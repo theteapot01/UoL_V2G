@@ -29,9 +29,9 @@ def simulate_power_watt():
     """
     mode = random.choice(["charging", "charging", "discharging"])  # bias toward charging
     if mode == "charging":
-        return round(random.uniform(2000, 7400), 2)   # up to ~7.4kW (typical AC charging)
+        return round(random.uniform(2000, 20000), 2)   # up to ~7.4kW (typical AC charging)
     else:
-        return round(random.uniform(-3600, -500), 2)  # V2G discharge back to grid
+        return round(random.uniform(-20000, -500), 2)  # V2G discharge back to grid
 
 
 class ChargePoint(cp):
@@ -47,6 +47,12 @@ class ChargePoint(cp):
         Periodically sends MeterValues to the central system.
         Reports active power (W) and cumulative energy (Wh).
         A negative Power.Active.Import value signals V2G discharge.
+
+        Fine for testing if OCPP works, but for actually running the prototype
+        need to only send the data when an EV is charging, otherwise be silent.
+
+        Need to find a look-up table to get equivalent AC power from DC charging 
+        and also other way around.
         """
         cumulative_energy_wh = 0.0
 
@@ -97,7 +103,7 @@ class ChargePoint(cp):
     async def send_boot_notification(self):
         request = call.BootNotification(
             charging_station=ChargingStationType(
-                model="Wallbox XYZ", vendor_name="anewone"
+                model="MSc Embedded", vendor_name="UoL"
             ),
             reason="PowerUp",
         )
@@ -108,7 +114,8 @@ class ChargePoint(cp):
             # Start heartbeat and meter values concurrently
             await asyncio.gather(
                 self.send_heartbeat(response.interval),
-                self.send_meter_values(evse_id=1, interval=10),
+                #self.send_meter_values(evse_id=1, interval=10), 
+                # instead need to have extra function checking if EV is connected
             )
 
 

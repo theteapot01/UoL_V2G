@@ -1,3 +1,47 @@
+"""
+Central System (CPMS) - OCPP 2.1 Implementation
+=================================================
+This module implements a basic Charging Station Management System (CPMS)
+using the OCPP 2.1 protocol over WebSockets.
+
+Project context:
+    Part of a V2G (Vehicle-to-Grid) communication protocol research project.
+    The CPMS acts as the grid operator's backend, managing connected charge
+    points and facilitating bidirectional energy flow between EVs and the grid.
+
+Handled messages (Charge Point → CPMS):
+    - BootNotification       : Registers a charge point on startup
+    - Authorize              : Validates a driver's ID token (RFID, app token etc.)
+    - Heartbeat              : Periodic keepalive from the charge point
+    - MeterValues            : Real-time power/energy readings, including V2G discharge
+
+Planned messages:
+    - TransactionEvent       : Session lifecycle (started, updated, ended)
+    - NotifyChargingLimit    : Charge point reports local grid constraints
+    - NotifyEVChargingSchedule : EV communicates its charging plan
+    - SetChargingProfile     : CPMS controls charge/discharge rate (core V2G control)
+    - StatusNotification     : Connector state changes (Available, Occupied, Faulted)
+
+Token authorization:
+    Currently uses a hardcoded whitelist (VALID_TOKENS) for development purposes.
+
+Usage:
+    Run this script on the central system (laptop/server):
+        $ python3 central_system.py
+
+    The server listens on port 9000. Charge points connect via:
+        ws://<host>:9000/<charge_point_id>
+
+    If running across subnets (e.g. university network), use an SSH tunnel:
+        $ ssh -L 9000:localhost:9000 <user>@<CPMS_host> -N
+
+Dependencies:
+    pip install ocpp websockets
+"""
+
+# --------------------------------------------------------------
+#                   Imports
+# --------------------------------------------------------------
 import asyncio
 import logging
 from datetime import datetime, timezone
@@ -19,9 +63,16 @@ from ocpp.v21.enums import Action
 
 logging.basicConfig(level=logging.INFO)
 
+# A simple whitelist of valid tokens
+VALID_TOKENS = {"RFID-001", "RFID-002", "APP-TOKEN-123"}
+
+# --------------------------------------------------------------
+#                   Class for CPMS message setup
+# --------------------------------------------------------------
 
 class ChargePoint(cp):
 
+    # notification from charge point when booting
     @on(Action.boot_notification)
     def on_boot_notification(self, charging_station, reason, **kwargs):
         return call_result.BootNotification(
@@ -29,7 +80,25 @@ class ChargePoint(cp):
             interval=10,
             status="Accepted",
         )
+    
+    # called when authorize request from charge point comes
+    @on(Action.authorize)
+    def on_authorize(self, id_token, **kwargs):
+        # id_token is a dict like: {"id_token": "RFID-001", "type": "ISO14443"}
+        token_value = id_token.get("id_token", "")
+    
+        if token_value in VALID_TOKENS:
+            status = "Accepted"
+            logging.info("Authorized: %s", token_value)
+        else:
+            status = "Unknown"  # OCPP uses "Unknown" not "Rejected" for unrecognised tokens
+            logging.warning("Authorization failed: %s", token_value)
 
+    return call_result.Authorize(
+        id_token_info={"status": status}
+    )
+
+    # periodic heartbeat from charge point to show its online
     @on(Action.heartbeat)
     def on_heartbeat(self):
         print("Got a Heartbeat!")
@@ -37,6 +106,7 @@ class ChargePoint(cp):
             current_time=datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S") + "Z"
         )
 
+    # Log meter values
     @on(Action.meter_values)
     def on_meter_values(self, evse_id, meter_value, **kwargs):
         """
@@ -55,22 +125,25 @@ class ChargePoint(cp):
                 if measurand == "Power.Active.Import":
                     if float(value) < 0:
                         logging.info(
-                            "⚡ V2G DISCHARGE | EVSE %s | %.1f %s at %s",
+                            "V2G DISCHARGE | EVSE %s | %.1f %s at %s",
                             evse_id, float(value), unit, timestamp
                         )
                     else:
                         logging.info(
-                            "🔋 CHARGING      | EVSE %s | %.1f %s at %s",
+                            "CHARGING      | EVSE %s | %.1f %s at %s",
                             evse_id, float(value), unit, timestamp
                         )
                 else:
                     logging.info(
-                        "📊 METER VALUE   | EVSE %s | %s: %s %s at %s",
+                        "METER VALUE   | EVSE %s | %s: %s %s at %s",
                         evse_id, measurand, value, unit, timestamp
                     )
 
         return call_result.MeterValues()
 
+# --------------------------------------------------------------
+#                   Example on connect 
+# --------------------------------------------------------------
 
 async def on_connect(websocket):
     """For every new charge point that connects, create a ChargePoint
