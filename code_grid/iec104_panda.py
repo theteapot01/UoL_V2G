@@ -1,6 +1,3 @@
-import os
-os.environ["PYTHONUNBUFFERED"] = "1"
-
 import pandapower as pp
 import matplotlib.pyplot as plt
 import c104
@@ -45,6 +42,9 @@ pp.create_line(
     std_type=line_type,
     name="line1",
 )
+
+# Load values for testing the calculation
+load_values = [-0.010, -0.015, -0.020, 0.05, 0.010, 0.025, 0.030, 0.035]
 
 voltages = []
 trafo_loadings = []
@@ -115,15 +115,16 @@ def main():
         print(
             "Waiting for connection to {0}:{1}".format(connection.ip, connection.port)
         )
-	# add here a repeating meter reading to calc power flow
         time.sleep(1)
 
     print(f"-> AFTER INIT {point_meter.value}")
 
     print("read")
+    print("read")
+    print("read")
     # Read the data point from the charger
     if point_meter.read():
-        net.load.at[0, "p_mw"] = point_meter.value/1000.0
+        net.load.at[0, "p_mw"] = point_meter.value
         pp.runpp(net)
 
         vm_pu_b2 = net.res_bus.at[b2, "vm_pu"]
@@ -134,7 +135,7 @@ def main():
         trafo_loadings.append(trafo_loading)
 
         print(
-            f"Load: {point_meter.value:.2f} kW | Bus 2 Voltage: {vm_pu_b2:.4f} pu | Trafo Loading: {trafo_loading:.1f}% | Line {line_loading:.1f}%"
+            f"Load: {p_mw*1000:.2f} kW | Bus 2 Voltage: {vm_pu_b2:.4f} pu | Trafo Loading: {trafo_loading:.1f}% | Line {line_loading:.1f}%"
         )
         print(f"-> SUCCESSFUL METER READING {point_meter.value}")
     else:
@@ -142,6 +143,8 @@ def main():
 
     time.sleep(3)
 
+    print("transmit")
+    print("transmit")
     print("transmit")
     # Write to command point with either HIGHER or LOWER for changing the charging levels
     if command.transmit(cause=c104.Cot.ACTIVATION):
@@ -152,24 +155,27 @@ def main():
     time.sleep(3)
 
     if point_soc.read():
-        print(f"-> SUCCESSFUL SOC READING {point_soc.value:.2f}")
+        print(f"-> SUCCESSFUL SOC READING {point_soc.value}")
     else:
         print("-> FAILURE")
 
     time.sleep(3)
 
     if point_temp.read():
-        print(f"-> SUCCESSFUL TEMP READING {point_temp.value:.2f}")
+        print(f"-> SUCCESSFUL TEMP READING {point_temp.value}")
     else:
         print("-> FAILURE")
 
     print("exit")
+    print("exit")
+    print("exit")
+
 
 if __name__ == "__main__":
-#    c104.set_debug_mode(
- #       c104.Debug.Client
-  #      | c104.Debug.Connection
-   #     | c104.Debug.Point
-    #    | c104.Debug.Callback
-   # )
+    c104.set_debug_mode(
+        c104.Debug.Client
+        | c104.Debug.Connection
+        | c104.Debug.Point
+        | c104.Debug.Callback
+    )
     main()

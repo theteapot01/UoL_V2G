@@ -42,11 +42,20 @@ Usage:
 
   Start this before the client. Uncomment the debug line at the bottom for verbose logging.
 """
+import os
+os.environ["PYTHONUNBUFFERED"] = "1"
 
 import c104
 import random
 import time
 
+# ------------------------------------------------------------
+#			IOA Addresses
+# ------------------------------------------------------------
+meterValues = 11
+chargeCMD = 12
+socVal = 13
+readTemp = 14
 
 def on_step_command(
     point: c104.Point, previous_info: c104.Information, message: c104.IncomingMessage
@@ -60,10 +69,12 @@ def on_step_command(
 
     if point.value == c104.Step.LOWER:
         # do something
+        print("GOING LOWER WITH CHARGING")
         return c104.ResponseState.SUCCESS
 
     if point.value == c104.Step.HIGHER:
         # do something
+        print("GOING HIGHER WITH CHARGING")
         return c104.ResponseState.SUCCESS
 
     return c104.ResponseState.FAILURE
@@ -71,22 +82,32 @@ def on_step_command(
 
 def before_auto_transmit(point: c104.Point) -> None:
     """update point value before transmission"""
-    point.value = random.random() * 100
+    if point.io_address == meterValues:
+        point.value = random.uniform(0,20)
+    elif point.io_address == socVal:
+        point.value = random.uniform(0,100)
+    elif point.io_address == readTemp:
+        point.value = random.uniform(20,60)
     print(
         "{0} BEFORE AUTOMATIC REPORT on IOA: {1} VALUE: {2}".format(
             point.type, point.io_address, point.value
         )
     )
 
-
 def before_read(point: c104.Point) -> None:
     """update point value before transmission"""
-    point.value = random.random() * 100
-    print(
-        "{0} BEFORE READ or INTERROGATION on IOA: {1} VALUE: {2}".format(
-            point.type, point.io_address, point.value
+    # replace the random value with the actual meter values
+    if point.io_address == meterValues:
+        point.value = random.uniform(0,20)
+        print(
+            "{0} BEFORE READ or INTERROGATION on IOA: {1} VALUE: {2}".format(
+                point.type, point.io_address, point.value
+            )
         )
-    )
+    elif point.io_address == socVal:
+        point.value = random.uniform(0,100)
+    elif point.io_address == readTemp:
+        point.value = random.uniform(20,60)
 
 
 def main():
@@ -95,12 +116,20 @@ def main():
     station = server.add_station(common_address=47)
 
     # create monitoring point to read data from
-    point = station.add_point(io_address=11, type=c104.Type.M_ME_NC_1, report_ms=1000)
-    point.on_before_auto_transmit(callable=before_auto_transmit)
-    point.on_before_read(callable=before_read)
+    point_meter = station.add_point(io_address=meterValues, type=c104.Type.M_ME_NC_1, report_ms=2000)
+#    point_meter.on_before_auto_transmit(callable=before_auto_transmit)
+    point_meter.on_before_read(callable=before_read)
+
+    # create SoC monitoring point
+    point_soc = station.add_point(io_address=socVal, type= c104.Type.M_ME_NC_1, report_ms=1000)
+    point_soc.on_before_read(callable=before_read)
+
+    # create Temp monitoring point
+    point_temp = station.add_point(io_address=readTemp, type=c104.Type.M_ME_NC_1, report_ms=1000)
+    point_temp.on_before_read(callable=before_read)
 
     # create command point to write commands to
-    command = station.add_point(io_address=12, type=c104.Type.C_RC_TA_1)
+    command = station.add_point(io_address=chargeCMD, type=c104.Type.C_RC_TA_1)
     command.on_receive(callable=on_step_command)
 
     # start
@@ -114,11 +143,11 @@ def main():
 
     c = 0
     while server.has_open_connections and c < 30:
-        c += 1
+        #c += 1
         print("Keep alive until disconnected")
         time.sleep(1)
 
 
 if __name__ == "__main__":
-    c104.set_debug_mode(c104.Debug.Server | c104.Debug.Point | c104.Debug.Callback)
+    #c104.set_debug_mode(c104.Debug.Server | c104.Debug.Point | c104.Debug.Callback)
     main()

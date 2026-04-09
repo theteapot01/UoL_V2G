@@ -42,9 +42,16 @@ import time
 # --------------------------------------------------------------
 #                   Network Settings
 # --------------------------------------------------------------
-ip_address = "127.0.0.1"  # check Pi self assigned address and fill in here
+ip_address = "10.42.0.23"  # check charger Pi assigned address and fill in here
 port = 2404  # for now leave port as is, if it overlaps with other functionallity then change it
 
+# --------------------------------------------------------------
+#		    Points and Commands
+# --------------------------------------------------------------
+meterValues = 11
+chargeCMD = 12
+socVal = 13
+readTemp = 14
 
 # --------------------------------------------------------------
 #                   Functions
@@ -81,10 +88,12 @@ def main():
     station = connection.add_station(common_address=47)
 
     # monitoring point preparation
-    point = station.add_point(io_address=11, type=c104.Type.M_ME_NC_1)
+    point_meter = station.add_point(io_address=meterValues, type=c104.Type.M_ME_NC_1)
+    point_soc = station.add_point(io_address=socVal, type=c104.Type.M_ME_NC_1)
+    point_temp = station.add_point(io_address=readTemp, type=c104.Type.M_ME_NC_1)
 
     # command point preparation
-    command = station.add_point(io_address=12, type=c104.Type.C_RC_TA_1)
+    command = station.add_point(io_address=chargeCMD, type=c104.Type.C_RC_TA_1)
     command.value = c104.Step.HIGHER
 
     # start
@@ -96,29 +105,41 @@ def main():
         )
         time.sleep(1)
 
-    print(f"-> AFTER INIT {point.value}")
+    print(f"-> AFTER INIT {point_meter.value}")
 
     print("read")
     print("read")
     print("read")
     # Read the data point from the charger
-    if point.read():
-        print(f"-> SUCCESS {point.value}")
+    if point_meter.read():
+        print(f"-> SUCCESSFUL METER READING {point_meter.value}")
     else:
         print("-> FAILURE")
 
-    # time.sleep(3)
+    time.sleep(3)
 
     print("transmit")
     print("transmit")
     print("transmit")
     # Write to command point with either HIGHER or LOWER for changing the charging levels
     if command.transmit(cause=c104.Cot.ACTIVATION):
-        print("-> SUCCESS")
+        print("-> SUCCESSFUL TRANSMIT")
     else:
         print("-> FAILURE")
 
     time.sleep(3)
+
+    if point_soc.read():
+        print(f"-> SUCCESSFUL SOC READING {point_soc.value}")
+    else:
+        print("-> FAILURE")
+
+    time.sleep(3)
+
+    if point_temp.read():
+        print(f"-> SUCCESSFUL TEMP READING {point_temp.value}")
+    else:
+        print("-> FAILURE")
 
     print("exit")
     print("exit")
