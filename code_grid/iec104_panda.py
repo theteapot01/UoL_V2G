@@ -129,8 +129,9 @@ async def run_iec104_client():
         now = time.time()
         # Read the data point from the charger
         if now - last_read >= 1:
-            if point_meter.read() and point_meter.value !=0:
-            #if await loop.run_in_executor(None, point_meter.read):
+            last_read = now
+            #if point_meter.read() and point_meter.value !=0:
+            if await loop.run_in_executor(None, point_meter.read):
                 net.load.at[0, "p_mw"] = point_meter.value / 1000
                 pp.runpp(net)
 
@@ -149,6 +150,7 @@ async def run_iec104_client():
                 print("-> FAILURE")
 
         if now - last_transmit >= 4:
+            last_transmit = now
             # Write to command point with either HIGHER or LOWER for changing the charging levels
             if await loop.run_in_executor(
                 None, lambda: command.transmit(cause=c104.Cot.ACTIVATION)
