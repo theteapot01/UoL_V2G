@@ -119,7 +119,7 @@ class ChargePoint(cp):
             )
 
 
-async def run_ocpp_server():
+async def run_ocpp_client():
     async with websockets.connect(
         "ws://localhost:9000/CP_1", subprotocols=["ocpp2.1"]
     ) as ws:
@@ -130,4 +130,4 @@ async def run_ocpp_server():
 
 
 if __name__ == "__main__":
-    asyncio.run(run_ocpp_server())
+    asyncio.run(run_ocpp_client())

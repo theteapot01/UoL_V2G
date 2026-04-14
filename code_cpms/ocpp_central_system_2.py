@@ -54,6 +54,7 @@ except ModuleNotFoundError:
     print()
     print(" $ pip install websockets")
     import sys
+
     sys.exit(1)
 
 from ocpp.routing import on
@@ -70,6 +71,7 @@ VALID_TOKENS = {"RFID-001", "RFID-002", "APP-TOKEN-123"}
 #                   Class for CPMS message setup
 # --------------------------------------------------------------
 
+
 class ChargePoint(cp):
 
     # notification from charge point when booting
@@ -80,23 +82,23 @@ class ChargePoint(cp):
             interval=10,
             status="Accepted",
         )
-    
+
     # called when authorize request from charge point comes
     @on(Action.authorize)
     def on_authorize(self, id_token, **kwargs):
         # id_token is a dict like: {"id_token": "RFID-001", "type": "ISO14443"}
         token_value = id_token.get("id_token", "")
-    
+
         if token_value in VALID_TOKENS:
             status = "Accepted"
             logging.info("Authorized: %s", token_value)
         else:
-            status = "Unknown"  # OCPP uses "Unknown" not "Rejected" for unrecognised tokens
+            status = (
+                "Unknown"  # OCPP uses "Unknown" not "Rejected" for unrecognised tokens
+            )
             logging.warning("Authorization failed: %s", token_value)
 
-    return call_result.Authorize(
-        id_token_info={"status": status}
-    )
+    return call_result.Authorize(id_token_info={"status": status})
 
     # periodic heartbeat from charge point to show its online
     @on(Action.heartbeat)
@@ -126,24 +128,36 @@ class ChargePoint(cp):
                     if float(value) < 0:
                         logging.info(
                             "V2G DISCHARGE | EVSE %s | %.1f %s at %s",
-                            evse_id, float(value), unit, timestamp
+                            evse_id,
+                            float(value),
+                            unit,
+                            timestamp,
                         )
                     else:
                         logging.info(
                             "CHARGING      | EVSE %s | %.1f %s at %s",
-                            evse_id, float(value), unit, timestamp
+                            evse_id,
+                            float(value),
+                            unit,
+                            timestamp,
                         )
                 else:
                     logging.info(
                         "METER VALUE   | EVSE %s | %s: %s %s at %s",
-                        evse_id, measurand, value, unit, timestamp
+                        evse_id,
+                        measurand,
+                        value,
+                        unit,
+                        timestamp,
                     )
 
         return call_result.MeterValues()
 
+
 # --------------------------------------------------------------
-#                   Example on connect 
+#                   Example on connect
 # --------------------------------------------------------------
+
 
 async def on_connect(websocket):
     """For every new charge point that connects, create a ChargePoint
@@ -169,6 +183,7 @@ async def on_connect(websocket):
     charge_point = ChargePoint(charge_point_id, websocket)
 
     await charge_point.start()
+
 
 async def run_ocpp_server():
     server = await websockets.serve(

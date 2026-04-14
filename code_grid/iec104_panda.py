@@ -92,7 +92,7 @@ def con_on_unexpected_message(
     )
 
 
-def main():
+async def run_iec104_client():
     # client, connection and station preparation
     client = c104.Client()
     connection = client.add_connection(ip=ip_address, port=port, init=c104.Init.ALL)
@@ -111,64 +111,61 @@ def main():
     # start
     client.start()
 
+    loop = asyncio.get_event_loop()
+
     while connection.state != c104.ConnectionState.OPEN:
         print(
             "Waiting for connection to {0}:{1}".format(connection.ip, connection.port)
         )
-        time.sleep(1)
+        await asyncio.sleep(1)
 
     print(f"-> AFTER INIT {point_meter.value}")
 
-    print("read")
-    print("read")
-    print("read")
-    # Read the data point from the charger
-    if point_meter.read():
-        net.load.at[0, "p_mw"] = point_meter.value
-        pp.runpp(net)
+    last_read = 0
+    last_transmit = 0
 
-        vm_pu_b2 = net.res_bus.at[b2, "vm_pu"]
-        trafo_loading = net.res_trafo.at[0, "loading_percent"]
-        line_loading = net.res_line.at[0, "loading_percent"]
+    while connection.state == c104.ConnectionState.OPEN:
+        now = time.time()
+        # Read the data point from the charger
+        if now - last_read >= 1:
+            if await loop.run_in_executor(None, point_meter.read):
+                net.load.at[0, "p_mw"] = point_meter.value
+                pp.runpp(net)
 
-        voltages.append(vm_pu_b2)
-        trafo_loadings.append(trafo_loading)
+                vm_pu_b2 = net.res_bus.at[b2, "vm_pu"]
+                trafo_loading = net.res_trafo.at[0, "loading_percent"]
+                line_loading = net.res_line.at[0, "loading_percent"]
 
-        print(
-            f"Load: {p_mw*1000:.2f} kW | Bus 2 Voltage: {vm_pu_b2:.4f} pu | Trafo Loading: {trafo_loading:.1f}% | Line {line_loading:.1f}%"
-        )
-        print(f"-> SUCCESSFUL METER READING {point_meter.value}")
-    else:
-        print("-> FAILURE")
+                voltages.append(vm_pu_b2)
+                trafo_loadings.append(trafo_loading)
 
-    time.sleep(3)
+                print(
+                    f"Load: {p_mw*1000:.2f} kW | Bus 2 Voltage: {vm_pu_b2:.4f} pu | Trafo Loading: {trafo_loading:.1f}% | Line {line_loading:.1f}%"
+                )
+                print(f"-> SUCCESSFUL METER READING {point_meter.value}")
+            else:
+                print("-> FAILURE")
 
-    print("transmit")
-    print("transmit")
-    print("transmit")
-    # Write to command point with either HIGHER or LOWER for changing the charging levels
-    if command.transmit(cause=c104.Cot.ACTIVATION):
-        print("-> SUCCESSFUL TRANSMIT")
-    else:
-        print("-> FAILURE")
+        if now - last_transmit >= 4:
+            # Write to command point with either HIGHER or LOWER for changing the charging levels
+            if await loop.run_in_executor(
+                None, lambda: command.transmit(cause=c104.Cot.ACTIVATION)
+            ):
+                print("-> SUCCESSFUL TRANSMIT")
+            else:
+                print("-> FAILURE")
 
-    time.sleep(3)
+            if await loop.run_in_executor(None, point_soc.read):
+                print(f"-> SUCCESSFUL SOC READING {point_soc.value}")
+            else:
+                print("-> FAILURE")
 
-    if point_soc.read():
-        print(f"-> SUCCESSFUL SOC READING {point_soc.value}")
-    else:
-        print("-> FAILURE")
+            if await loop.run_in_executor(None, point_temp.read):
+                print(f"-> SUCCESSFUL TEMP READING {point_temp.value}")
+            else:
+                print("-> FAILURE")
 
-    time.sleep(3)
-
-    if point_temp.read():
-        print(f"-> SUCCESSFUL TEMP READING {point_temp.value}")
-    else:
-        print("-> FAILURE")
-
-    print("exit")
-    print("exit")
-    print("exit")
+        await asyncio.sleep(0.1)
 
 
 if __name__ == "__main__":
@@ -178,4 +175,4 @@ if __name__ == "__main__":
         | c104.Debug.Point
         | c104.Debug.Callback
     )
-    main()
+    asyncio.run(run_iec104_client())
