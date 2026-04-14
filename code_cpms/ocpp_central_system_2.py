@@ -170,8 +170,7 @@ async def on_connect(websocket):
 
     await charge_point.start()
 
-
-async def main():
+async def run_ocpp_server():
     server = await websockets.serve(
         on_connect, "0.0.0.0", 9000, subprotocols=["ocpp2.1"]
     )
@@ -181,4 +180,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(run_ocpp_server())

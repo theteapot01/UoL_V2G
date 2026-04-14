@@ -48,6 +48,7 @@ os.environ["PYTHONUNBUFFERED"] = "1"
 import c104
 import random
 import time
+import asyncio
 
 # ------------------------------------------------------------
 #			IOA Addresses
@@ -110,7 +111,7 @@ def before_read(point: c104.Point) -> None:
         point.value = random.uniform(20,60)
 
 
-def main():
+async def run_iec104_server():
     # server and station preparation
     server = c104.Server()
     station = server.add_station(common_address=47)
@@ -137,15 +138,15 @@ def main():
 
     while not server.has_active_connections:
         print("Waiting for connection")
-        time.sleep(1)
+        await asyncio.sleep(1)
 
-    time.sleep(1)
+    await asyncio.sleep(1)
 
     c = 0
     while server.has_open_connections and c < 30:
         #c += 1
         print("Keep alive until disconnected")
-        time.sleep(1)
+        await asyncio.sleep(1)
 
 
 if __name__ == "__main__":
