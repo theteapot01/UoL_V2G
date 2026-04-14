@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import c104
 import random
 import time
+import asyncio
 
 net = pp.create_empty_network()
 
@@ -128,8 +129,9 @@ async def run_iec104_client():
         now = time.time()
         # Read the data point from the charger
         if now - last_read >= 1:
-            if await loop.run_in_executor(None, point_meter.read):
-                net.load.at[0, "p_mw"] = point_meter.value
+            if point_meter.read() and point_meter.value !=0:
+            #if await loop.run_in_executor(None, point_meter.read):
+                net.load.at[0, "p_mw"] = point_meter.value / 1000
                 pp.runpp(net)
 
                 vm_pu_b2 = net.res_bus.at[b2, "vm_pu"]
@@ -140,7 +142,7 @@ async def run_iec104_client():
                 trafo_loadings.append(trafo_loading)
 
                 print(
-                    f"Load: {p_mw*1000:.2f} kW | Bus 2 Voltage: {vm_pu_b2:.4f} pu | Trafo Loading: {trafo_loading:.1f}% | Line {line_loading:.1f}%"
+                    f"Load: {point_meter.value:.2f} kW | Bus 2 Voltage: {vm_pu_b2:.4f} pu | Trafo Loading: {trafo_loading:.1f}% | Line {line_loading:.1f}%"
                 )
                 print(f"-> SUCCESSFUL METER READING {point_meter.value}")
             else:

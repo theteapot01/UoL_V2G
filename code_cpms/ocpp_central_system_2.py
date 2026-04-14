@@ -98,7 +98,7 @@ class ChargePoint(cp):
             )
             logging.warning("Authorization failed: %s", token_value)
 
-    return call_result.Authorize(id_token_info={"status": status})
+        return call_result.Authorize(id_token_info={"status": status})
 
     # periodic heartbeat from charge point to show its online
     @on(Action.heartbeat)
