@@ -59,7 +59,7 @@ class ChargePoint(cp):
         while True:
             power_w = simulate_power_watt()
 
-            # Accumulate energy — only add when charging (positive power)
+            # Accumulate energy - only add when charging (positive power)
             if power_w > 0:
                 cumulative_energy_wh += (power_w * interval) / 3600
 

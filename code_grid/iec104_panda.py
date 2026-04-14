@@ -5,6 +5,8 @@ import random
 import time
 import asyncio
 
+from config import config
+
 net = pp.create_empty_network()
 
 # --------------------------------------------------------------
@@ -52,21 +54,6 @@ trafo_loadings = []
 
 
 # --------------------------------------------------------------
-#                   Network Settings
-# --------------------------------------------------------------
-ip_address = "10.42.0.23"  # check Pi self assigned address and fill in here
-port = 2404  # for now leave port as is, if it overlaps with other functionallity then change it
-
-# --------------------------------------------------------------
-# 		    Points and Commands
-# --------------------------------------------------------------
-meterValues = 11
-chargeCMD = 12
-socVal = 13
-readTemp = 14
-
-
-# --------------------------------------------------------------
 #                   Functions
 # --------------------------------------------------------------
 def con_on_unexpected_message(
@@ -96,17 +83,23 @@ def con_on_unexpected_message(
 async def run_iec104_client():
     # client, connection and station preparation
     client = c104.Client()
-    connection = client.add_connection(ip=ip_address, port=port, init=c104.Init.ALL)
+    connection = client.add_connection(
+        ip=config.IP_ADDRESS, port=config.PORT, init=c104.Init.ALL
+    )
     connection.on_unexpected_message(callable=con_on_unexpected_message)
-    station = connection.add_station(common_address=47)
+    station = connection.add_station(common_address=config.COMMON_ADDRESS)
 
     # monitoring point preparation
-    point_meter = station.add_point(io_address=meterValues, type=c104.Type.M_ME_NC_1)
-    point_soc = station.add_point(io_address=socVal, type=c104.Type.M_ME_NC_1)
-    point_temp = station.add_point(io_address=readTemp, type=c104.Type.M_ME_NC_1)
+    point_meter = station.add_point(
+        io_address=config.METER_VALUES, type=c104.Type.M_ME_NC_1
+    )
+    point_soc = station.add_point(io_address=config.SOC_VAL, type=c104.Type.M_ME_NC_1)
+    point_temp = station.add_point(
+        io_address=config.READ_TEMP, type=c104.Type.M_ME_NC_1
+    )
 
     # command point preparation
-    command = station.add_point(io_address=chargeCMD, type=c104.Type.C_RC_TA_1)
+    command = station.add_point(io_address=config.CHARGE_CMD, type=c104.Type.C_RC_TA_1)
     command.value = c104.Step.HIGHER
 
     # start
@@ -130,7 +123,7 @@ async def run_iec104_client():
         # Read the data point from the charger
         if now - last_read >= 1:
             last_read = now
-            #if point_meter.read() and point_meter.value !=0:
+            # if point_meter.read() and point_meter.value !=0:
             if await loop.run_in_executor(None, point_meter.read):
                 net.load.at[0, "p_mw"] = point_meter.value / 1000
                 pp.runpp(net)

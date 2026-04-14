@@ -52,13 +52,11 @@ import random
 import time
 import asyncio
 
+from config import config
+
 # ------------------------------------------------------------
-# 			IOA Addresses
+# 			        Functions
 # ------------------------------------------------------------
-meterValues = 11
-chargeCMD = 12
-socVal = 13
-readTemp = 14
 
 
 def on_step_command(
@@ -86,11 +84,11 @@ def on_step_command(
 
 def before_auto_transmit(point: c104.Point) -> None:
     """update point value before transmission"""
-    if point.io_address == meterValues:
+    if point.io_address == config.METER_VALUES:
         point.value = random.uniform(0, 20)
-    elif point.io_address == socVal:
+    elif point.io_address == config.SOC_VAL:
         point.value = random.uniform(0, 100)
-    elif point.io_address == readTemp:
+    elif point.io_address == config.READ_TEMP:
         point.value = random.uniform(20, 60)
     print(
         "{0} BEFORE AUTOMATIC REPORT on IOA: {1} VALUE: {2}".format(
@@ -102,16 +100,16 @@ def before_auto_transmit(point: c104.Point) -> None:
 def before_read(point: c104.Point) -> None:
     """update point value before transmission"""
     # replace the random value with the actual meter values
-    if point.io_address == meterValues:
+    if point.io_address == config.METER_VALUES:
         point.value = random.uniform(0, 20)
         print(
             "{0} BEFORE READ or INTERROGATION on IOA: {1} VALUE: {2}".format(
                 point.type, point.io_address, point.value
             )
         )
-    elif point.io_address == socVal:
+    elif point.io_address == config.SOC_VAL:
         point.value = random.uniform(0, 100)
-    elif point.io_address == readTemp:
+    elif point.io_address == config.READ_TEMP:
         point.value = random.uniform(20, 60)
 
 
@@ -122,27 +120,27 @@ async def run_iec104_server():
 
     # create monitoring point to read data from
     point_meter = station.add_point(
-        io_address=meterValues, type=c104.Type.M_ME_NC_1, report_ms=2000
+        io_address=config.METER_VALUES, type=c104.Type.M_ME_NC_1, report_ms=2000
     )
     #    point_meter.on_before_auto_transmit(callable=before_auto_transmit)
     point_meter.on_before_read(callable=before_read)
 
     # create SoC monitoring point
     point_soc = station.add_point(
-        io_address=socVal, type=c104.Type.M_ME_NC_1, report_ms=1000
+        io_address=config.SOC_VAL, type=c104.Type.M_ME_NC_1, report_ms=1000
     )
     point_soc.on_before_auto_transmit(callable=before_auto_transmit)
     point_soc.on_before_read(callable=before_read)
 
     # create Temp monitoring point
     point_temp = station.add_point(
-        io_address=readTemp, type=c104.Type.M_ME_NC_1, report_ms=1000
+        io_address=config.READ_TEMP, type=c104.Type.M_ME_NC_1, report_ms=1000
     )
     point_temp.on_before_auto_transmit(callable=before_auto_transmit)
     point_temp.on_before_read(callable=before_read)
 
     # create command point to write commands to
-    command = station.add_point(io_address=chargeCMD, type=c104.Type.C_RC_TA_1)
+    command = station.add_point(io_address=config.CHARGE_CMD, type=c104.Type.C_RC_TA_1)
     command.on_receive(callable=on_step_command)
 
     # start
