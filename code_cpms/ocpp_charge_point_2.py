@@ -120,13 +120,18 @@ class ChargePoint(cp):
 
 
 async def run_ocpp_client():
-    async with websockets.connect(
-        "ws://localhost:9000/CP_1", subprotocols=["ocpp2.1"]
-    ) as ws:
-        charge_point = ChargePoint("CP_1", ws)
-        await asyncio.gather(
-            charge_point.start(), charge_point.send_boot_notification()
-        )
+    while True:
+        try:
+            async with websockets.connect(
+                "ws://localhost:9000/CP_1", subprotocols=["ocpp2.1"]
+            ) as ws:
+                charge_point = ChargePoint("CP_1", ws)
+                await asyncio.gather(
+                    charge_point.start(), charge_point.send_boot_notification()
+                )
+        except OSError:
+            logging.info("OCPP server not available yet, retrying in 3s...")
+            await asyncio.sleep(3)
 
 
 if __name__ == "__main__":

@@ -5,8 +5,11 @@ from code_cpms.ocpp_charge_point_2 import run_ocpp_client
 
 
 async def main():
-    asyncio.gather(run_iec104_server(), run_ocpp_client())
+    await asyncio.gather(run_iec104_server(), run_ocpp_client())
 
 
 if __name__ == "__main__":
-    asyncio.run(mains())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("Closing connections...")
