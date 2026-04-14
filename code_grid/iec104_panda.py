@@ -29,7 +29,7 @@ pp.create_line(
     from_bus=b2,
     to_bus=b3,
     length_km=Config.LINE_LENGTH,
-    std_type=Config.TRAFO_TYPE,
+    std_type=Config.LINE_TYPE,
     name="line1",
     )
 
