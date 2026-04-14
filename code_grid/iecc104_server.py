@@ -44,14 +44,15 @@ Usage:
 """
 
 import os
+
 os.environ["PYTHONUNBUFFERED"] = "1"
 
 import c104
 import random
-import time
 import asyncio
 
 from config import Config
+
 
 # ------------------------------------------------------------
 # 			        Functions
@@ -59,103 +60,103 @@ from config import Config
 
 
 def on_step_command(
-    point: c104.Point, previous_info: c104.Information, message: c104.IncomingMessage
-) -> c104.ResponseState:
+        point: c104.Point, previous_info: c104.Information, message: c104.IncomingMessage
+        ) -> c104.ResponseState:
     """handle incoming regulating step command"""
     print(
         "{0} STEP COMMAND on IOA: {1}, message: {2}, previous: {3}, current: {4}".format(
             point.type, point.io_address, message, previous_info, point.info
+            )
         )
-    )
 
     if point.value == c104.Step.LOWER:
         # do something
-        print("GOING LOWER WITH CHARGING")
+        print( "GOING LOWER WITH CHARGING" )
         return c104.ResponseState.SUCCESS
 
     if point.value == c104.Step.HIGHER:
         # do something
-        print("GOING HIGHER WITH CHARGING")
+        print( "GOING HIGHER WITH CHARGING" )
         return c104.ResponseState.SUCCESS
 
     return c104.ResponseState.FAILURE
 
 
-def before_auto_transmit(point: c104.Point) -> None:
+def before_auto_transmit( point: c104.Point ) -> None:
     """update point value before transmission"""
     if point.io_address == Config.METER_VALUES:
-        point.value = random.uniform(0, 20)
+        point.value = random.uniform( 0, 20 )
     elif point.io_address == Config.SOC_VAL:
-        point.value = random.uniform(0, 100)
+        point.value = random.uniform( 0, 100 )
     elif point.io_address == Config.READ_TEMP:
-        point.value = random.uniform(20, 60)
+        point.value = random.uniform( 20, 60 )
     print(
         "{0} BEFORE AUTOMATIC REPORT on IOA: {1} VALUE: {2}".format(
             point.type, point.io_address, point.value
+            )
         )
-    )
 
 
-def before_read(point: c104.Point) -> None:
+def before_read( point: c104.Point ) -> None:
     """update point value before transmission"""
     # replace the random value with the actual meter values
     if point.io_address == Config.METER_VALUES:
-        point.value = random.uniform(0, 20)
+        point.value = random.uniform( 0, 20 )
         print(
             "{0} BEFORE READ or INTERROGATION on IOA: {1} VALUE: {2}".format(
                 point.type, point.io_address, point.value
+                )
             )
-        )
     elif point.io_address == Config.SOC_VAL:
-        point.value = random.uniform(0, 100)
+        point.value = random.uniform( 0, 100 )
     elif point.io_address == Config.READ_TEMP:
-        point.value = random.uniform(20, 60)
+        point.value = random.uniform( 20, 60 )
 
 
 async def run_iec104_server():
     # server and station preparation
     server = c104.Server()
-    station = server.add_station(common_address=47)
+    station = server.add_station( common_address=47 )
 
     # create monitoring point to read data from
     point_meter = station.add_point(
         io_address=Config.METER_VALUES, type=c104.Type.M_ME_NC_1, report_ms=2000
-    )
+        )
     #    point_meter.on_before_auto_transmit(callable=before_auto_transmit)
-    point_meter.on_before_read(callable=before_read)
+    point_meter.on_before_read( callable=before_read )
 
     # create SoC monitoring point
     point_soc = station.add_point(
         io_address=Config.SOC_VAL, type=c104.Type.M_ME_NC_1, report_ms=1000
-    )
-    point_soc.on_before_auto_transmit(callable=before_auto_transmit)
-    point_soc.on_before_read(callable=before_read)
+        )
+    point_soc.on_before_auto_transmit( callable=before_auto_transmit )
+    point_soc.on_before_read( callable=before_read )
 
     # create Temp monitoring point
     point_temp = station.add_point(
         io_address=Config.READ_TEMP, type=c104.Type.M_ME_NC_1, report_ms=1000
-    )
-    point_temp.on_before_auto_transmit(callable=before_auto_transmit)
-    point_temp.on_before_read(callable=before_read)
+        )
+    point_temp.on_before_auto_transmit( callable=before_auto_transmit )
+    point_temp.on_before_read( callable=before_read )
 
     # create command point to write commands to
-    command = station.add_point(io_address=Config.CHARGE_CMD, type=c104.Type.C_RC_TA_1)
-    command.on_receive(callable=on_step_command)
+    command = station.add_point( io_address=Config.CHARGE_CMD, type=c104.Type.C_RC_TA_1 )
+    command.on_receive( callable=on_step_command )
 
     # start
     server.start()
 
     while not server.has_active_connections:
-        print("Waiting for connection")
-        await asyncio.sleep(1)
+        print( "Waiting for connection" )
+        await asyncio.sleep( 1 )
 
-    await asyncio.sleep(1)
+    await asyncio.sleep( 1 )
 
     c = 0
     while server.has_open_connections and c < 30:
         # c += 1
-        print("Keep alive until disconnected")
-        await asyncio.sleep(1)
+        print( "Keep alive until disconnected" )
+        await asyncio.sleep( 1 )
 
 
 if __name__ == "__main__":

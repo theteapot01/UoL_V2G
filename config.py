@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 
-@dataclass(frozen=True)
+@dataclass( frozen=True )
 class Config:
     # --------------------------------------------------------------
     # 		    Points and Commands
