@@ -1,48 +1,34 @@
-import pandapower as pp
-import matplotlib.pyplot as plt
-import c104
-import random
-import time
 import asyncio
+import time
+import c104
+import pandapower as pp
 
-from config import config
+from config import Config
+
+import os
+os.environ["PYTHONUNBUFFERED"] = "1"
 
 net = pp.create_empty_network()
-
-# --------------------------------------------------------------
-#                   Voltage Setup
-# --------------------------------------------------------------
-
-# primary Voltage in kV
-v_p = 10.0
-# secondary Voltage in kV
-v_s = 0.4
-# trafo type according to PandaPower
-trafo_type = "0.4 MVA 10/0.4 kV"
-# line type according to PandaPower
-line_type = "NA2XS2Y 1x185 RM/25 6/10 kV"  # "NAYY 4x120 SE"
-line_length = 0.5  # in km
-# NA2XS2Y 1x185 RM/25 6/10 kV
 
 # --------------------------------------------------------------
 #                   Net and Bus Setup
 # --------------------------------------------------------------
 
-b1 = pp.create_bus(net, vn_kv=v_p, name="Bus 1")
-b2 = pp.create_bus(net, vn_kv=v_s, name="Bus 2")
-b3 = pp.create_bus(net, vn_kv=v_s, name="Bus 3")
+b1 = pp.create_bus(net, vn_kv=Config.V_PRIMARY, name="Bus 1")
+b2 = pp.create_bus(net, vn_kv=Config.V_SECONDARY, name="Bus 2")
+b3 = pp.create_bus(net, vn_kv=Config.V_SECONDARY, name="Bus 3")
 
 pp.create_ext_grid(net, bus=b1, vm_pu=1.02, name="Grid Connection")
-pp.create_load(net, bus=b3, p_mw=0.1, q_mvar=0.05, name="Load")
+pp.create_load(net, bus=b3, p_mw=Config.LOAD_MW, q_mvar=Config.LOAD_MVAR, name="Load")
 
-pp.create_transformer(net, hv_bus=b1, lv_bus=b2, std_type=trafo_type, name="Trafo")
+pp.create_transformer(net, hv_bus=b1, lv_bus=b2, std_type=Config.TRAFO_TYPE, name="Trafo")
 
 pp.create_line(
     net,
     from_bus=b2,
     to_bus=b3,
-    length_km=line_length,
-    std_type=line_type,
+    length_km=Config.LINE_LENGTH,
+    std_type=Config.TRAFO_TYPE,
     name="line1",
 )
 
@@ -57,7 +43,7 @@ trafo_loadings = []
 #                   Functions
 # --------------------------------------------------------------
 def con_on_unexpected_message(
-    connection: c104.Connection, message: c104.IncomingMessage, cause: c104.Umc
+        connection: c104.Connection, message: c104.IncomingMessage, cause: c104.Umc
 ) -> None:
     if cause == c104.Umc.MISMATCHED_TYPE_ID:
         station = connection.get_station(message.common_address)
@@ -84,22 +70,22 @@ async def run_iec104_client():
     # client, connection and station preparation
     client = c104.Client()
     connection = client.add_connection(
-        ip=config.IP_ADDRESS, port=config.PORT, init=c104.Init.ALL
+        ip=Config.IP_ADDRESS, port=Config.PORT, init=c104.Init.ALL
     )
     connection.on_unexpected_message(callable=con_on_unexpected_message)
-    station = connection.add_station(common_address=config.COMMON_ADDRESS)
+    station = connection.add_station(common_address=Config.COMMON_ADDRESS)
 
     # monitoring point preparation
     point_meter = station.add_point(
-        io_address=config.METER_VALUES, type=c104.Type.M_ME_NC_1
+        io_address=Config.METER_VALUES, type=c104.Type.M_ME_NC_1
     )
-    point_soc = station.add_point(io_address=config.SOC_VAL, type=c104.Type.M_ME_NC_1)
+    point_soc = station.add_point(io_address=Config.SOC_VAL, type=c104.Type.M_ME_NC_1)
     point_temp = station.add_point(
-        io_address=config.READ_TEMP, type=c104.Type.M_ME_NC_1
+        io_address=Config.READ_TEMP, type=c104.Type.M_ME_NC_1
     )
 
     # command point preparation
-    command = station.add_point(io_address=config.CHARGE_CMD, type=c104.Type.C_RC_TA_1)
+    command = station.add_point(io_address=Config.CHARGE_CMD, type=c104.Type.C_RC_TA_1)
     command.value = c104.Step.HIGHER
 
     # start
@@ -146,7 +132,7 @@ async def run_iec104_client():
             last_transmit = now
             # Write to command point with either HIGHER or LOWER for changing the charging levels
             if await loop.run_in_executor(
-                None, lambda: command.transmit(cause=c104.Cot.ACTIVATION)
+                    None, lambda: command.transmit(cause=c104.Cot.ACTIVATION)
             ):
                 print("-> SUCCESSFUL TRANSMIT")
             else:

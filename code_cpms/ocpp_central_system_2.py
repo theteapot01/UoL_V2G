@@ -71,7 +71,6 @@ VALID_TOKENS = {"RFID-001", "RFID-002", "APP-TOKEN-123"}
 #                   Class for CPMS message setup
 # --------------------------------------------------------------
 
-
 class ChargePoint(cp):
 
     # notification from charge point when booting
@@ -153,11 +152,9 @@ class ChargePoint(cp):
 
         return call_result.MeterValues()
 
-
 # --------------------------------------------------------------
 #                   Example on connect
 # --------------------------------------------------------------
-
 
 async def on_connect(websocket):
     """For every new charge point that connects, create a ChargePoint
@@ -184,7 +181,6 @@ async def on_connect(websocket):
 
     await charge_point.start()
 
-
 async def run_ocpp_server():
     server = await websockets.serve(
         on_connect, "0.0.0.0", 9000, subprotocols=["ocpp2.1"]
@@ -192,7 +188,6 @@ async def run_ocpp_server():
 
     logging.info("Server Started listening to new connections...")
     await server.wait_closed()
-
 
 if __name__ == "__main__":
     asyncio.run(run_ocpp_server())
