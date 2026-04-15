@@ -18,6 +18,7 @@ from ocpp.v21 import ChargePoint as cp
 from ocpp.v21 import call
 from ocpp.v21.datatypes import ChargingStationType
 
+from config import Config
 import csv
 
 logging.basicConfig( level=logging.INFO )
@@ -129,7 +130,7 @@ class ChargePoint( cp ):
             # Start heartbeat and meter values concurrently
             await asyncio.gather(
                 self.send_heartbeat( response.interval ),
-                # self.send_meter_values(evse_id=1, interval=10),
+                self.send_meter_values(evse_id=1, interval=10),
                 # instead need to have extra function checking if EV is connected
                 )
 
@@ -138,7 +139,7 @@ async def run_ocpp_client():
     while True:
         try:
             async with websockets.connect(
-                    "ws://localhost:9000/CP_1", subprotocols=["ocpp2.1"]
+                    "ws://{Config.OCPP_SERVER}/CP_1", subprotocols=["ocpp2.1"]
                     ) as ws:
                 charge_point = ChargePoint( "CP_1", ws )
                 await asyncio.gather(
