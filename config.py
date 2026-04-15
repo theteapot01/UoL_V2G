@@ -4,23 +4,23 @@ from dataclasses import dataclass
 @dataclass( frozen=True )
 class Config:
     # --------------------------------------------------------------
-    # 		    Points and Commands
+    # 		       Points and Commands for IEC104
     # --------------------------------------------------------------
     METER_VALUES = 11
     SOC_VAL = 13
     READ_TEMP = 14
     CHARGE_CMD = 12
     # --------------------------------------------------------------
-    #                   Network Settings
+    #                 Network Settings IEC104
     # --------------------------------------------------------------
-    IP_ADDRESS = "10.42.0.23"  # check Pi self-assigned address and fill in here
-    PORT = 2404  # for now leave port as is, if it overlaps with other functionality then change it
-    COMMON_ADDRESS = 47
+    IP_ADDRESS = "10.42.0.23"  # check charger Pi address and fill in here
+    PORT = 2404  # IEC104 port number
+    COMMON_ADDRESS = 47  # common address of IEC104 server/client
 
-    OCPP_SERVER = "10.42.0.1:9000"
+    OCPP_SERVER = "10.42.0.1:9000"  # IP of the grid Pi
 
     # --------------------------------------------------------------
-    #                   Voltage Setup
+    #      Voltage Setup for PandaPower power flow simulation
     # --------------------------------------------------------------
     # primary Voltage in kV
     V_PRIMARY = 10.0
