@@ -17,7 +17,7 @@ class Config:
     PORT = 2404  # for now leave port as is, if it overlaps with other functionality then change it
     COMMON_ADDRESS = 47
 
-    OCPP_SERVER = "10.42.0.1"
+    OCPP_SERVER = "10.42.0.1:9000"
 
     # --------------------------------------------------------------
     #                   Voltage Setup

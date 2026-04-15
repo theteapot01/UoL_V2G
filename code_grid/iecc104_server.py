@@ -114,8 +114,8 @@ def before_read( point: c104.Point ) -> None:
         point.value = power
         time_passed += 1
         print(
-            "{0} BEFORE READ or INTERROGATION on IOA: {1} VALUE: {2}".format(
-                point.type, point.io_address, point.value
+            "{0} BEFORE READ or INTERROGATION on IOA: {1} VALUE: {2} PASSED {3}".format(
+                point.type, point.io_address, point.value, time_passed
                 )
             )
     elif point.io_address == Config.SOC_VAL:

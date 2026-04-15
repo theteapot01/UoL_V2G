@@ -138,8 +138,10 @@ class ChargePoint( cp ):
 async def run_ocpp_client():
     while True:
         try:
+            url = f"ws://{Config.OCPP_SERVER}/CP_1"
+            print(f"Connecting to: {url}")
             async with websockets.connect(
-                    "ws://{Config.OCPP_SERVER}/CP_1", subprotocols=["ocpp2.1"]
+                    url, subprotocols=["ocpp2.1"]
                     ) as ws:
                 charge_point = ChargePoint( "CP_1", ws )
                 await asyncio.gather(
