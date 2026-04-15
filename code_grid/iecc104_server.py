@@ -52,7 +52,14 @@ import random
 import asyncio
 
 from config import Config
+import csv
 
+data = { }
+time_passed = 0
+with open( 'code_battery_sim/profiles/lfp_50kwh.csv', 'r' ) as file:
+    reader = csv.DictReader( file )
+    for row in reader:
+        data[float( row['time_min'] )] = row
 
 # ------------------------------------------------------------
 # 			        Functions
@@ -90,25 +97,30 @@ def before_auto_transmit( point: c104.Point ) -> None:
         point.value = random.uniform( 0, 100 )
     elif point.io_address == Config.READ_TEMP:
         point.value = random.uniform( 20, 60 )
-    print(
-        "{0} BEFORE AUTOMATIC REPORT on IOA: {1} VALUE: {2}".format(
-            point.type, point.io_address, point.value
-            )
-        )
+    # print(
+    #     "{0} BEFORE AUTOMATIC REPORT on IOA: {1} VALUE: {2}".format(
+    #         point.type, point.io_address, point.value
+    #         )
+    #     )
 
 
 def before_read( point: c104.Point ) -> None:
     """update point value before transmission"""
+    global time_passed
+    time = data[time_passed]
     # replace the random value with the actual meter values
     if point.io_address == Config.METER_VALUES:
-        point.value = random.uniform( 0, 20 )
+        power = float( time['power_kw'] )
+        point.value = power
+        time_passed += 1
         print(
             "{0} BEFORE READ or INTERROGATION on IOA: {1} VALUE: {2}".format(
                 point.type, point.io_address, point.value
                 )
             )
     elif point.io_address == Config.SOC_VAL:
-        point.value = random.uniform( 0, 100 )
+        soc = float( time['soc_percent'] )
+        point.value = soc
     elif point.io_address == Config.READ_TEMP:
         point.value = random.uniform( 20, 60 )
 

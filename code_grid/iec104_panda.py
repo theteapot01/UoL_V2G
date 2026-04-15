@@ -125,7 +125,7 @@ async def run_iec104_client():
                 print(
                     f"Load: {point_meter.value:.2f} kW | Bus 2 Voltage: {vm_pu_b2:.4f} pu | Trafo Loading: {trafo_loading:.1f}% | Line {line_loading:.1f}%"
                     )
-                print( f"-> SUCCESSFUL METER READING {point_meter.value}" )
+                #print( f"-> SUCCESSFUL METER READING {point_meter.value}" )
             else:
                 print( "-> FAILURE" )
 
@@ -153,10 +153,10 @@ async def run_iec104_client():
 
 
 if __name__ == "__main__":
-    c104.set_debug_mode(
-        c104.Debug.Client
-        | c104.Debug.Connection
-        | c104.Debug.Point
-        | c104.Debug.Callback
-        )
+    # c104.set_debug_mode(
+    #     c104.Debug.Client
+    #     | c104.Debug.Connection
+    #     | c104.Debug.Point
+    #     | c104.Debug.Callback
+    #     )
     asyncio.run( run_iec104_client() )

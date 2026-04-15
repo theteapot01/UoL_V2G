@@ -18,6 +18,8 @@ from ocpp.v21 import ChargePoint as cp
 from ocpp.v21 import call
 from ocpp.v21.datatypes import ChargingStationType
 
+import csv
+
 logging.basicConfig( level=logging.INFO )
 
 
@@ -56,9 +58,20 @@ class ChargePoint( cp ):
         and also other way around.
         """
         cumulative_energy_wh = 0.0
+        time_passed = 0
+
+        data = { }
+        with open( 'code_battery_sim/profiles/lfp_50kwh.csv', 'r' ) as file:
+            reader = csv.DictReader( file )
+            for row in reader:
+                data[float( row['time_min'] )] = row
 
         while True:
-            power_w = simulate_power_watt()
+            row = data[time_passed]
+            power = float( row['power_kw'] )
+            soc = float( row['soc_percent'] )
+            phase = row['phase']
+            power_w = power
 
             # Accumulate energy - only add when charging (positive power)
             if power_w > 0:
@@ -93,6 +106,7 @@ class ChargePoint( cp ):
 
             await self.call( request )
 
+            time_passed += 1
             direction = "⬆ V2G discharge" if power_w < 0 else "⬇ Charging"
             logging.info(
                 "MeterValues sent | EVSE %s | Power: %.1f W (%s) | Energy: %.2f Wh",
