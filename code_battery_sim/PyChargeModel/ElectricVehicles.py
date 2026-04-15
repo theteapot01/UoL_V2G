@@ -76,7 +76,7 @@ class ElectricVehicles:
             ev_parameters_file = os.path.join(kwargs['input_path'], 'evtype', '{}_parameters.csv'.format(self.evtype))
         
             params = pd.read_csv(ev_parameters_file, index_col = 'Parameter Name')
-            params = params['Parameter Value'].astype(float).to_dict()
+            params = params['Parameter Value'].apply(lambda x: float(x) if str(x).replace('.','').replace('-','').isnumeric() else x).to_dict()
         else:
             print('Warning: Cannot find EV parameter file. Using default values for fixed parameters')
             params = {'ev_crate': 1.0, #1/hr
