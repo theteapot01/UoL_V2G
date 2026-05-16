@@ -122,6 +122,12 @@ async def run_iec104_client():
                 voltages.append( vm_pu_b2 )
                 trafo_loadings.append( trafo_loading )
 
+                # constant load checking the grid if it can handle the charger
+                if trafo_loading > 80 or vm_pu_b2 < 0.95:
+                    command.value = c104.Step.LOWER # reduce load, grid is stressed
+                else:
+                    command.value = c104.Step.HIGHER # load can be increased
+
                 print(
                     f"Load: {point_meter.value:.2f} kW | Bus 2 Voltage: {vm_pu_b2:.4f} pu | Trafo Loading: {trafo_loading:.1f}% | Line {line_loading:.1f}%"
                     )

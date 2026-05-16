@@ -71,8 +71,8 @@ def on_step_command(
         ) -> c104.ResponseState:
     """handle incoming regulating step command"""
     print(
-        "{0} STEP COMMAND on IOA: {1}, message: {2}, previous: {3}, current: {4}".format(
-            point.type, point.io_address, message, previous_info, point.info
+        "STEP COMMAND on IOA: {0}, message: {1}, previous: {2}, current: {3}".format(
+            point.io_address, message, previous_info, point.info
             )
         )
 
@@ -97,11 +97,11 @@ def before_auto_transmit( point: c104.Point ) -> None:
         point.value = random.uniform( 0, 100 )
     elif point.io_address == Config.READ_TEMP:
         point.value = random.uniform( 20, 60 )
-    # print(
-    #     "{0} BEFORE AUTOMATIC REPORT on IOA: {1} VALUE: {2}".format(
-    #         point.type, point.io_address, point.value
-    #         )
-    #     )
+    print(
+        "BEFORE AUTOMATIC REPORT on IOA: {0} VALUE: {1}".format(
+            point.io_address, point.value
+            )
+        )
 
 
 def before_read( point: c104.Point ) -> None:
@@ -114,8 +114,8 @@ def before_read( point: c104.Point ) -> None:
         point.value = power
         time_passed += 1
         print(
-            "{0} BEFORE READ or INTERROGATION on IOA: {1} VALUE: {2} PASSED {3}".format(
-                point.type, point.io_address, point.value, time_passed
+            "BEFORE READ or INTERROGATION on IOA: {0} VALUE: {1} PASSED {2}".format(
+                point.io_address, point.value, time_passed
                 )
             )
     elif point.io_address == Config.SOC_VAL:
