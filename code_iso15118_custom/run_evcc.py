@@ -27,6 +27,7 @@ import sys
 
 from iso15118.evcc import Config, EVCCHandler
 from iso15118.evcc.evcc_config import load_from_file
+from iso15118.evcc.controller.simulator import SimEVController
 from iso15118.shared.exificient_exi_codec import ExificientEXICodec
 
 from battery_ev_controller import BatterySimEVController
@@ -49,11 +50,24 @@ async def main():
     max_steps_env = os.environ.get("EVCC_MAX_STEPS", "").strip()
     max_steps = int(max_steps_env) if max_steps_env else None
 
+    # Select which EV controller to use:
+    #   EVCC_CONTROLLER=sim     -> Josev's stock SimEVController (implements all
+    #                              ISO 15118-2 AND -20 methods; use for -20 bring-up)
+    #   EVCC_CONTROLLER=battery -> our BatterySimEVController (default; -2 only
+    #                              so far, profile-driven)
+    controller_choice = os.environ.get("EVCC_CONTROLLER", "battery").strip().lower()
+    if controller_choice == "sim":
+        ev_controller = SimEVController(evcc_config)
+        logger.info("Using stock SimEVController")
+    else:
+        ev_controller = BatterySimEVController(evcc_config, max_steps=max_steps)
+        logger.info("Using BatterySimEVController")
+
     await EVCCHandler(
         evcc_config=evcc_config,
         iface=config.iface,
         exi_codec=ExificientEXICodec(),
-        ev_controller=BatterySimEVController(evcc_config, max_steps=max_steps),
+        ev_controller=ev_controller,
     ).start()
 
 
