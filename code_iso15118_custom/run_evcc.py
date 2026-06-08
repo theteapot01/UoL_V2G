@@ -31,6 +31,7 @@ from iso15118.evcc.controller.simulator import SimEVController
 from iso15118.shared.exificient_exi_codec import ExificientEXICodec
 
 from battery_ev_controller import BatterySimEVController
+from battery_profile import CsvProfile
 
 logger = logging.getLogger(__name__)
 
@@ -50,17 +51,23 @@ async def main():
     max_steps_env = os.environ.get("EVCC_MAX_STEPS", "").strip()
     max_steps = int(max_steps_env) if max_steps_env else None
 
+    # Optional battery profile CSV path.  If unset, falls back to the
+    # controller's DEFAULT_PROFILE_PATH (lfp_50kwh.csv).
+    profile_path = os.environ.get("EVCC_PROFILE_PATH", "").strip()
+    profile = CsvProfile(profile_path) if profile_path else None
+
     # Select which EV controller to use:
     #   EVCC_CONTROLLER=sim     -> Josev's stock SimEVController (implements all
     #                              ISO 15118-2 AND -20 methods; use for -20 bring-up)
-    #   EVCC_CONTROLLER=battery -> our BatterySimEVController (default; -2 only
-    #                              so far, profile-driven)
+    #   EVCC_CONTROLLER=battery -> our BatterySimEVController (default; profile-driven)
     controller_choice = os.environ.get("EVCC_CONTROLLER", "battery").strip().lower()
     if controller_choice == "sim":
         ev_controller = SimEVController(evcc_config)
         logger.info("Using stock SimEVController")
     else:
-        ev_controller = BatterySimEVController(evcc_config, max_steps=max_steps)
+        ev_controller = BatterySimEVController(
+            evcc_config, profile=profile, max_steps=max_steps
+        )
         logger.info("Using BatterySimEVController")
 
     await EVCCHandler(

@@ -8,7 +8,7 @@ artificial fixed-cycle behaviour of Josev's SimEVController.
 Design
 ------
 SimEVController already implements every method of EVControllerInterface and
-produced a clean ISO 15118-2 DC session. Almost all of its DC behaviour
+produced clean ISO 15118-2 and -20 DC sessions. Almost all of its DC behaviour
 derives from a single piece of state: `self._soc`. This subclass keeps that
 contract but sources `self._soc` (and the loop's start/stop decisions) from a
 BatteryProfile rather than incrementing a counter.
@@ -17,10 +17,12 @@ We override only the few methods that decide:
   - how SoC evolves over the charge loop  (continue_charging)
   - when the charge loop ends             (is_charging_complete)
   - the reported EV status / SoC          (get_dc_ev_status, get_dc_ev_status_dinspec)
+  - the target current/voltage each loop  (get_dc_charge_params for -2,
+                                           get_scheduled_dc_charge_loop_params for -20)
 
-Everything else (charge parameter discovery, precharge logic, target/present
-voltage, welding detection, all AC and ISO 15118-20 methods) is inherited
-unchanged from SimEVController.
+Everything else (charge parameter discovery, precharge logic, welding
+detection, all AC and Dynamic-mode -20 methods) is inherited unchanged
+from SimEVController.
 """
 
 import logging
@@ -40,6 +42,11 @@ from iso15118.shared.messages.datatypes import (
     PVEVEnergyCapacity,
     PVEVTargetCurrent,
     PVEVTargetVoltage,
+)
+# ISO 15118-20 types for the Scheduled DC charge loop
+from iso15118.shared.messages.iso15118_20.common_types import RationalNumber
+from iso15118.shared.messages.iso15118_20.dc import (
+    ScheduledDCChargeLoopReqParams,
 )
 
 from battery_profile import BatteryProfile, CsvProfile, load_battery_parameters
@@ -277,4 +284,42 @@ class BatterySimEVController(SimEVController):
             dc_target_voltage=PVEVTargetVoltage(
                 multiplier=volt_mult, value=volt_value, unit=UnitSymbol.VOLTAGE
             ),
+        )
+
+    # ------------------------------------------------------------------
+    #  ISO 15118-20 overrides
+    # ------------------------------------------------------------------
+
+    def _as_rational_number(self, value: float) -> RationalNumber:
+        """
+        Convert a float to a RationalNumber for ISO 15118-20 encoding.
+
+        Reuses _as_value_multiplier for the integer/exponent split, then wraps
+        the result in the -20 RationalNumber type (where the field names are
+        ``exponent`` and ``value`` rather than ``multiplier`` and ``value``).
+        """
+        int_val, exp = self._as_value_multiplier(value)
+        return RationalNumber(exponent=exp, value=int_val)
+
+    async def get_scheduled_dc_charge_loop_params(
+        self,
+    ) -> ScheduledDCChargeLoopReqParams:
+        """
+        Build the Scheduled-mode DC charge-loop parameters with target current
+        and voltage derived from the current battery profile point.
+
+        Target current = profile power / nominal voltage (I = P / V).
+        Target voltage = nominal pack voltage.
+
+        Overrides SimEVController.get_scheduled_dc_charge_loop_params(), which
+        returned a fixed (Exponent=1, Value=20) placeholder for both fields.
+        """
+        state = self.profile.current()
+        power_w = state.power_kw * 1000.0
+        voltage = self.nominal_voltage if self.nominal_voltage > 0 else 1.0
+        target_current_a = power_w / voltage
+
+        return ScheduledDCChargeLoopReqParams(
+            ev_target_current=self._as_rational_number(target_current_a),
+            ev_target_voltage=self._as_rational_number(voltage),
         )

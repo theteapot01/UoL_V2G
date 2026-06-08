@@ -1,0 +1,17 @@
+time_min,soc_percent,power_kw,phase
+0,80.0,0.0,done
+1,80.5,10.0,charge
+2,81.0,10.2,charge
+3,81.5,10.4,charge
+4,82.0,10.5,charge
+5,82.5,10.6,charge
+6,83.0,10.7,charge
+7,83.5,10.8,charge
+8,83.0,-5.0,discharge
+9,82.5,-5.1,discharge
+10,82.0,-5.2,discharge
+11,81.5,-5.3,discharge
+12,81.0,-5.4,discharge
+13,80.5,-5.5,discharge
+14,80.0,-5.6,discharge
+15,79.5,-5.7,discharge
