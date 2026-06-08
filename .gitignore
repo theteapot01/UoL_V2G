@@ -28,6 +28,9 @@ htmlcov/
 .vscode/
 *.code-workspace
 
+# PyCharm
+.idea/
+
 # OS
 .DS_Store
 Thumbs.db

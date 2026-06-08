@@ -62,7 +62,7 @@ The system uses battery profiles (located in `code_battery_sim/profiles`) to sim
 ## Requirements
 
 ### Prerequisites
-- Python >= 3.10 (Tested up to 3.12, `c104` may have issues on 3.13+)
+- Python >= 3.10 (Tested up to 3.11, `c104` may have issues on 3.13+)
 - `pip` package manager
 
 ### Installation
