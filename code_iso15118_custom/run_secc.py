@@ -24,6 +24,9 @@ import asyncio
 import logging
 import sys
 
+import pathlib
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
+
 from iso15118.secc import SECCHandler
 from iso15118.secc.secc_settings import Config
 from iso15118.shared.exificient_exi_codec import ExificientEXICodec

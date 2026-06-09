@@ -2,7 +2,7 @@ import logging
 from typing import Optional
 
 from iso15118.secc.controller.simulator import SimEVSEController
-from code_iso15118_custom.charger_state import state, Telemetry
+from charger_state import state, Telemetry
 
 logger = logging.getLogger(__name__)
 

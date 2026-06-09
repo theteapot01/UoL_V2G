@@ -49,16 +49,16 @@ os.environ["PYTHONUNBUFFERED"] = "1"
 
 import c104
 import asyncio
-from code_iso15118_custom.charger_state import state
+from charger_state import state
 from config import Config
 import csv
 
-data = { }
+#data = { }
 time_passed = 0
-with open( 'code_battery_sim/profiles/lfp_50kwh.csv', 'r' ) as file:
-    reader = csv.DictReader( file )
-    for row in reader:
-        data[float( row['time_min'] )] = row
+#with open( 'code_battery_sim/profiles/lfp_50kwh.csv', 'r' ) as file:
+#    reader = csv.DictReader( file )
+#    for row in reader:
+#        data[float( row['time_min'] )] = row
 
 # ------------------------------------------------------------
 # 			        Functions
