@@ -2,6 +2,7 @@ import asyncio
 import logging
 import random
 from datetime import datetime, timezone
+from charger_state import state
 
 try:
     import websockets
@@ -49,31 +50,13 @@ class ChargePoint( cp ):
     async def send_meter_values( self, evse_id: int = 1, interval: int = 10 ):
         """
         Periodically sends MeterValues to the central system.
-        Reports active power (W) and cumulative energy (Wh).
-        A negative Power.Active.Import value signals V2G discharge.
-
-        Fine for testing if OCPP works, but for actually running the prototype
-        need to only send the data when an EV is charging, otherwise be silent.
-
-        Need to find a look-up table to get equivalent AC power from DC charging 
-        and also other way around.
+        Reports active power (W) and cumulative energy (Wh) using data from SharedState.
         """
         cumulative_energy_wh = 0.0
-        time_passed = 0
-
-        data = { }
-        with open( 'code_battery_sim/profiles/lfp_50kwh.csv', 'r' ) as file:
-            reader = csv.DictReader( file )
-            for row in reader:
-                data[float( row['time_min'] )] = row
 
         while True:
-            row = data[time_passed]
-            power = float( row['power_kw'] )
-            soc = float( row['soc_percent'] )
-            phase = row['phase']
-            power_w = power
-
+            telemetry = state.latest
+            power_w = telemetry.power_kw * 1000.0  # Telemetry has kW
             # Accumulate energy - only add when charging (positive power)
             if power_w > 0:
                 cumulative_energy_wh += (power_w * interval) / 3600
@@ -100,6 +83,13 @@ class ChargePoint( cp ):
                                 "unit_of_measure": { "unit": "Wh" },
                                 "context": "Sample.Periodic",
                                 },
+                            {
+                                # State of Charge
+                                "value": round( telemetry.soc_percent, 1 ),
+                                "measurand": "SoC",
+                                "unit_of_measure": { "unit": "Percent" },
+                                "context": "Sample.Periodic",
+                                },
                             ],
                         }
                     ],
@@ -107,11 +97,10 @@ class ChargePoint( cp ):
 
             await self.call( request )
 
-            time_passed += 1
             direction = "⬆ V2G discharge" if power_w < 0 else "⬇ Charging"
             logging.info(
-                "MeterValues sent | EVSE %s | Power: %.1f W (%s) | Energy: %.2f Wh",
-                evse_id, power_w, direction, cumulative_energy_wh
+                "MeterValues sent | EVSE %s | Power: %.1f W (%s) | SoC: %.1f%% | Energy: %.2f Wh",
+                evse_id, power_w, direction, telemetry.soc_percent, cumulative_energy_wh
                 )
 
             await asyncio.sleep( interval )

@@ -48,9 +48,9 @@ import os
 os.environ["PYTHONUNBUFFERED"] = "1"
 
 import c104
-import random
 import asyncio
-
+import random
+from charger_state import state
 from config import Config
 import csv
 
@@ -91,12 +91,14 @@ def on_step_command(
 
 def before_auto_transmit( point: c104.Point ) -> None:
     """update point value before transmission"""
+    # Use the shared state for auto reports too, to keep it consistent
+    telemetry = state.latest
     if point.io_address == Config.METER_VALUES:
-        point.value = random.uniform( 0, 20 )
+        point.value = telemetry.power_kw
     elif point.io_address == Config.SOC_VAL:
-        point.value = random.uniform( 0, 100 )
+        point.value = telemetry.soc_percent
     elif point.io_address == Config.READ_TEMP:
-        point.value = random.uniform( 20, 60 )
+        point.value = 25.0
     print(
         "BEFORE AUTOMATIC REPORT on IOA: {0} VALUE: {1}".format(
             point.io_address, point.value
@@ -106,23 +108,21 @@ def before_auto_transmit( point: c104.Point ) -> None:
 
 def before_read( point: c104.Point ) -> None:
     """update point value before transmission"""
-    global time_passed
-    time = data[time_passed]
-    # replace the random value with the actual meter values
+    # Use the shared state updated by the SECC
+    telemetry = state.latest
+    
     if point.io_address == Config.METER_VALUES:
-        power = float( time['power_kw'] )
-        point.value = power
-        time_passed += 1
+        point.value = telemetry.power_kw
         print(
-            "BEFORE READ or INTERROGATION on IOA: {0} VALUE: {1} PASSED {2}".format(
-                point.io_address, point.value, time_passed
+            "BEFORE READ or INTERROGATION on IOA: {0} VALUE: {1} kW".format(
+                point.io_address, point.value
                 )
             )
     elif point.io_address == Config.SOC_VAL:
-        soc = float( time['soc_percent'] )
-        point.value = soc
+        point.value = telemetry.soc_percent
     elif point.io_address == Config.READ_TEMP:
-        point.value = random.uniform( 20, 60 )
+        # Temperature not in telemetry, keep simulated or set to a default
+        point.value = 25.0
 
 
 async def run_iec104_server():
@@ -173,4 +173,4 @@ async def run_iec104_server():
 
 if __name__ == "__main__":
     # c104.set_debug_mode(c104.Debug.Server | c104.Debug.Point | c104.Debug.Callback)
-    main()
+    asyncio.run( run_iec104_server() )
