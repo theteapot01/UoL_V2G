@@ -2,7 +2,7 @@ import asyncio
 import logging
 import random
 from datetime import datetime, timezone
-from charger_state import state
+from code_iso15118_custom.charger_state import state
 
 try:
     import websockets
@@ -89,6 +89,13 @@ class ChargePoint( cp ):
                                 "unit_of_measure": { "unit": "Percent" },
                                 "context": "Sample.Periodic",
                                 },
+                            {
+                                # State of Health
+                                "value": round( telemetry.soh_percent, 1 ),
+                                "measurand": "SoH",
+                                "unit_of_measure": { "unit": "Percent" },
+                                "context": "Sample.Periodic",
+                                },
                             ],
                         }
                     ],
@@ -98,8 +105,8 @@ class ChargePoint( cp ):
 
             direction = "⬆ V2G discharge" if power_w < 0 else "⬇ Charging"
             logging.info(
-                "MeterValues sent | EVSE %s | Power: %.1f W (%s) | SoC: %.1f%% | Energy: %.2f Wh",
-                evse_id, power_w, direction, telemetry.soc_percent, cumulative_energy_wh
+                "MeterValues sent | EVSE %s | Power: %.1f W (%s) | SoC: %.1f%% | SoH: %.1f%% | Energy: %.2f Wh",
+                evse_id, power_w, direction, telemetry.soc_percent, telemetry.soh_percent, cumulative_energy_wh
                 )
 
             await asyncio.sleep( interval )

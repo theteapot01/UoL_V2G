@@ -58,7 +58,7 @@ import threading
 import time
 from typing import Optional
 
-from battery_profile import BatteryProfile, BatteryState
+from code_iso15118_custom.battery_profile import BatteryProfile, BatteryState
 
 
 class SimulatedBattery(BatteryProfile):
@@ -315,6 +315,7 @@ class SimulatedBattery(BatteryProfile):
         return BatteryState(
             time_min=self._elapsed_min,
             soc_percent=self._soc,
+            soh_percent=self._soh * 100.0,
             power_kw=self._actual_power_kw,
             phase=phase,
         )

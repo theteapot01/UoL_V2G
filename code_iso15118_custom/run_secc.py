@@ -32,6 +32,8 @@ from iso15118.secc.secc_settings import Config
 from iso15118.shared.exificient_exi_codec import ExificientEXICodec
 
 from telemetry_evse_controller import TelemetryEVSEController
+from code_iso15118_custom.simulated_battery import SimulatedBattery
+from code_iso15118_custom.charger_state import state as shared_state
 
 from code_grid.iecc104_server import run_iec104_server
 from code_cpms.ocpp_charge_point_2 import run_ocpp_client
@@ -46,6 +48,12 @@ async def main():
         secc_config_file_path = sys.argv[1]
         if secc_config_file_path:
             config.secc_config_file_path = secc_config_file_path
+
+    # Initialize the battery model and wire it into the shared state
+    # so the IEC 104 server can apply grid commands to it.
+    battery = SimulatedBattery(target_soc=80.0)
+    shared_state.battery = battery
+    logger.info("Live SimulatedBattery initialized in shared state")
 
     # Initialize the EVSE controller
     evse_controller = await TelemetryEVSEController.create()

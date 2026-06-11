@@ -36,10 +36,6 @@ from iso15118.shared.messages.din_spec.datatypes import (
 )
 from iso15118.shared.messages.datatypes import (
     DCEVChargeParams,
-    PVEVMaxCurrentLimit,
-    PVEVMaxPowerLimit,
-    PVEVMaxVoltageLimit,
-    PVEVEnergyCapacity,
     PVEVTargetCurrent,
     PVEVTargetVoltage,
 )
@@ -51,7 +47,7 @@ from iso15118.shared.messages.iso15118_20.dc import (
 
 from battery_profile import BatteryProfile, CsvProfile, load_battery_parameters
 
-from charger_state import state as shared_state, Telemetry
+from code_iso15118_custom.charger_state import state as shared_state, Telemetry
 
 logger = logging.getLogger(__name__)
 
@@ -70,7 +66,7 @@ class BatterySimEVController(SimEVController):
     """
 
     DEFAULT_PROFILE_PATH = (
-        "/home/pi/UoL_V2G/code_battery_sim/profiles/lfp_50kwh.csv"
+        "/home/pi/UoL_V2G/code_battery_sim/profiles/lfp_82kwh.csv"
     )
     DEFAULT_PARAMS_PATH = (
         "/home/pi/UoL_V2G/code_battery_sim/evtype/lfp_parameters.csv"
