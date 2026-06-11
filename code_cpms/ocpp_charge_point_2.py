@@ -89,13 +89,6 @@ class ChargePoint( cp ):
                                 "unit_of_measure": { "unit": "Percent" },
                                 "context": "Sample.Periodic",
                                 },
-                            {
-                                # State of Health
-                                "value": round( telemetry.soh_percent, 1 ),
-                                "measurand": "SoH",
-                                "unit_of_measure": { "unit": "Percent" },
-                                "context": "Sample.Periodic",
-                                },
                             ],
                         }
                     ],
