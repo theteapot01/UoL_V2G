@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Optional
-from code_iso15118_custom.simulated_battery import SimulatedBattery
+from simulated_battery import SimulatedBattery
 
 @dataclass(frozen=True)
 class Telemetry:

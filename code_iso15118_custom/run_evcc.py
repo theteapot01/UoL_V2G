@@ -32,8 +32,8 @@ from iso15118.shared.exificient_exi_codec import ExificientEXICodec
 
 from battery_ev_controller import BatterySimEVController
 from battery_profile import CsvProfile
-from code_iso15118_custom.simulated_battery import SimulatedBattery
-from code_iso15118_custom.charger_state import state as shared_state
+from simulated_battery import SimulatedBattery
+from charger_state import state as shared_state
 
 logger = logging.getLogger(__name__)
 

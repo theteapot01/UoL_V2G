@@ -47,7 +47,7 @@ from iso15118.shared.messages.iso15118_20.dc import (
 
 from battery_profile import BatteryProfile, CsvProfile, load_battery_parameters
 
-from code_iso15118_custom.charger_state import state as shared_state, Telemetry
+from charger_state import state as shared_state, Telemetry
 
 logger = logging.getLogger(__name__)
 

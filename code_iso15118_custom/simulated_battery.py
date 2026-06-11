@@ -58,7 +58,7 @@ import threading
 import time
 from typing import Optional
 
-from code_iso15118_custom.battery_profile import BatteryProfile, BatteryState
+from battery_profile import BatteryProfile, BatteryState
 
 
 class SimulatedBattery(BatteryProfile):

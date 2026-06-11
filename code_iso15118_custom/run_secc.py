@@ -32,8 +32,8 @@ from iso15118.secc.secc_settings import Config
 from iso15118.shared.exificient_exi_codec import ExificientEXICodec
 
 from telemetry_evse_controller import TelemetryEVSEController
-from code_iso15118_custom.simulated_battery import SimulatedBattery
-from code_iso15118_custom.charger_state import state as shared_state
+from simulated_battery import SimulatedBattery
+from charger_state import state as shared_state
 
 from code_grid.iecc104_server import run_iec104_server
 from code_cpms.ocpp_charge_point_2 import run_ocpp_client
