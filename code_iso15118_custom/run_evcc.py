@@ -32,6 +32,8 @@ from iso15118.shared.exificient_exi_codec import ExificientEXICodec
 
 from battery_ev_controller import BatterySimEVController
 from battery_profile import CsvProfile
+from simulated_battery import SimulatedBattery
+from charger_state import state as shared_state
 
 logger = logging.getLogger(__name__)
 
@@ -54,21 +56,28 @@ async def main():
     # Optional battery profile CSV path.  If unset, falls back to the
     # controller's DEFAULT_PROFILE_PATH (lfp_50kwh.csv).
     profile_path = os.environ.get("EVCC_PROFILE_PATH", "").strip()
-    profile = CsvProfile(profile_path) if profile_path else None
-
-    # Select which EV controller to use:
-    #   EVCC_CONTROLLER=sim     -> Josev's stock SimEVController (implements all
-    #                              ISO 15118-2 AND -20 methods; use for -20 bring-up)
-    #   EVCC_CONTROLLER=battery -> our BatterySimEVController (default; profile-driven)
+    
+    # Initialize the battery model. If we want it to be grid-controllable, 
+    # we use SimulatedBattery and wire it into the shared state.
     controller_choice = os.environ.get("EVCC_CONTROLLER", "battery").strip().lower()
+
     if controller_choice == "sim":
         ev_controller = SimEVController(evcc_config)
         logger.info("Using stock SimEVController")
-    else:
+    elif controller_choice == "battery_csv" or (controller_choice == "battery" and profile_path):
+        profile = CsvProfile(profile_path) if profile_path else None
         ev_controller = BatterySimEVController(
             evcc_config, profile=profile, max_steps=max_steps
         )
-        logger.info("Using BatterySimEVController")
+        logger.info(f"Using BatterySimEVController with CsvProfile: {profile_path}")
+    else:
+        # Default to live SimulatedBattery
+        battery = SimulatedBattery(target_soc=80.0) # Example target
+        shared_state.battery = battery
+        ev_controller = BatterySimEVController(
+            evcc_config, profile=battery, max_steps=max_steps
+        )
+        logger.info("Using BatterySimEVController with live SimulatedBattery")
 
     await EVCCHandler(
         evcc_config=evcc_config,

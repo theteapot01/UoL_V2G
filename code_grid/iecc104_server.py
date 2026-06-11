@@ -75,29 +75,41 @@ def on_step_command(
             )
         )
 
-    if point.value == c104.Step.LOWER:
-        # do something
-        print( "GOING LOWER WITH CHARGING" )
-        return c104.ResponseState.SUCCESS
+    if state.battery:
+        if point.value == c104.Step.LOWER:
+            state.battery.apply_step(higher=False)
+            print( f"GOING LOWER WITH CHARGING (New Setpoint: {state.battery.power_setpoint_kw} kW)" )
+            return c104.ResponseState.SUCCESS
 
-    if point.value == c104.Step.HIGHER:
-        # do something
-        print( "GOING HIGHER WITH CHARGING" )
-        return c104.ResponseState.SUCCESS
+        if point.value == c104.Step.HIGHER:
+            state.battery.apply_step(higher=True)
+            print( f"GOING HIGHER WITH CHARGING (New Setpoint: {state.battery.power_setpoint_kw} kW)" )
+            return c104.ResponseState.SUCCESS
+    else:
+        print("Battery not initialized in shared state")
 
     return c104.ResponseState.FAILURE
 
 
 def before_auto_transmit( point: c104.Point ) -> None:
     """update point value before transmission"""
-    # Use the shared state for auto reports too, to keep it consistent
-    telemetry = state.latest
-    if point.io_address == Config.METER_VALUES:
-        point.value = telemetry.power_kw
-    elif point.io_address == Config.SOC_VAL:
-        point.value = telemetry.soc_percent
-    elif point.io_address == Config.READ_TEMP:
-        point.value = 25.0
+    # Use the simulated battery if available, else fall back to telemetry
+    if state.battery:
+        if point.io_address == Config.METER_VALUES:
+            point.value = state.battery.power_kw
+        elif point.io_address == Config.SOC_VAL:
+            point.value = state.battery.soc_percent
+        elif point.io_address == Config.READ_TEMP:
+            point.value = 25.0
+    else:
+        telemetry = state.latest
+        if point.io_address == Config.METER_VALUES:
+            point.value = telemetry.power_kw
+        elif point.io_address == Config.SOC_VAL:
+            point.value = telemetry.soc_percent
+        elif point.io_address == Config.READ_TEMP:
+            point.value = 25.0
+
     print(
         "BEFORE AUTOMATIC REPORT on IOA: {0} VALUE: {1}".format(
             point.io_address, point.value
@@ -107,21 +119,28 @@ def before_auto_transmit( point: c104.Point ) -> None:
 
 def before_read( point: c104.Point ) -> None:
     """update point value before transmission"""
-    # Use the shared state updated by the SECC
-    telemetry = state.latest
-    
-    if point.io_address == Config.METER_VALUES:
-        point.value = telemetry.power_kw
-        print(
-            "BEFORE READ or INTERROGATION on IOA: {0} VALUE: {1} kW".format(
-                point.io_address, point.value
-                )
+    # Use the simulated battery if available, else fall back to telemetry
+    if state.battery:
+        if point.io_address == Config.METER_VALUES:
+            point.value = state.battery.power_kw
+        elif point.io_address == Config.SOC_VAL:
+            point.value = state.battery.soc_percent
+        elif point.io_address == Config.READ_TEMP:
+            point.value = 25.0
+    else:
+        telemetry = state.latest
+        if point.io_address == Config.METER_VALUES:
+            point.value = telemetry.power_kw
+        elif point.io_address == Config.SOC_VAL:
+            point.value = telemetry.soc_percent
+        elif point.io_address == Config.READ_TEMP:
+            point.value = 25.0
+
+    print(
+        "BEFORE READ or INTERROGATION on IOA: {0} VALUE: {1}".format(
+            point.io_address, point.value
             )
-    elif point.io_address == Config.SOC_VAL:
-        point.value = telemetry.soc_percent
-    elif point.io_address == Config.READ_TEMP:
-        # Temperature not in telemetry, keep simulated or set to a default
-        point.value = 25.0
+        )
 
 
 async def run_iec104_server():

@@ -125,6 +125,12 @@ async def run_iec104_client():
                 # constant load checking the grid if it can handle the charger
                 if trafo_loading > 80 or vm_pu_b2 < 0.95:
                     command.value = c104.Step.LOWER # reduce load, grid is stressed
+                elif trafo_loading < 20 and point_soc.value < 40:
+                    # Grid has plenty of power and EV SoC is low, increase charge
+                    command.value = c104.Step.LOWER # increase charge
+                elif trafo_loading > 90 and point_soc.value > 30:
+                    # Grid is very stressed, EV should feed back if it has enough SoC
+                    command.value = c104.Step.HIGHER # increase discharge
                 else:
                     command.value = c104.Step.HIGHER # load can be increased
 

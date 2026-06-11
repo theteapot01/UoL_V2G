@@ -51,6 +51,8 @@ from iso15118.shared.messages.iso15118_20.dc import (
 
 from battery_profile import BatteryProfile, CsvProfile, load_battery_parameters
 
+from charger_state import state as shared_state, Telemetry
+
 logger = logging.getLogger(__name__)
 
 
@@ -178,6 +180,14 @@ class BatterySimEVController(SimEVController):
                 f"(SoC {self._soc}%, phase '{state.phase}')"
             )
             return False
+
+        # Update the shared telemetry state
+        shared_state.latest = Telemetry(
+            soc_percent=state.soc_percent,
+            soh_percent=getattr(self.profile, "soh_percent", 100.0),
+            power_kw=state.power_kw,
+            charging=state.power_kw > 0
+        )
 
         self.profile.advance()
         return True
