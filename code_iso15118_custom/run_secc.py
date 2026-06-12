@@ -47,11 +47,10 @@ async def main():
         if secc_config_file_path:
             config.secc_config_file_path = secc_config_file_path
 
-    # No battery model on the SECC side — the EV owns SoC.
     # TelemetryEVSEController forwards EV data to shared state and relays
     # grid commands back to the EV via EVSE session limits.
     evse_controller = await TelemetryEVSEController.create()
-    logger.info( "Using TelemetryEVSEController (no local battery model)" )
+    logger.info("Using TelemetryEVSEController")
 
     await asyncio.gather(
         SECCHandler(

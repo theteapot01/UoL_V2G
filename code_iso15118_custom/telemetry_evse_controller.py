@@ -59,12 +59,23 @@ class TelemetryEVSEController(SimEVSEController):
 
         voltage = ev_target_voltage if ev_target_voltage is not None else 0.0
         current = ev_target_current if ev_target_current is not None else 0.0
-        power_kw = (voltage * current) / 1000.0
-        soc = ev_data.present_soc if ev_data.present_soc is not None else 0.0
+
+        # If we have a live simulated battery, use its state for telemetry
+        # (This handles the case where the battery model was initialized in
+        # shared state by run_secc.py - optional, but helps sync)
+        if getattr(state, "battery", None):
+            state.battery.tick()  # Advance real-time
+            soc = state.battery.soc_percent
+            power_kw = state.battery.power_kw
+            soh = state.battery.soh_percent
+        else:
+            power_kw = (voltage * current) / 1000.0
+            soc = ev_data.present_soc if ev_data.present_soc is not None else 0.0
+            soh = 100.0
 
         state.latest = Telemetry(
             soc_percent=float(soc),
-            soh_percent=100.0,
+            soh_percent=float(soh),
             power_kw=float(power_kw),
             voltage_v=float(voltage),
             current_a=float(current),

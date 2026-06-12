@@ -206,17 +206,25 @@ class BatterySimEVController(SimEVController):
         )
 
         # If we're using the live SimulatedBattery, let it track the grid's
-        # offered power.  Otherwise it stays stuck at its initial 0 kW setpoint.
+        # offered power.
         from simulated_battery import SimulatedBattery
         if isinstance(self.profile, SimulatedBattery):
-            # If the grid is offering charge, take it. If it's only offering
-            # discharge (V2G), follow that.
-            if max_charge_w > 0:
-                self.profile.set_power_setpoint(max_charge_w / 1000.0)
-            elif max_discharge_w > 0:
-                self.profile.set_power_setpoint(-max_discharge_w / 1000.0)
+            # If the grid is offering charge, and we are idle, start charging.
+            # If it's only offering discharge (V2G), follow that.
+            # Otherwise follow the setpoint.
+            current_setpoint = self.profile.power_setpoint_kw
+            if current_setpoint == 0.0:
+                if max_charge_w > 0:
+                    self.profile.set_power_setpoint(min(10.0, max_charge_w / 1000.0))
+                elif max_discharge_w > 0:
+                    self.profile.set_power_setpoint(-min(10.0, max_discharge_w / 1000.0))
             else:
-                self.profile.set_power_setpoint(0.0)
+                # If we already have a setpoint, just ensure it's within new limits
+                if current_setpoint > 0:
+                    new_setpoint = min(current_setpoint, max_charge_w / 1000.0)
+                else:
+                    new_setpoint = max(current_setpoint, -max_discharge_w / 1000.0)
+                self.profile.set_power_setpoint(new_setpoint)
 
     # ------------------------------------------------------------------
     #  Charge-loop lifecycle
