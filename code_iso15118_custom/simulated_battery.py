@@ -291,10 +291,12 @@ class SimulatedBattery(BatteryProfile):
         is permanent). Use reset_health() to also clear them."""
         with self._lock:
             self._soc = self._soc_init
-            self._power_setpoint_kw = 0.0
             self._actual_power_kw = 0.0
             self._elapsed_min = 0.0
             self._last_t = None
+            # NOTE: self._power_setpoint_kw is NOT reset here, because in a
+            # live simulation we want to preserve the grid's last setpoint
+            # across communication session restarts.
 
     def reset_health(self) -> None:
         """Clear SOH and throughput (e.g. to model a brand-new pack)."""
