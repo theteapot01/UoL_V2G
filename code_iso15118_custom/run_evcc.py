@@ -9,6 +9,13 @@ battery profile) for the stock SimEVController. Keeping this launcher in
 code_iso15118_custom/ means the upstream iso15118 tree is not edited to wire in
 our controller.
 
+Architecture note
+-----------------
+The EVCC is the single source of truth for battery state (SoC, power).  The
+battery profile (CSV or live SimulatedBattery) lives here.  The SECC reads
+SoC from the ISO 15118 messages and forwards it to the grid — it has no
+battery model of its own.
+
 Run from the iso15118 project root (so the .env symlink and relative
 EVCC_CONFIG_PATH resolve), with this directory on PYTHONPATH:
 
@@ -18,6 +25,7 @@ EVCC_CONFIG_PATH resolve), with this directory on PYTHONPATH:
 
 An optional EVCC config file path may be passed as the first argument, exactly
 as with the upstream main.py.
+
 """
 
 import asyncio
@@ -50,41 +58,55 @@ async def main():
     # Optional cap on the charge loop length, for bounded test runs.
     # Set e.g. EVCC_MAX_STEPS=15 in the environment; unset/empty means run the
     # full battery profile.
-    max_steps_env = os.environ.get("EVCC_MAX_STEPS", "").strip()
-    max_steps = int(max_steps_env) if max_steps_env else None
+    max_steps_env = os.environ.get( "EVCC_MAX_STEPS", "" ).strip()
+    max_steps = int( max_steps_env ) if max_steps_env else None
 
     # Optional battery profile CSV path.  If unset, falls back to the
-    # controller's DEFAULT_PROFILE_PATH (lfp_50kwh.csv).
-    profile_path = os.environ.get("EVCC_PROFILE_PATH", "").strip()
-    
-    # Initialize the battery model. If we want it to be grid-controllable, 
-    # we use SimulatedBattery and wire it into the shared state.
-    controller_choice = os.environ.get("EVCC_CONTROLLER", "battery").strip().lower()
+    # controller's DEFAULT_PROFILE_PATH (lfp_82kwh.csv).
+    profile_path = os.environ.get( "EVCC_PROFILE_PATH", "" ).strip()
+
+    # Controller selection:
+    #   "sim"         → stock SimEVController (no battery profile)
+    #   "battery_csv" → BatterySimEVController with a CsvProfile
+    #   "battery"     → BatterySimEVController with a live SimulatedBattery
+    #                    (default; grid-responsive when the Josev hook is in
+    #                    place — see battery_ev_controller.update_evse_limits)
+    controller_choice = (
+        os.environ.get( "EVCC_CONTROLLER", "battery" ).strip().lower()
+    )
 
     if controller_choice == "sim":
-        ev_controller = SimEVController(evcc_config)
-        logger.info("Using stock SimEVController")
-    elif controller_choice == "battery_csv" or (controller_choice == "battery" and profile_path):
-        profile = CsvProfile(profile_path) if profile_path else None
+        ev_controller = SimEVController( evcc_config )
+        logger.info( "Using stock SimEVController" )
+
+    elif controller_choice == "battery_csv" or (
+            controller_choice == "battery" and profile_path
+    ):
+        profile = CsvProfile( profile_path ) if profile_path else None
         ev_controller = BatterySimEVController(
             evcc_config, profile=profile, max_steps=max_steps
-        )
-        logger.info(f"Using BatterySimEVController with CsvProfile: {profile_path}")
+            )
+        logger.info(
+            f"Using BatterySimEVController with CsvProfile: "
+            f"{profile_path or 'default'}"
+            )
+
     else:
-        # Default to live SimulatedBattery
-        battery = SimulatedBattery(target_soc=80.0) # Example target
-        shared_state.battery = battery
+        # Default: live SimulatedBattery as the BatteryProfile.
+        # The battery model lives entirely in this EVCC process — the SECC
+        # has no battery model; it reads SoC from the ISO 15118 messages.
+        battery = SimulatedBattery( target_soc=80.0 )
         ev_controller = BatterySimEVController(
             evcc_config, profile=battery, max_steps=max_steps
-        )
-        logger.info("Using BatterySimEVController with live SimulatedBattery")
+            )
+        logger.info( "Using BatterySimEVController with live SimulatedBattery" )
 
     await EVCCHandler(
         evcc_config=evcc_config,
         iface=config.iface,
         exi_codec=ExificientEXICodec(),
         ev_controller=ev_controller,
-    ).start()
+        ).start()
 
 
 def run():

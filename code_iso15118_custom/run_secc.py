@@ -23,8 +23,8 @@ as with the upstream main.py.
 import asyncio
 import logging
 import sys
-
 import pathlib
+
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 
 from iso15118.secc import SECCHandler
@@ -32,8 +32,6 @@ from iso15118.secc.secc_settings import Config
 from iso15118.shared.exificient_exi_codec import ExificientEXICodec
 
 from telemetry_evse_controller import TelemetryEVSEController
-from simulated_battery import SimulatedBattery
-from charger_state import state as shared_state
 
 from code_grid.iecc104_server import run_iec104_server
 from code_cpms.ocpp_charge_point_2 import run_ocpp_client
@@ -44,39 +42,35 @@ logger = logging.getLogger(__name__)
 async def main():
     config = Config()
     config.load_envs()
-    if len(sys.argv) > 1:
+    if len( sys.argv ) > 1:
         secc_config_file_path = sys.argv[1]
         if secc_config_file_path:
             config.secc_config_file_path = secc_config_file_path
 
-    # Initialize the battery model and wire it into the shared state
-    # so the IEC 104 server can apply grid commands to it.
-    battery = SimulatedBattery(target_soc=80.0)
-    shared_state.battery = battery
-    logger.info("Live SimulatedBattery initialized in shared state")
-
-    # Initialize the EVSE controller
+    # No battery model on the SECC side — the EV owns SoC.
+    # TelemetryEVSEController forwards EV data to shared state and relays
+    # grid commands back to the EV via EVSE session limits.
     evse_controller = await TelemetryEVSEController.create()
-    logger.info("Using TelemetryEVSEController")
+    logger.info( "Using TelemetryEVSEController (no local battery model)" )
 
     await asyncio.gather(
         SECCHandler(
             exi_codec=ExificientEXICodec(),
             evse_controller=evse_controller,
-            config=config
-        ).start(config.iface),
+            config=config,
+            ).start( config.iface ),
         run_iec104_server(),
         run_ocpp_client(),
-    )
+        )
 
 
 def run():
     try:
-        asyncio.run(main())
+        asyncio.run( main() )
     except KeyboardInterrupt:
-        logger.info("Closing connections...")
+        logger.info( "Closing connections..." )
     except Exception as e:
-        logger.exception(f"SECC program terminated with error: {e}")
+        logger.exception( f"SECC program terminated with error: {e}" )
 
 
 if __name__ == "__main__":

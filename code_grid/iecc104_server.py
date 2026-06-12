@@ -3,44 +3,28 @@ iecc104_server.py
 =================
 EV charger server for V2G (Vehicle-to-Grid) communication over IEC 60870-5-104.
 
-This module acts as the controlled station (server) in the IEC 104 protocol, representing
-the physical EV charger. It exposes real-time telemetry to the grid operator's SCADA client
-and handles incoming commands to regulate the direction and magnitude of power flow.
+This module acts as the controlled station (server) in the IEC 104 protocol,
+representing the physical EV charger. It exposes real-time telemetry to the
+grid operator's SCADA client and handles incoming commands to regulate the
+direction and magnitude of power flow.
 
-IOA ... Information Object Address
+Architecture
+------------
+The SECC does NOT own a battery model. All telemetry (SoC, power, temperature)
+is forwarded from the EV via ISO 15118 and stored in ``state.latest`` by the
+TelemetryEVSEController. The IEC 104 callbacks simply read from that snapshot.
 
-Data points exposed:
-  - IOA 11 (M_ME_NC_1): measured float value representing current power flow (watts).
-    Auto-reported to all connected clients every 1000 ms. Value is refreshed via
-    before_auto_transmit() and before_read() callbacks (currently using random simulation;
-    replace with real BMS/charger hardware reads in production).
+Grid commands (HIGHER / LOWER step commands on IOA 12) adjust
+``state.grid_power_setpoint_kw``. The TelemetryEVSEController translates that
+setpoint into EVSE power limits inside ``DC_ChargeLoopRes``, which the EV then
+respects when choosing its target current.
 
-  - IOA 12 (C_RC_TA_1): timestamped regulating step command receiver.
-    Handles HIGHER (increase discharge / reduce charge) and LOWER (decrease discharge /
-    increase charge) instructions sent by the grid client with cause ACTIVATION.
-
-Callbacks:
-  - on_step_command:      triggered when the grid sends a charge/discharge regulation command
-  - before_auto_transmit: updates the power measurement before each periodic report
-  - before_read:          updates the power measurement before responding to a client poll
-
-Protocol details:
-  - Transport:      TCP/IP, default port 2404
-  - Common address: 47 (identifies this charger station on the network)
-
-Intended extensions:
-  - Real BMS integration (SoC, temperature, min/max discharge limits)
-  - Enforcement of battery protection limits within on_step_command (refuse commands
-    that would discharge below a configured SoC floor, e.g. 20%)
-  - Additional monitoring points (SoC %, battery temp, compensation energy counter)
-  - Support for direct setpoint commands (C_SE_NC_1)
-
-Usage:
-  python >= 3.7, < 3.13
-
-  python iecc104_server.py
-
-  Start this before the client. Uncomment the debug line at the bottom for verbose logging.
+IOA map
+-------
+  IOA 11 (M_ME_NC_1) : power [kW] — from state.latest.power_kw
+  IOA 12 (C_RC_TA_1) : regulating step command (HIGHER / LOWER)
+  IOA 13 (M_ME_NC_1) : SoC [%]   — from state.latest.soc_percent
+  IOA 14 (M_ME_NC_1) : temperature [°C] — placeholder 25.0
 """
 
 import os
@@ -52,142 +36,135 @@ import asyncio
 from code_iso15118_custom.charger_state import state
 from config import Config
 
-#data = { }
-time_passed = 0
-#with open( 'code_battery_sim/profiles/lfp_50kwh.csv', 'r' ) as file:
-#    reader = csv.DictReader( file )
-#    for row in reader:
-#        data[float( row['time_min'] )] = row
 
 # ------------------------------------------------------------
-# 			        Functions
+#                        Callbacks
 # ------------------------------------------------------------
-
 
 def on_step_command(
-        point: c104.Point, previous_info: c104.Information, message: c104.IncomingMessage
+        point: c104.Point, previous_info: c104.Information,
+        message: c104.IncomingMessage
         ) -> c104.ResponseState:
-    """handle incoming regulating step command"""
+    """
+    Handle an incoming regulating step command from the grid.
+
+    HIGHER → decrease setpoint (more discharge / less charge)
+    LOWER  → increase setpoint (more charge / less discharge)
+
+    The setpoint is stored in shared state; the TelemetryEVSEController reads
+    it and relays it to the EV as EVSE power limits in the next
+    DC_ChargeLoopRes.
+    """
     print(
-        "STEP COMMAND on IOA: {0}, message: {1}, previous: {2}, current: {3}".format(
-            point.io_address, message, previous_info, point.info
-            )
-        )
+        "STEP COMMAND on IOA: {0}, message: {1}, previous: {2}, current: {3}"
+        .format(point.io_address, message, previous_info, point.info)
+    )
 
-    if state.battery:
-        if point.value == c104.Step.LOWER:
-            state.battery.apply_step(higher=False)
-            print( f"GOING LOWER WITH CHARGING (New Setpoint: {state.battery.power_setpoint_kw} kW)" )
-            return c104.ResponseState.SUCCESS
-
-        if point.value == c104.Step.HIGHER:
-            state.battery.apply_step(higher=True)
-            print( f"GOING HIGHER WITH CHARGING (New Setpoint: {state.battery.power_setpoint_kw} kW)" )
-            return c104.ResponseState.SUCCESS
+    if point.value == c104.Step.HIGHER:
+        state.grid_power_setpoint_kw -= state.step_kw
+    elif point.value == c104.Step.LOWER:
+        state.grid_power_setpoint_kw += state.step_kw
     else:
-        print("Battery not initialized in shared state")
+        print(f"Unknown step value: {point.value}")
+        return c104.ResponseState.FAILURE
 
-    return c104.ResponseState.FAILURE
+    # Clamp to configured limits
+    state.grid_power_setpoint_kw = max(
+        -state.max_discharge_kw,
+        min(state.max_charge_kw, state.grid_power_setpoint_kw)
+    )
 
-
-def before_auto_transmit( point: c104.Point ) -> None:
-    """update point value before transmission"""
-    # Use the simulated battery if available, else fall back to telemetry
-    if state.battery:
-        if point.io_address == Config.METER_VALUES:
-            point.value = state.battery.power_kw
-        elif point.io_address == Config.SOC_VAL:
-            point.value = state.battery.soc_percent
-        elif point.io_address == Config.READ_TEMP:
-            point.value = 25.0
-    else:
-        telemetry = state.latest
-        if point.io_address == Config.METER_VALUES:
-            point.value = telemetry.power_kw
-        elif point.io_address == Config.SOC_VAL:
-            point.value = telemetry.soc_percent
-        elif point.io_address == Config.READ_TEMP:
-            point.value = 25.0
-
+    direction = "DISCHARGE" if state.grid_power_setpoint_kw < 0 else "CHARGE"
     print(
-        "BEFORE AUTOMATIC REPORT on IOA: {0} VALUE: {1}".format(
-            point.io_address, point.value
-            )
-        )
+        f"Grid setpoint now: {state.grid_power_setpoint_kw:+.1f} kW ({direction})"
+    )
+    return c104.ResponseState.SUCCESS
 
 
-def before_read( point: c104.Point ) -> None:
-    """update point value before transmission"""
-    # Use the simulated battery if available, else fall back to telemetry
-    if state.battery:
-        if point.io_address == Config.METER_VALUES:
-            point.value = state.battery.power_kw
-        elif point.io_address == Config.SOC_VAL:
-            point.value = state.battery.soc_percent
-        elif point.io_address == Config.READ_TEMP:
-            point.value = 25.0
-    else:
-        telemetry = state.latest
-        if point.io_address == Config.METER_VALUES:
-            point.value = telemetry.power_kw
-        elif point.io_address == Config.SOC_VAL:
-            point.value = telemetry.soc_percent
-        elif point.io_address == Config.READ_TEMP:
-            point.value = 25.0
+def _update_point(point: c104.Point) -> None:
+    """
+    Populate an IEC 104 monitoring point from the latest EV telemetry.
 
+    Single code path — all data comes from state.latest, which is written
+    by TelemetryEVSEController each time it receives a charge-loop request
+    from the EV.
+    """
+    telemetry = state.latest
+    if point.io_address == Config.METER_VALUES:
+        point.value = telemetry.power_kw
+    elif point.io_address == Config.SOC_VAL:
+        point.value = telemetry.soc_percent
+    elif point.io_address == Config.READ_TEMP:
+        point.value = 25.0  # placeholder until real BMS integration
+
+
+def before_auto_transmit(point: c104.Point) -> None:
+    """Update point value before periodic automatic report."""
+    _update_point(point)
     print(
-        "BEFORE READ or INTERROGATION on IOA: {0} VALUE: {1}".format(
-            point.io_address, point.value
-            )
-        )
+        "BEFORE AUTOMATIC REPORT on IOA: {0} VALUE: {1}"
+        .format(point.io_address, point.value)
+    )
 
+
+def before_read(point: c104.Point) -> None:
+    """Update point value before responding to a client interrogation/read."""
+    _update_point(point)
+    print(
+        "BEFORE READ or INTERROGATION on IOA: {0} VALUE: {1}"
+        .format(point.io_address, point.value)
+    )
+
+
+# ------------------------------------------------------------
+#                     Server entry point
+# ------------------------------------------------------------
 
 async def run_iec104_server():
     # server and station preparation
     server = c104.Server()
-    station = server.add_station( common_address=47 )
+    station = server.add_station(common_address=47)
 
-    # create monitoring point to read data from
+    # monitoring point: power [kW]
     point_meter = station.add_point(
         io_address=Config.METER_VALUES, type=c104.Type.M_ME_NC_1, report_ms=2000
-        )
-    #    point_meter.on_before_auto_transmit(callable=before_auto_transmit)
-    point_meter.on_before_read( callable=before_read )
+    )
+    point_meter.on_before_read(callable=before_read)
 
-    # create SoC monitoring point
+    # monitoring point: SoC [%]
     point_soc = station.add_point(
         io_address=Config.SOC_VAL, type=c104.Type.M_ME_NC_1, report_ms=1000
-        )
-    point_soc.on_before_auto_transmit( callable=before_auto_transmit )
-    point_soc.on_before_read( callable=before_read )
+    )
+    point_soc.on_before_auto_transmit(callable=before_auto_transmit)
+    point_soc.on_before_read(callable=before_read)
 
-    # create Temp monitoring point
+    # monitoring point: temperature [°C]
     point_temp = station.add_point(
         io_address=Config.READ_TEMP, type=c104.Type.M_ME_NC_1, report_ms=1000
-        )
-    point_temp.on_before_auto_transmit( callable=before_auto_transmit )
-    point_temp.on_before_read( callable=before_read )
+    )
+    point_temp.on_before_auto_transmit(callable=before_auto_transmit)
+    point_temp.on_before_read(callable=before_read)
 
-    # create command point to write commands to
-    command = station.add_point( io_address=Config.CHARGE_CMD, type=c104.Type.C_RC_TA_1 )
-    command.on_receive( callable=on_step_command )
+    # command point: regulating step (HIGHER / LOWER)
+    command = station.add_point(
+        io_address=Config.CHARGE_CMD, type=c104.Type.C_RC_TA_1
+    )
+    command.on_receive(callable=on_step_command)
 
     # start
     server.start()
 
     while not server.has_active_connections:
-        print( "Waiting for connection" )
-        await asyncio.sleep( 1 )
+        print("Waiting for connection")
+        await asyncio.sleep(1)
 
-    await asyncio.sleep( 1 )
+    await asyncio.sleep(1)
 
-    c = 0
-    while server.has_open_connections and c < 30:
-        # c += 1
-        print( "Keep alive until disconnected" )
-        await asyncio.sleep( 1 )
+    while server.has_open_connections:
+        print("Keep alive until disconnected")
+        await asyncio.sleep(1)
 
 
 if __name__ == "__main__":
     # c104.set_debug_mode(c104.Debug.Server | c104.Debug.Point | c104.Debug.Callback)
-    asyncio.run( run_iec104_server() )
+    asyncio.run(run_iec104_server())
