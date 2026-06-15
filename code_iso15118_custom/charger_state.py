@@ -35,7 +35,7 @@ class SharedState:
         self.grid_power_setpoint_kw: float = 0.0
 
         # Size of one HIGHER/LOWER step [kW].
-        self.step_kw: float = 5.0
+        self.step_kw: float = 1.0
 
         # Absolute limits for clamping the setpoint.
         self.max_charge_kw: float = 100.0

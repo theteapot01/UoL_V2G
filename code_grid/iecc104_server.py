@@ -33,13 +33,7 @@ os.environ["PYTHONUNBUFFERED"] = "1"
 
 import c104
 import asyncio
-# Import by the bare module name so this is the SAME module object (and hence
-# the SAME `state` singleton) that telemetry_evse_controller.py imports.
-# Importing as `code_iso15118_custom.charger_state` would create a SECOND,
-# independent SharedState instance, so telemetry written by the EVSE
-# controller would never be visible here. Requires code_iso15118_custom/ on
-# PYTHONPATH (already the case, as the EVSE/EV controllers resolve that way).
-from charger_state import state
+from code_iso15118_custom.charger_state import state
 from config import Config
 
 

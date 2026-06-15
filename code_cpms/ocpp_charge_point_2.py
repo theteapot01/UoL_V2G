@@ -2,7 +2,7 @@ import asyncio
 import logging
 import random
 from datetime import datetime, timezone
-from charger_state import state
+from code_iso15118_custom.charger_state import state
 
 try:
     import websockets
