@@ -205,26 +205,30 @@ class BatterySimEVController(SimEVController):
             f"discharge={max_discharge_w:.0f} W"
         )
 
-        # If we're using the live SimulatedBattery, let it track the grid's
-        # offered power.
+        # If we're using the live SimulatedBattery, follow the grid's offered
+        # power. The grid's EVSE limits are treated as a *target* the EV charges
+        # toward, not just a ceiling: a higher charge offer makes the EV draw
+        # more, a lower offer makes it draw less, and a discharge-only offer
+        # flips it into V2G. The SimulatedBattery clamps internally to its own
+        # physical max_charge_kw / max_discharge_kw, so aiming for the full
+        # offer is safe.
         from simulated_battery import SimulatedBattery
         if isinstance(self.profile, SimulatedBattery):
-            # If the grid is offering charge, and we are idle, start charging.
-            # If it's only offering discharge (V2G), follow that.
-            # Otherwise follow the setpoint.
-            current_setpoint = self.profile.power_setpoint_kw
-            if current_setpoint == 0.0:
-                if max_charge_w > 0:
-                    self.profile.set_power_setpoint(min(10.0, max_charge_w / 1000.0))
-                elif max_discharge_w > 0:
-                    self.profile.set_power_setpoint(-min(10.0, max_discharge_w / 1000.0))
+            max_charge_kw = max_charge_w / 1000.0
+            max_discharge_kw = max_discharge_w / 1000.0
+
+            if max_charge_kw > 0:
+                # Grid is offering charge: aim to charge at the offered power.
+                target_kw = max_charge_kw
+            elif max_discharge_kw > 0:
+                # Grid is offering discharge only (V2G): feed back at the
+                # offered power.
+                target_kw = -max_discharge_kw
             else:
-                # If we already have a setpoint, just ensure it's within new limits
-                if current_setpoint > 0:
-                    new_setpoint = min(current_setpoint, max_charge_w / 1000.0)
-                else:
-                    new_setpoint = max(current_setpoint, -max_discharge_w / 1000.0)
-                self.profile.set_power_setpoint(new_setpoint)
+                # Grid offering nothing in either direction: idle.
+                target_kw = 0.0
+
+            self.profile.set_power_setpoint(target_kw)
 
     # ------------------------------------------------------------------
     #  Charge-loop lifecycle
