@@ -104,31 +104,17 @@ class ChargePoint( cp ):
                                 "context": "Sample.Periodic",
                                 },
                             {
-                                # EVSE max charge limit sent in DC_ChargeLoopRes [kW]
-                                "value": round( state.iso_evse_max_charge_w / 1000.0, 1 ),
-                                "measurand": "ISO15118.EVSE.MaxChargePower",
-                                "unit_of_measure": { "unit": "kW" },
+                                # EVSE max charge power offered to EV in DC_ChargeLoopRes [W]
+                                "value": round( state.iso_evse_max_charge_w, 1 ),
+                                "measurand": "Power.Import.Offered",
+                                "unit_of_measure": { "unit": "W" },
                                 "context": "Sample.Periodic",
                                 },
                             {
-                                # EVSE max discharge limit sent in DC_ChargeLoopRes [kW]
-                                "value": round( state.iso_evse_max_discharge_w / 1000.0, 1 ),
-                                "measurand": "ISO15118.EVSE.MaxDischargePower",
-                                "unit_of_measure": { "unit": "kW" },
-                                "context": "Sample.Periodic",
-                                },
-                            {
-                                # Cumulative DC_ChargeLoop iterations since SECC start
-                                "value": state.iso_loop_count,
-                                "measurand": "ISO15118.LoopCount",
-                                "unit_of_measure": { "unit": "" },
-                                "context": "Sample.Periodic",
-                                },
-                            {
-                                # send_charging_command processing latency [ms]
-                                "value": round( state.iso_loop_ms, 2 ),
-                                "measurand": "ISO15118.LoopProcessingMs",
-                                "unit_of_measure": { "unit": "ms" },
+                                # EVSE max discharge power offered to grid in DC_ChargeLoopRes [W]
+                                "value": round( state.iso_evse_max_discharge_w, 1 ),
+                                "measurand": "Power.Export.Offered",
+                                "unit_of_measure": { "unit": "W" },
                                 "context": "Sample.Periodic",
                                 },
                             ],
@@ -173,7 +159,7 @@ async def run_ocpp_client():
             async with websockets.connect(
                     url, subprotocols=["ocpp2.1"]
                     ) as ws:
-                charge_point = ChargePoint( "CP_1", ws, skip_schema_validation=True )
+                charge_point = ChargePoint( "CP_1", ws )
                 await asyncio.gather(
                     charge_point.start(), charge_point.send_boot_notification()
                     )

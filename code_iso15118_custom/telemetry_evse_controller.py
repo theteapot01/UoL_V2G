@@ -14,7 +14,6 @@ respect the grid's wishes.
 """
 
 import logging
-import time
 from typing import Optional
 
 from iso15118.secc.controller.simulator import SimEVSEController
@@ -51,7 +50,6 @@ class TelemetryEVSEController(SimEVSEController):
           2. Push the grid's power setpoint into the EVSE session limits so the
              framework includes them in the next DC_ChargeLoopRes (→ EV).
         """
-        _t0 = time.time()
         await super().send_charging_command(
             ev_target_voltage, ev_target_current, is_precharge, is_session_bpt
         )
@@ -98,8 +96,6 @@ class TelemetryEVSEController(SimEVSEController):
 
         state.iso_evse_max_charge_w = max_charge_w
         state.iso_evse_max_discharge_w = max_discharge_w
-        state.iso_loop_count += 1
-        state.iso_loop_ms = (time.time() - _t0) * 1000
 
         logger.debug(
             f"EVSE limits updated: charge={max_charge_w} W, "

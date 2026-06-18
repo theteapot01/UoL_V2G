@@ -322,17 +322,6 @@ _HTML = """<!DOCTYPE html>
         <span class="metric-label">EVSE Max Discharge</span>
         <span id="iso-discharge-lim" class="metric-val">—</span>
       </div>
-      <div class="metric-row">
-        <span class="metric-label">Loop Count</span>
-        <span id="iso-loops" class="metric-val">—</span>
-      </div>
-    </div>
-    <div class="timing-item" style="margin-top:0.4rem">
-      <div class="timing-header">
-        <span class="timing-name">SECC processing / loop</span>
-        <span id="iso-loop-ms" class="timing-ms">—</span>
-      </div>
-      <div class="timing-bg"><div id="iso-tb-loop" class="timing-fill" style="width:0%;background:var(--purple)"></div></div>
     </div>
   </div>
 
@@ -507,7 +496,7 @@ function updateUI(d) {
   // ── ISO 15118 ──
   const iso = d.iso15118;
   if (iso) {
-    const active = iso.loop_count > 0;
+    const active = iso.voltage_v > 0;
     const ageEl = document.getElementById('iso-age');
     if (iso.age_ms !== null && iso.age_ms !== undefined) {
       ageEl.textContent = '· ' + ageFmt(iso.age_ms);
@@ -521,10 +510,6 @@ function updateUI(d) {
     pwEl.style.color  = !active ? 'var(--muted)' : pw < -0.05 ? 'var(--red)' : pw > 0.05 ? 'var(--green)' : 'var(--muted)';
     document.getElementById('iso-charge-lim').textContent   = active ? iso.evse_charge_kw.toFixed(1)    + ' kW' : '—';
     document.getElementById('iso-discharge-lim').textContent= active ? iso.evse_discharge_kw.toFixed(1) + ' kW' : '—';
-    document.getElementById('iso-loops').textContent        = active ? iso.loop_count.toLocaleString() : '—';
-    const lms = iso.loop_ms;
-    document.getElementById('iso-loop-ms').textContent  = active ? lms.toFixed(1) + ' ms' : '—';
-    document.getElementById('iso-tb-loop').style.width  = active ? Math.min(lms / 50 * 100, 100) + '%' : '0%';
   }
 
   // ── Command log ──
@@ -672,14 +657,12 @@ def _build_payload() -> dict:
             "override": grid_state.manual_override,
         },
         "iso15118": {
-            "voltage_v":           round(ocpp.voltage_v, 1),
-            "current_a":           round(ocpp.current_a, 2),
-            "power_kw":            round((ocpp.voltage_v * ocpp.current_a) / 1000.0, 2),
-            "evse_charge_kw":      round(ocpp.evse_max_charge_kw, 1),
-            "evse_discharge_kw":   round(ocpp.evse_max_discharge_kw, 1),
-            "loop_count":          ocpp.loop_count,
-            "loop_ms":             round(ocpp.loop_ms, 1),
-            "age_ms":              round((now - ocpp.timestamp) * 1000) if ocpp.timestamp else None,
+            "voltage_v":         round(ocpp.voltage_v, 1),
+            "current_a":         round(ocpp.current_a, 2),
+            "power_kw":          round((ocpp.voltage_v * ocpp.current_a) / 1000.0, 2),
+            "evse_charge_kw":    round(ocpp.evse_max_charge_kw, 1),
+            "evse_discharge_kw": round(ocpp.evse_max_discharge_kw, 1),
+            "age_ms":            round((now - ocpp.timestamp) * 1000) if ocpp.timestamp else None,
         },
         "log": [
             {

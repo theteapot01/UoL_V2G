@@ -23,8 +23,6 @@ class OCPPSnapshot:
     current_a: float = 0.0
     evse_max_charge_kw: float = 0.0
     evse_max_discharge_kw: float = 0.0
-    loop_count: int = 0
-    loop_ms: float = 0.0
 
 
 @dataclass

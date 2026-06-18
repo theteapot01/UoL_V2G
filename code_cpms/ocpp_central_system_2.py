@@ -141,14 +141,10 @@ class ChargePoint( cp ):
                     grid_state.ocpp.voltage_v = float( value )
                 elif measurand == "Current.Import":
                     grid_state.ocpp.current_a = float( value )
-                elif measurand == "ISO15118.EVSE.MaxChargePower":
-                    grid_state.ocpp.evse_max_charge_kw = float( value )
-                elif measurand == "ISO15118.EVSE.MaxDischargePower":
-                    grid_state.ocpp.evse_max_discharge_kw = float( value )
-                elif measurand == "ISO15118.LoopCount":
-                    grid_state.ocpp.loop_count = int( float( value ) )
-                elif measurand == "ISO15118.LoopProcessingMs":
-                    grid_state.ocpp.loop_ms = float( value )
+                elif measurand == "Power.Import.Offered":
+                    grid_state.ocpp.evse_max_charge_kw = float( value ) / 1000.0
+                elif measurand == "Power.Export.Offered":
+                    grid_state.ocpp.evse_max_discharge_kw = float( value ) / 1000.0
 
                 # Flag V2G discharge events specifically
                 if measurand == "Power.Active.Import":
@@ -212,7 +208,7 @@ async def on_connect( websocket ):
         return await websocket.close()
 
     charge_point_id = websocket.request.path.strip( "/" )
-    charge_point = ChargePoint( charge_point_id, websocket, skip_schema_validation=True )
+    charge_point = ChargePoint( charge_point_id, websocket )
 
     await charge_point.start()
 
