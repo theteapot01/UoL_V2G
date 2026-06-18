@@ -95,7 +95,11 @@ async def main():
         # Default: live SimulatedBattery as the BatteryProfile.
         # The battery model lives entirely in this EVCC process — the SECC
         # has no battery model; it reads SoC from the ISO 15118 messages.
-        battery = SimulatedBattery( target_soc=80.0 )
+        battery = SimulatedBattery(
+            target_soc=80.0,
+            max_charge_kw=300.0,
+            max_discharge_kw=20.0,
+        )
 
         # Seed an initial charging setpoint so the EV starts drawing power
         # straight away (like a normally plugged-in car), instead of sitting

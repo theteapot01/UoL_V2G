@@ -152,19 +152,28 @@ async def run_iec104_client():
                     _pending_cmd  = grid_state.manual_override
                     _pending_src  = "manual"
                 else:
-                    # Auto: reduce charge when grid is stressed, increase when spare capacity
+                        # Auto: reduce charge when grid is stressed or battery is full;
+                    # increase charge when there is spare capacity and battery needs it.
                     if trafo_loading > 80 or vm_pu_b2 < 0.95:
+                        # Grid stressed — shed load immediately
                         command.value = c104.Step.HIGHER
                         _pending_cmd  = "HIGHER"
-                    elif trafo_loading < 20 and point_soc.value < 40:
+                    elif point_soc.value > 80:
+                        # Battery approaching full — ramp down (or request V2G)
+                        command.value = c104.Step.HIGHER
+                        _pending_cmd  = "HIGHER"
+                    elif point_soc.value < 20:
+                        # Battery low — charge it regardless of trafo loading
                         command.value = c104.Step.LOWER
                         _pending_cmd  = "LOWER"
-                    elif trafo_loading > 90 and point_soc.value > 30:
-                        command.value = c104.Step.HIGHER
-                        _pending_cmd  = "HIGHER"
+                    elif trafo_loading < 40:
+                        # Spare grid capacity and battery not full — increase charge
+                        command.value = c104.Step.LOWER
+                        _pending_cmd  = "LOWER"
                     else:
-                        command.value = c104.Step.LOWER
-                        _pending_cmd  = "LOWER"
+                        # Hold current setpoint (no change needed)
+                        command.value = c104.Step.HIGHER
+                        _pending_cmd  = "HIGHER"
                     _pending_src = "auto"
 
                 grid_state.cycle_ms = (time.time() - t_cycle) * 1000
