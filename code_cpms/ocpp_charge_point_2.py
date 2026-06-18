@@ -173,7 +173,7 @@ async def run_ocpp_client():
             async with websockets.connect(
                     url, subprotocols=["ocpp2.1"]
                     ) as ws:
-                charge_point = ChargePoint( "CP_1", ws )
+                charge_point = ChargePoint( "CP_1", ws, skip_schema_validation=True )
                 await asyncio.gather(
                     charge_point.start(), charge_point.send_boot_notification()
                     )

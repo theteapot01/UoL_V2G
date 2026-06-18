@@ -212,7 +212,7 @@ async def on_connect( websocket ):
         return await websocket.close()
 
     charge_point_id = websocket.request.path.strip( "/" )
-    charge_point = ChargePoint( charge_point_id, websocket )
+    charge_point = ChargePoint( charge_point_id, websocket, skip_schema_validation=True )
 
     await charge_point.start()
 
