@@ -154,7 +154,7 @@ async def run_iec104_client():
                 else:
                         # Auto: reduce charge when grid is stressed or battery is full;
                     # increase charge when there is spare capacity and battery needs it.
-                    if trafo_loading > 80 or vm_pu_b2 < 0.97:
+                    if trafo_loading > 80 or vm_pu_b2 < 0.95:
                         # Grid stressed — shed load immediately
                         command.value = c104.Step.HIGHER
                         _pending_cmd  = "HIGHER"
