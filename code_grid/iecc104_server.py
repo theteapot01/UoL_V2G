@@ -60,6 +60,8 @@ def on_step_command(
         .format(point.io_address, message, previous_info, point.info)
     )
 
+    state.command_received = True
+
     if point.value == c104.Step.HIGHER:
         state.grid_power_setpoint_kw -= state.step_kw
     elif point.value == c104.Step.LOWER:

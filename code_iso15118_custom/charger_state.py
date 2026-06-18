@@ -38,8 +38,14 @@ class SharedState:
         self.step_kw: float = 5.0
 
         # Absolute limits for clamping the setpoint.
-        self.max_charge_kw: float = 100.0
-        self.max_discharge_kw: float = 100.0
+        self.max_charge_kw: float = 300.0
+        self.max_discharge_kw: float = 20.0
+
+        # Set to True by on_step_command the moment the first IEC 104 command
+        # arrives. Used by _grid_setpoint_to_evse_limits to tell apart
+        # "startup before any command" (setpoint == 0 by default) from
+        # "setpoint stepped through zero during a direction change".
+        self.command_received: bool = False
 
 
 state = SharedState()

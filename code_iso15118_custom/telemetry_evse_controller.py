@@ -110,21 +110,27 @@ class TelemetryEVSEController(SimEVSEController):
         Convert ``state.grid_power_setpoint_kw`` into (max_charge_W,
         max_discharge_W) for the EVSE session limits.
 
-        When the grid hasn't sent any commands yet (setpoint == 0), we fall
-        back to a generous default so the EV isn't blocked from charging.
+        The startup case (no command received yet) is handled via the
+        ``state.command_received`` flag so that a setpoint of exactly 0.0
+        during a direction-change transition is not mistaken for startup and
+        does not incorrectly unlock both directions at full rated power.
         """
-        setpoint = state.grid_power_setpoint_kw
-
-        if setpoint == 0.0:
-            # No grid command received yet — allow both directions at rated.
+        if not state.command_received:
+            # No IEC 104 command has arrived yet — let the EV charge freely
+            # at its initial setpoint (EVCC_INIT_SETPOINT_KW).
             return (
                 state.max_charge_kw * 1000.0,
                 state.max_discharge_kw * 1000.0,
             )
 
+        setpoint = state.grid_power_setpoint_kw
+
         if setpoint > 0:
             # Grid wants charging
             return abs(setpoint) * 1000.0, 0.0
-        else:
+        elif setpoint < 0:
             # Grid wants V2G discharge
             return 0.0, abs(setpoint) * 1000.0
+        else:
+            # Setpoint landed on exactly 0 mid-transition — hold idle.
+            return 0.0, 0.0
