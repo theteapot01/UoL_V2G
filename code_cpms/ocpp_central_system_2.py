@@ -44,7 +44,10 @@ Dependencies:
 # --------------------------------------------------------------
 import asyncio
 import logging
+import time
 from datetime import datetime, timezone
+
+from code_grid.grid_state import grid_state
 
 try:
     import websockets
@@ -115,6 +118,10 @@ class ChargePoint( cp ):
         Receives MeterValues from the charge point and logs them.
         Negative Power.Active.Import = EV feeding energy back to grid (V2G).
         """
+        _power_w   = 0.0
+        _energy_wh = 0.0
+        _soc_pct   = 0.0
+
         for mv in meter_value:
             timestamp = mv.get( "timestamp", "unknown time" )
             for sample in mv.get( "sampled_value", [] ):
@@ -122,6 +129,14 @@ class ChargePoint( cp ):
                 value = sample.get( "value", 0 )
                 unit_obj = sample.get( "unit_of_measure", { } )
                 unit = unit_obj.get( "unit", "" ) if isinstance( unit_obj, dict ) else ""
+
+                # Snapshot for dashboard
+                if measurand == "Power.Active.Import":
+                    _power_w = float( value )
+                elif measurand == "Energy.Active.Import.Register":
+                    _energy_wh = float( value )
+                elif measurand == "SoC":
+                    _soc_pct = float( value )
 
                 # Flag V2G discharge events specifically
                 if measurand == "Power.Active.Import":
@@ -150,6 +165,12 @@ class ChargePoint( cp ):
                         unit,
                         timestamp,
                         )
+
+        # Persist to shared state so the web dashboard can display OCPP data.
+        grid_state.ocpp.power_w    = _power_w
+        grid_state.ocpp.energy_wh  = _energy_wh
+        grid_state.ocpp.soc_percent = _soc_pct
+        grid_state.ocpp.timestamp  = time.time()
 
         return call_result.MeterValues()
 

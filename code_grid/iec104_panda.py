@@ -5,6 +5,7 @@ import time
 import c104
 import pandapower as pp
 
+from code_grid.grid_state import grid_state
 from config import Config
 
 os.environ["PYTHONUNBUFFERED"] = "1"
@@ -104,62 +105,108 @@ async def run_iec104_client():
 
     last_read = 0
     last_transmit = 0
+    # Track what was last staged so we can log it at transmit time.
+    _pending_cmd = "LOWER"
+    _pending_src = "auto"
 
     while connection.state == c104.ConnectionState.OPEN:
         now = time.time()
-        # Read the data point from the charger
+
+        # ── 1 s read cycle: meter → pandapower → stage command ──────────────
         if now - last_read >= 1:
             last_read = now
-            # if point_meter.read() and point_meter.value !=0:
-            if await loop.run_in_executor( None, point_meter.read ):
+            t_cycle = time.time()
+
+            t0 = time.time()
+            read_ok = await loop.run_in_executor( None, point_meter.read )
+            grid_state.iec104_read_ms = (time.time() - t0) * 1000
+
+            if read_ok:
+                grid_state.iec104.power_kw  = point_meter.value
+                grid_state.iec104.timestamp = time.time()
+
+                t_pp = time.time()
                 net.load.at[0, "p_mw"] = point_meter.value / 1000
                 pp.runpp( net )
+                grid_state.pandapower_ms = (time.time() - t_pp) * 1000
 
-                vm_pu_b2 = net.res_bus.at[b2, "vm_pu"]
+                vm_pu_b2      = net.res_bus.at[b2, "vm_pu"]
                 trafo_loading = net.res_trafo.at[0, "loading_percent"]
-                line_loading = net.res_line.at[0, "loading_percent"]
+                line_loading  = net.res_line.at[0, "loading_percent"]
 
                 voltages.append( vm_pu_b2 )
                 trafo_loadings.append( trafo_loading )
 
-                # constant load checking the grid if it can handle the charger
-                if trafo_loading > 80 or vm_pu_b2 < 0.95:
-                    command.value = c104.Step.HIGHER # reduce load / increase discharge, grid is stressed
-                elif trafo_loading < 20 and point_soc.value < 40:
-                    # Grid has plenty of power and EV SoC is low, increase charge
-                    command.value = c104.Step.LOWER # increase charge
-                elif trafo_loading > 90 and point_soc.value > 30:
-                    # Grid is very stressed, EV should feed back if it has enough SoC
-                    command.value = c104.Step.HIGHER # increase discharge
+                grid_state.grid.bus2_voltage_pu  = vm_pu_b2
+                grid_state.grid.trafo_loading_pct = trafo_loading
+                grid_state.grid.line_loading_pct  = line_loading
+
+                # Manual override takes precedence over auto logic
+                if not grid_state.auto_control and grid_state.manual_override:
+                    step = (
+                        c104.Step.HIGHER
+                        if grid_state.manual_override == "HIGHER"
+                        else c104.Step.LOWER
+                    )
+                    command.value = step
+                    _pending_cmd  = grid_state.manual_override
+                    _pending_src  = "manual"
                 else:
-                    command.value = c104.Step.LOWER # load can be increased
+                    # Auto: reduce charge when grid is stressed, increase when spare capacity
+                    if trafo_loading > 80 or vm_pu_b2 < 0.95:
+                        command.value = c104.Step.HIGHER
+                        _pending_cmd  = "HIGHER"
+                    elif trafo_loading < 20 and point_soc.value < 40:
+                        command.value = c104.Step.LOWER
+                        _pending_cmd  = "LOWER"
+                    elif trafo_loading > 90 and point_soc.value > 30:
+                        command.value = c104.Step.HIGHER
+                        _pending_cmd  = "HIGHER"
+                    else:
+                        command.value = c104.Step.LOWER
+                        _pending_cmd  = "LOWER"
+                    _pending_src = "auto"
+
+                grid_state.cycle_ms = (time.time() - t_cycle) * 1000
 
                 print(
-                    f"Load: {point_meter.value:.2f} kW | Bus 2 Voltage: {vm_pu_b2:.4f} pu | Trafo Loading: {trafo_loading:.1f}% | Line {line_loading:.1f}%"
-                    )
-                #print( f"-> SUCCESSFUL METER READING {point_meter.value}" )
+                    f"Load: {point_meter.value:.2f} kW | "
+                    f"Bus 2: {vm_pu_b2:.4f} pu | "
+                    f"Trafo: {trafo_loading:.1f}% | "
+                    f"Line: {line_loading:.1f}% | "
+                    f"Cmd: {_pending_cmd} ({_pending_src}) | "
+                    f"Cycle: {grid_state.cycle_ms:.0f} ms"
+                )
             else:
-                print( "-> FAILURE" )
+                print( "-> IEC104 READ FAILURE" )
 
+        # ── 4 s transmit cycle: send command, refresh SoC + temp ────────────
         if now - last_transmit >= 4:
             last_transmit = now
-            # Write to command point with either HIGHER or LOWER for changing the charging levels
+
+            t_tx = time.time()
             if await loop.run_in_executor(
                     None, lambda: command.transmit( cause=c104.Cot.ACTIVATION )
                     ):
-                print( "-> SUCCESSFUL TRANSMIT" )
+                grid_state.transmit_ms = (time.time() - t_tx) * 1000
+                grid_state.log_command( _pending_cmd, _pending_src )
+                print(
+                    f"-> TRANSMIT OK  cmd={_pending_cmd} src={_pending_src} "
+                    f"tx={grid_state.transmit_ms:.0f} ms"
+                )
             else:
-                print( "-> FAILURE" )
+                print( "-> TRANSMIT FAILURE" )
 
             if await loop.run_in_executor( None, point_soc.read ):
-                print( f"-> SUCCESSFUL SOC READING {point_soc.value}" )
+                grid_state.iec104.soc_percent = point_soc.value
+                print( f"-> SOC {point_soc.value:.1f}%" )
             else:
-                print( "-> FAILURE" )
+                print( "-> SOC READ FAILURE" )
 
             if await loop.run_in_executor( None, point_temp.read ):
-                print( f"-> SUCCESSFUL TEMP READING {point_temp.value}" )
+                grid_state.iec104.temp_c = point_temp.value
             else:
-                print( "-> FAILURE" )
+                print( "-> TEMP READ FAILURE" )
 
         await asyncio.sleep( 0.1 )
 
