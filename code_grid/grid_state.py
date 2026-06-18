@@ -18,6 +18,13 @@ class OCPPSnapshot:
     energy_wh: float = 0.0
     soc_percent: float = 0.0
     timestamp: float = 0.0
+    # ISO 15118 stats forwarded via OCPP MeterValues custom measurands
+    voltage_v: float = 0.0
+    current_a: float = 0.0
+    evse_max_charge_kw: float = 0.0
+    evse_max_discharge_kw: float = 0.0
+    loop_count: int = 0
+    loop_ms: float = 0.0
 
 
 @dataclass

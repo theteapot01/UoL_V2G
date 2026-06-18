@@ -298,6 +298,44 @@ _HTML = """<!DOCTYPE html>
     <div class="timing-sub">Transmit runs every 4 s independent of the 1 s read cycle.</div>
   </div>
 
+  <!-- ISO 15118 Stats (2 cols) -->
+  <div class="card span2">
+    <div class="card-label">ISO 15118 Charge Loop <span id="iso-age" style="font-size:0.72rem;color:var(--muted);font-weight:400;margin-left:0.5rem">—</span></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem 1.2rem;margin-bottom:0.6rem">
+      <div class="metric-row">
+        <span class="metric-label">EV Voltage</span>
+        <span id="iso-voltage" class="metric-val">—</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-label">EV Current</span>
+        <span id="iso-current" class="metric-val">—</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-label">EV Power (V×I)</span>
+        <span id="iso-power" class="metric-val">—</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-label">EVSE Max Charge</span>
+        <span id="iso-charge-lim" class="metric-val">—</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-label">EVSE Max Discharge</span>
+        <span id="iso-discharge-lim" class="metric-val">—</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-label">Loop Count</span>
+        <span id="iso-loops" class="metric-val">—</span>
+      </div>
+    </div>
+    <div class="timing-item" style="margin-top:0.4rem">
+      <div class="timing-header">
+        <span class="timing-name">SECC processing / loop</span>
+        <span id="iso-loop-ms" class="timing-ms">—</span>
+      </div>
+      <div class="timing-bg"><div id="iso-tb-loop" class="timing-fill" style="width:0%;background:var(--purple)"></div></div>
+    </div>
+  </div>
+
   <!-- Manual Control (2 cols) -->
   <div class="card span2">
     <div class="card-label">Grid Demand Control</div>
@@ -466,6 +504,29 @@ function updateUI(d) {
   chart.data.datasets[0].backgroundColor = kw < -0.1 ? 'rgba(248,81,73,0.06)' : kw > 0.1 ? 'rgba(63,185,80,0.06)' : 'rgba(88,166,255,0.07)';
   chart.update('none');
 
+  // ── ISO 15118 ──
+  const iso = d.iso15118;
+  if (iso) {
+    const active = iso.loop_count > 0;
+    const ageEl = document.getElementById('iso-age');
+    if (iso.age_ms !== null && iso.age_ms !== undefined) {
+      ageEl.textContent = '· ' + ageFmt(iso.age_ms);
+      ageEl.style.color = iso.age_ms > 30000 ? 'var(--red)' : iso.age_ms > 15000 ? 'var(--orange)' : 'var(--muted)';
+    }
+    document.getElementById('iso-voltage').textContent      = active ? iso.voltage_v.toFixed(1) + ' V'  : '—';
+    document.getElementById('iso-current').textContent      = active ? iso.current_a.toFixed(1) + ' A'  : '—';
+    const pw = iso.power_kw;
+    const pwEl = document.getElementById('iso-power');
+    pwEl.textContent  = active ? Math.abs(pw).toFixed(2) + ' kW' : '—';
+    pwEl.style.color  = !active ? 'var(--muted)' : pw < -0.05 ? 'var(--red)' : pw > 0.05 ? 'var(--green)' : 'var(--muted)';
+    document.getElementById('iso-charge-lim').textContent   = active ? iso.evse_charge_kw.toFixed(1)    + ' kW' : '—';
+    document.getElementById('iso-discharge-lim').textContent= active ? iso.evse_discharge_kw.toFixed(1) + ' kW' : '—';
+    document.getElementById('iso-loops').textContent        = active ? iso.loop_count.toLocaleString() : '—';
+    const lms = iso.loop_ms;
+    document.getElementById('iso-loop-ms').textContent  = active ? lms.toFixed(1) + ' ms' : '—';
+    document.getElementById('iso-tb-loop').style.width  = active ? Math.min(lms / 50 * 100, 100) + '%' : '0%';
+  }
+
   // ── Command log ──
   const logEl = document.getElementById('log-list');
   if (d.log && d.log.length) {
@@ -609,6 +670,16 @@ def _build_payload() -> dict:
         "control": {
             "auto":     grid_state.auto_control,
             "override": grid_state.manual_override,
+        },
+        "iso15118": {
+            "voltage_v":           round(ocpp.voltage_v, 1),
+            "current_a":           round(ocpp.current_a, 2),
+            "power_kw":            round((ocpp.voltage_v * ocpp.current_a) / 1000.0, 2),
+            "evse_charge_kw":      round(ocpp.evse_max_charge_kw, 1),
+            "evse_discharge_kw":   round(ocpp.evse_max_discharge_kw, 1),
+            "loop_count":          ocpp.loop_count,
+            "loop_ms":             round(ocpp.loop_ms, 1),
+            "age_ms":              round((now - ocpp.timestamp) * 1000) if ocpp.timestamp else None,
         },
         "log": [
             {

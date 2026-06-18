@@ -47,5 +47,12 @@ class SharedState:
         # "setpoint stepped through zero during a direction change".
         self.command_received: bool = False
 
+        # ISO 15118 charge-loop stats — written by TelemetryEVSEController
+        # each DC_ChargeLoop iteration; read by the OCPP client for reporting.
+        self.iso_evse_max_charge_w: float = 0.0    # last EVSE charge limit sent to EV [W]
+        self.iso_evse_max_discharge_w: float = 0.0 # last EVSE discharge limit sent to EV [W]
+        self.iso_loop_count: int = 0               # cumulative charge-loop iterations
+        self.iso_loop_ms: float = 0.0              # send_charging_command processing time [ms]
+
 
 state = SharedState()

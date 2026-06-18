@@ -137,6 +137,18 @@ class ChargePoint( cp ):
                     _energy_wh = float( value )
                 elif measurand == "SoC":
                     _soc_pct = float( value )
+                elif measurand == "Voltage":
+                    grid_state.ocpp.voltage_v = float( value )
+                elif measurand == "Current.Import":
+                    grid_state.ocpp.current_a = float( value )
+                elif measurand == "ISO15118.EVSE.MaxChargePower":
+                    grid_state.ocpp.evse_max_charge_kw = float( value )
+                elif measurand == "ISO15118.EVSE.MaxDischargePower":
+                    grid_state.ocpp.evse_max_discharge_kw = float( value )
+                elif measurand == "ISO15118.LoopCount":
+                    grid_state.ocpp.loop_count = int( float( value ) )
+                elif measurand == "ISO15118.LoopProcessingMs":
+                    grid_state.ocpp.loop_ms = float( value )
 
                 # Flag V2G discharge events specifically
                 if measurand == "Power.Active.Import":

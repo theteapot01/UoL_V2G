@@ -89,6 +89,48 @@ class ChargePoint( cp ):
                                 "unit_of_measure": { "unit": "Percent" },
                                 "context": "Sample.Periodic",
                                 },
+                            {
+                                # EV target voltage from ISO 15118 DC_ChargeLoopReq
+                                "value": round( telemetry.voltage_v, 1 ),
+                                "measurand": "Voltage",
+                                "unit_of_measure": { "unit": "V" },
+                                "context": "Sample.Periodic",
+                                },
+                            {
+                                # EV target current from ISO 15118 DC_ChargeLoopReq
+                                "value": round( telemetry.current_a, 2 ),
+                                "measurand": "Current.Import",
+                                "unit_of_measure": { "unit": "A" },
+                                "context": "Sample.Periodic",
+                                },
+                            {
+                                # EVSE max charge limit sent in DC_ChargeLoopRes [kW]
+                                "value": round( state.iso_evse_max_charge_w / 1000.0, 1 ),
+                                "measurand": "ISO15118.EVSE.MaxChargePower",
+                                "unit_of_measure": { "unit": "kW" },
+                                "context": "Sample.Periodic",
+                                },
+                            {
+                                # EVSE max discharge limit sent in DC_ChargeLoopRes [kW]
+                                "value": round( state.iso_evse_max_discharge_w / 1000.0, 1 ),
+                                "measurand": "ISO15118.EVSE.MaxDischargePower",
+                                "unit_of_measure": { "unit": "kW" },
+                                "context": "Sample.Periodic",
+                                },
+                            {
+                                # Cumulative DC_ChargeLoop iterations since SECC start
+                                "value": state.iso_loop_count,
+                                "measurand": "ISO15118.LoopCount",
+                                "unit_of_measure": { "unit": "" },
+                                "context": "Sample.Periodic",
+                                },
+                            {
+                                # send_charging_command processing latency [ms]
+                                "value": round( state.iso_loop_ms, 2 ),
+                                "measurand": "ISO15118.LoopProcessingMs",
+                                "unit_of_measure": { "unit": "ms" },
+                                "context": "Sample.Periodic",
+                                },
                             ],
                         }
                     ],
