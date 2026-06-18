@@ -96,6 +96,19 @@ async def main():
         # The battery model lives entirely in this EVCC process — the SECC
         # has no battery model; it reads SoC from the ISO 15118 messages.
         battery = SimulatedBattery( target_soc=80.0 )
+
+        # Seed an initial charging setpoint so the EV starts drawing power
+        # straight away (like a normally plugged-in car), instead of sitting
+        # idle at 0 kW waiting for a grid command that only arrives once load
+        # appears. The grid then *modulates* this via IEC 104 step commands.
+        # Override with EVCC_INIT_SETPOINT_KW (+charge / -discharge).
+        init_setpoint_env = os.environ.get( "EVCC_INIT_SETPOINT_KW", "" ).strip()
+        init_setpoint_kw = float( init_setpoint_env ) if init_setpoint_env else 17.0
+        battery.set_power_setpoint( init_setpoint_kw )
+        logger.info(
+            f"Seeded SimulatedBattery with initial setpoint "
+            f"{init_setpoint_kw:+.1f} kW"
+            )
         ev_controller = BatterySimEVController(
             evcc_config, profile=battery, max_steps=max_steps
             )
