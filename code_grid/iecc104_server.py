@@ -33,7 +33,7 @@ os.environ["PYTHONUNBUFFERED"] = "1"
 
 import c104
 import asyncio
-from code_iso15118_custom.charger_state import state
+from charger_state import state
 from config import Config
 
 
