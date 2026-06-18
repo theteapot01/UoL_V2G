@@ -20,7 +20,7 @@ b1 = pp.create_bus( net, vn_kv=Config.V_PRIMARY, name="Bus 1" )
 b2 = pp.create_bus( net, vn_kv=Config.V_SECONDARY, name="Bus 2" )
 b3 = pp.create_bus( net, vn_kv=Config.V_SECONDARY, name="Bus 3" )
 
-pp.create_ext_grid( net, bus=b1, vm_pu=1.02, name="Grid Connection" )
+pp.create_ext_grid( net, bus=b1, vm_pu=0.98, name="Grid Connection" )
 pp.create_load( net, bus=b3, p_mw=Config.LOAD_MW, q_mvar=Config.LOAD_MVAR, name="Load" )
 
 pp.create_transformer( net, hv_bus=b1, lv_bus=b2, std_type=Config.TRAFO_TYPE, name="Trafo" )
@@ -154,7 +154,7 @@ async def run_iec104_client():
                 else:
                         # Auto: reduce charge when grid is stressed or battery is full;
                     # increase charge when there is spare capacity and battery needs it.
-                    if trafo_loading > 80 or vm_pu_b2 < 0.95:
+                    if trafo_loading > 80 or vm_pu_b2 < 0.97:
                         # Grid stressed — shed load immediately
                         command.value = c104.Step.HIGHER
                         _pending_cmd  = "HIGHER"
