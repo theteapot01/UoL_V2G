@@ -62,7 +62,7 @@ except ModuleNotFoundError:
 
 from ocpp.routing import on
 from ocpp.v21 import ChargePoint as cp
-from ocpp.v21 import call_result
+from ocpp.v21 import call, call_result
 from ocpp.v21.enums import Action
 
 logging.basicConfig( level=logging.INFO )
@@ -182,6 +182,15 @@ class ChargePoint( cp ):
 
         return call_result.MeterValues()
 
+    async def send_preferences(self, prefs) -> None:
+        """Push user preferences to the charge point via OCPP SetVariables."""
+        await self.call(call.SetVariables(set_variable_data=[
+            {"attribute_value": str(prefs.min_soc_pct),    "component": {"name": "UserPreferences"}, "variable": {"name": "MinSoC"}},
+            {"attribute_value": str(prefs.max_soc_pct),    "component": {"name": "UserPreferences"}, "variable": {"name": "MaxSoC"}},
+            {"attribute_value": str(prefs.target_soc_pct), "component": {"name": "UserPreferences"}, "variable": {"name": "TargetSoC"}},
+            {"attribute_value": prefs.departure_time,       "component": {"name": "UserPreferences"}, "variable": {"name": "DepartureTime"}},
+        ]))
+
 
 # --------------------------------------------------------------
 #                   Example on connect
@@ -210,7 +219,11 @@ async def on_connect( websocket ):
     charge_point_id = websocket.request.path.strip( "/" )
     charge_point = ChargePoint( charge_point_id, websocket )
 
-    await charge_point.start()
+    grid_state.connected_charge_point = charge_point
+    try:
+        await charge_point.start()
+    finally:
+        grid_state.connected_charge_point = None
 
 
 async def run_ocpp_server():

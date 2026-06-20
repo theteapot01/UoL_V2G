@@ -53,5 +53,11 @@ class SharedState:
         self.iso_evse_max_discharge_w: float = 0.0 # last EVSE discharge limit sent to EV [W]
         self.iso_loop_ms: float = 0.0              # processing time of last charge-loop tick [ms]
 
+        # User preferences — pushed from CPMS via OCPP SetVariables
+        self.pref_min_soc_pct: float = 20.0     # don't V2G below this
+        self.pref_max_soc_pct: float = 80.0     # stop charging above this
+        self.pref_target_soc_pct: float = 80.0  # desired SoC at departure
+        self.pref_departure_time: str = ""       # "HH:MM" or "" = no window
+
 
 state = SharedState()

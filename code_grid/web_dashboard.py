@@ -346,6 +346,41 @@ _HTML = """<!DOCTYPE html>
     <div id="ctrl-status" class="ctrl-status mode-auto">Mode: Auto — grid-controlled via PandaPower load-flow</div>
   </div>
 
+  <!-- User Preferences -->
+  <div class="card span2">
+    <div class="card-label">User Preferences</div>
+    <div class="ctrl-desc">
+      Set SoC limits and departure time. Saved preferences are pushed to the charger via OCPP <strong>SetVariables</strong>.
+      The auto-control logic will respect these thresholds in real time.
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.8rem 1.2rem;margin-bottom:0.8rem">
+      <div class="metric-row" style="flex-direction:column;align-items:flex-start;gap:0.3rem">
+        <label class="metric-label" for="pref-min-soc">Min SoC (V2G floor) %</label>
+        <input id="pref-min-soc" type="number" min="0" max="100" step="1" value="20"
+               style="width:100%;padding:0.35rem 0.5rem;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;color:var(--fg);font-size:0.95rem">
+      </div>
+      <div class="metric-row" style="flex-direction:column;align-items:flex-start;gap:0.3rem">
+        <label class="metric-label" for="pref-max-soc">Max SoC (charge cap) %</label>
+        <input id="pref-max-soc" type="number" min="0" max="100" step="1" value="80"
+               style="width:100%;padding:0.35rem 0.5rem;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;color:var(--fg);font-size:0.95rem">
+      </div>
+      <div class="metric-row" style="flex-direction:column;align-items:flex-start;gap:0.3rem">
+        <label class="metric-label" for="pref-target-soc">Target SoC at departure %</label>
+        <input id="pref-target-soc" type="number" min="0" max="100" step="1" value="80"
+               style="width:100%;padding:0.35rem 0.5rem;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;color:var(--fg);font-size:0.95rem">
+      </div>
+      <div class="metric-row" style="flex-direction:column;align-items:flex-start;gap:0.3rem">
+        <label class="metric-label" for="pref-departure">Departure time</label>
+        <input id="pref-departure" type="time" value=""
+               style="width:100%;padding:0.35rem 0.5rem;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;color:var(--fg);font-size:0.95rem">
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:1rem">
+      <button class="ctrl-btn" onclick="savePreferences()">&#10003; Save &amp; Send to Charger</button>
+      <span id="pref-status" style="font-size:0.85rem;color:var(--green)"></span>
+    </div>
+  </div>
+
   <!-- Command Log -->
   <div class="card">
     <div class="card-label">Transmitted Command Log</div>
@@ -531,6 +566,9 @@ function updateUI(d) {
 
   // ── Control mode ──
   syncControlButtons(d.control);
+
+  // ── User preferences ──
+  syncPreferences(d.prefs);
 }
 
 // ── Control buttons ───────────────────────────────────────────────────────────
@@ -560,6 +598,41 @@ function setControl(action) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ action })
+  });
+}
+
+// ── User Preferences ──────────────────────────────────────────────────────────
+function syncPreferences(prefs) {
+  if (!prefs) return;
+  const map = {
+    'pref-min-soc':    'min_soc_pct',
+    'pref-max-soc':    'max_soc_pct',
+    'pref-target-soc': 'target_soc_pct',
+    'pref-departure':  'departure_time',
+  };
+  Object.entries(map).forEach(([id, key]) => {
+    const el = document.getElementById(id);
+    if (el && document.activeElement !== el) el.value = prefs[key];
+  });
+}
+
+function savePreferences() {
+  const body = {
+    min_soc_pct:    parseFloat(document.getElementById('pref-min-soc').value),
+    max_soc_pct:    parseFloat(document.getElementById('pref-max-soc').value),
+    target_soc_pct: parseFloat(document.getElementById('pref-target-soc').value),
+    departure_time:  document.getElementById('pref-departure').value,
+  };
+  fetch('/api/preferences', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  }).then(r => r.json()).then(d => {
+    const el = document.getElementById('pref-status');
+    el.textContent = d.ocpp === 'sent' ? '✓ Saved & sent to charger' : '✓ Saved (charger offline — will sync on reconnect)';
+    setTimeout(() => { el.textContent = ''; }, 4000);
+  }).catch(() => {
+    document.getElementById('pref-status').textContent = '✗ Save failed';
   });
 }
 
@@ -613,6 +686,29 @@ async def control(request: Request):
         grid_state.manual_override = None
         grid_state.auto_control = True
     return {"status": "ok", "action": action}
+
+
+@app.post("/api/preferences")
+async def set_preferences(request: Request):
+    body = await request.json()
+    prefs = grid_state.prefs
+    if "min_soc_pct" in body:
+        prefs.min_soc_pct    = max(0.0, min(100.0, float(body["min_soc_pct"])))
+    if "max_soc_pct" in body:
+        prefs.max_soc_pct    = max(0.0, min(100.0, float(body["max_soc_pct"])))
+    if "target_soc_pct" in body:
+        prefs.target_soc_pct = max(0.0, min(100.0, float(body["target_soc_pct"])))
+    if "departure_time" in body:
+        prefs.departure_time = str(body["departure_time"])
+
+    cp = grid_state.connected_charge_point
+    if cp:
+        try:
+            await cp.send_preferences(prefs)
+            return {"status": "ok", "ocpp": "sent"}
+        except Exception as exc:
+            return {"status": "ok", "ocpp": f"error: {exc}"}
+    return {"status": "ok", "ocpp": "not_connected"}
 
 
 @app.websocket("/ws")
@@ -669,6 +765,12 @@ def _build_payload() -> dict:
             "evse_discharge_kw": round(ocpp.evse_max_discharge_kw, 1),
             "loop_ms":           round(iec.iso_loop_ms, 1),
             "age_ms":            round((now - iec.iso_timestamp) * 1000) if iec.iso_timestamp else None,
+        },
+        "prefs": {
+            "min_soc_pct":    grid_state.prefs.min_soc_pct,
+            "max_soc_pct":    grid_state.prefs.max_soc_pct,
+            "target_soc_pct": grid_state.prefs.target_soc_pct,
+            "departure_time": grid_state.prefs.departure_time,
         },
         "log": [
             {

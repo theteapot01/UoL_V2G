@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 import os
 import time
 
@@ -44,6 +45,22 @@ trafo_loadings = []
 # --------------------------------------------------------------
 #                   Functions
 # --------------------------------------------------------------
+
+def _minutes_to_departure(departure_str: str):
+    """Return minutes until the user's departure time, or None if not set."""
+    if not departure_str:
+        return None
+    try:
+        h, m = map(int, departure_str.split(":"))
+        now = datetime.datetime.now()
+        dep = now.replace(hour=h, minute=m, second=0, microsecond=0)
+        if dep <= now:
+            dep += datetime.timedelta(days=1)
+        return (dep - now).total_seconds() / 60.0
+    except (ValueError, AttributeError):
+        return None
+
+
 def con_on_unexpected_message(
         connection: c104.Connection, message: c104.IncomingMessage, cause: c104.Umc
         ) -> None:
@@ -155,18 +172,31 @@ async def run_iec104_client():
                     _pending_cmd  = grid_state.manual_override
                     _pending_src  = "manual"
                 else:
-                        # Auto: reduce charge when grid is stressed or battery is full;
+                    # Auto: reduce charge when grid is stressed or battery is full;
                     # increase charge when there is spare capacity and battery needs it.
-                    if trafo_loading > 80 or vm_pu_b2 < 0.95:
+                    prefs = grid_state.prefs
+                    soc   = point_soc.value
+                    mins  = _minutes_to_departure(prefs.departure_time)
+                    departure_priority = (
+                        mins is not None
+                        and mins < 60
+                        and soc < prefs.target_soc_pct
+                    )
+
+                    if departure_priority:
+                        # Departure imminent and below target — charge regardless of grid state
+                        command.value = c104.Step.LOWER
+                        _pending_cmd  = "LOWER"
+                    elif trafo_loading > 80 or vm_pu_b2 < 0.95:
                         # Grid stressed — shed load immediately
                         command.value = c104.Step.HIGHER
                         _pending_cmd  = "HIGHER"
-                    elif point_soc.value > 80:
-                        # Battery approaching full — ramp down (or request V2G)
+                    elif soc > prefs.max_soc_pct:
+                        # Battery approaching user's max — ramp down (or request V2G)
                         command.value = c104.Step.HIGHER
                         _pending_cmd  = "HIGHER"
-                    elif point_soc.value < 20:
-                        # Battery low — charge it regardless of trafo loading
+                    elif soc < prefs.min_soc_pct:
+                        # Battery below user's min — charge regardless of trafo loading
                         command.value = c104.Step.LOWER
                         _pending_cmd  = "LOWER"
                     elif trafo_loading < 40:

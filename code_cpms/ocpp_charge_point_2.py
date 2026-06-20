@@ -15,9 +15,11 @@ except ModuleNotFoundError:
 
     sys.exit( 1 )
 
+from ocpp.routing import on
 from ocpp.v21 import ChargePoint as cp
-from ocpp.v21 import call
+from ocpp.v21 import call, call_result
 from ocpp.v21.datatypes import ChargingStationType
+from ocpp.v21.enums import Action
 
 from config import Config
 
@@ -38,7 +40,41 @@ def simulate_power_watt():
         return round( random.uniform( -20000, -500 ), 2 )  # V2G discharge back to grid
 
 
+_PREF_HANDLERS = {
+    "MinSoC":        lambda v: setattr(state, "pref_min_soc_pct",    float(v)),
+    "MaxSoC":        lambda v: setattr(state, "pref_max_soc_pct",    float(v)),
+    "TargetSoC":     lambda v: setattr(state, "pref_target_soc_pct", float(v)),
+    "DepartureTime": lambda v: setattr(state, "pref_departure_time",  str(v)),
+}
+
+
 class ChargePoint( cp ):
+
+    @on(Action.set_variables)
+    async def on_set_variables(self, set_variable_data, **kwargs):
+        results = []
+        for item in set_variable_data:
+            component = item.get("component", {}).get("name", "")
+            variable  = item.get("variable",  {}).get("name", "")
+            value     = item.get("attribute_value", "")
+
+            if component == "UserPreferences" and variable in _PREF_HANDLERS:
+                try:
+                    _PREF_HANDLERS[variable](value)
+                    status = "Accepted"
+                    logging.info("Preference set: %s = %s", variable, value)
+                except (ValueError, TypeError) as exc:
+                    status = "Rejected"
+                    logging.warning("Bad preference value %s=%r: %s", variable, value, exc)
+            else:
+                status = "UnknownComponent" if component != "UserPreferences" else "UnknownVariable"
+
+            results.append({
+                "attribute_status": status,
+                "component": {"name": component},
+                "variable":  {"name": variable},
+            })
+        return call_result.SetVariables(set_variable_result=results)
 
     async def send_heartbeat( self, interval ):
         request = call.Heartbeat()

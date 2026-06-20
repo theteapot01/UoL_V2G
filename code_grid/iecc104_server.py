@@ -66,6 +66,12 @@ def on_step_command(
     state.command_received = True
 
     if point.value == c104.Step.HIGHER:
+        if state.latest.soc_percent <= state.pref_min_soc_pct:
+            print(
+                f"SoC floor ({state.pref_min_soc_pct:.0f}%) — ignoring HIGHER "
+                f"(SoC={state.latest.soc_percent:.1f}%)"
+            )
+            return c104.ResponseState.SUCCESS
         state.grid_power_setpoint_kw -= state.step_kw
     elif point.value == c104.Step.LOWER:
         state.grid_power_setpoint_kw += state.step_kw

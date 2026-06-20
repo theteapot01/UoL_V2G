@@ -1,7 +1,7 @@
 import time
 from collections import deque
 from dataclasses import dataclass
-from typing import Deque, Optional
+from typing import Any, Deque, Optional
 
 
 @dataclass
@@ -37,6 +37,14 @@ class GridSnapshot:
 
 
 @dataclass
+class UserPreferences:
+    min_soc_pct: float = 20.0    # don't V2G discharge below this
+    max_soc_pct: float = 80.0    # stop charging above this
+    target_soc_pct: float = 80.0 # desired SoC at departure
+    departure_time: str = ""     # "HH:MM" or "" = no window
+
+
+@dataclass
 class CommandEntry:
     timestamp: float
     command: str
@@ -59,6 +67,13 @@ class GridDashboardState:
         # Manual control state
         self.manual_override: Optional[str] = None  # "HIGHER", "LOWER", or None
         self.auto_control: bool = True
+
+        # User preferences (editable via dashboard, pushed to charge point via OCPP SetVariables)
+        self.prefs: UserPreferences = UserPreferences()
+
+        # Live reference to the connected OCPP ChargePoint instance (set by CPMS on_connect).
+        # Used by the dashboard to send SetVariables without a circular import.
+        self.connected_charge_point: Optional[Any] = None
 
     def log_command(self, command: str, source: str) -> None:
         self.command_log.appendleft(
