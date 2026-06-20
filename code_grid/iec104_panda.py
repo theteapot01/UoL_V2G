@@ -85,6 +85,9 @@ async def run_iec104_client():
     point_temp = station.add_point(
         io_address=Config.READ_TEMP, type=c104.Type.M_ME_NC_1
         )
+    point_voltage = station.add_point( io_address=Config.EV_VOLTAGE, type=c104.Type.M_ME_NC_1 )
+    point_current = station.add_point( io_address=Config.EV_CURRENT, type=c104.Type.M_ME_NC_1 )
+    point_loop_ms = station.add_point( io_address=Config.ISO_LOOP_MS, type=c104.Type.M_ME_NC_1 )
 
     # command point preparation
     command = station.add_point( io_address=Config.CHARGE_CMD, type=c104.Type.C_RC_TA_1 )
@@ -216,6 +219,22 @@ async def run_iec104_client():
                 grid_state.iec104.temp_c = point_temp.value
             else:
                 print( "-> TEMP READ FAILURE" )
+
+            if await loop.run_in_executor( None, point_voltage.read ):
+                grid_state.iec104.voltage_v = point_voltage.value
+                grid_state.iec104.iso_timestamp = time.time()
+            else:
+                print( "-> VOLTAGE READ FAILURE" )
+
+            if await loop.run_in_executor( None, point_current.read ):
+                grid_state.iec104.current_a = point_current.value
+            else:
+                print( "-> CURRENT READ FAILURE" )
+
+            if await loop.run_in_executor( None, point_loop_ms.read ):
+                grid_state.iec104.iso_loop_ms = point_loop_ms.value
+            else:
+                print( "-> ISO LOOP MS READ FAILURE" )
 
         await asyncio.sleep( 0.1 )
 

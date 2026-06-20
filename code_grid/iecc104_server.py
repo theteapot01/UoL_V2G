@@ -21,10 +21,13 @@ respects when choosing its target current.
 
 IOA map
 -------
-  IOA 11 (M_ME_NC_1) : power [kW] — from state.latest.power_kw
+  IOA 11 (M_ME_NC_1) : power [kW]          — from state.latest.power_kw
   IOA 12 (C_RC_TA_1) : regulating step command (HIGHER / LOWER)
-  IOA 13 (M_ME_NC_1) : SoC [%]   — from state.latest.soc_percent
-  IOA 14 (M_ME_NC_1) : temperature [°C] — placeholder 25.0
+  IOA 13 (M_ME_NC_1) : SoC [%]             — from state.latest.soc_percent
+  IOA 14 (M_ME_NC_1) : temperature [°C]    — placeholder 25.0
+  IOA 15 (M_ME_NC_1) : EV voltage [V]      — from state.latest.voltage_v
+  IOA 16 (M_ME_NC_1) : EV current [A]      — from state.latest.current_a
+  IOA 17 (M_ME_NC_1) : loop time [ms]      — from state.iso_loop_ms
 """
 
 import os
@@ -98,6 +101,12 @@ def _update_point(point: c104.Point) -> None:
         point.value = telemetry.soc_percent
     elif point.io_address == Config.READ_TEMP:
         point.value = 25.0  # placeholder until real BMS integration
+    elif point.io_address == Config.EV_VOLTAGE:
+        point.value = telemetry.voltage_v
+    elif point.io_address == Config.EV_CURRENT:
+        point.value = telemetry.current_a
+    elif point.io_address == Config.ISO_LOOP_MS:
+        point.value = state.iso_loop_ms
 
 
 def before_auto_transmit(point: c104.Point) -> None:
@@ -146,6 +155,27 @@ async def run_iec104_server():
     )
     point_temp.on_before_auto_transmit(callable=before_auto_transmit)
     point_temp.on_before_read(callable=before_read)
+
+    # monitoring point: EV voltage [V]
+    point_voltage = station.add_point(
+        io_address=Config.EV_VOLTAGE, type=c104.Type.M_ME_NC_1, report_ms=2000
+    )
+    point_voltage.on_before_auto_transmit(callable=before_auto_transmit)
+    point_voltage.on_before_read(callable=before_read)
+
+    # monitoring point: EV current [A]
+    point_current = station.add_point(
+        io_address=Config.EV_CURRENT, type=c104.Type.M_ME_NC_1, report_ms=2000
+    )
+    point_current.on_before_auto_transmit(callable=before_auto_transmit)
+    point_current.on_before_read(callable=before_read)
+
+    # monitoring point: ISO 15118 charge-loop processing time [ms]
+    point_loop_ms = station.add_point(
+        io_address=Config.ISO_LOOP_MS, type=c104.Type.M_ME_NC_1, report_ms=2000
+    )
+    point_loop_ms.on_before_auto_transmit(callable=before_auto_transmit)
+    point_loop_ms.on_before_read(callable=before_read)
 
     # command point: regulating step (HIGHER / LOWER)
     command = station.add_point(

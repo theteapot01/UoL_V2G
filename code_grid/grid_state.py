@@ -10,6 +10,10 @@ class IEC104Snapshot:
     soc_percent: float = 0.0
     temp_c: float = 25.0
     timestamp: float = 0.0
+    voltage_v: float = 0.0
+    current_a: float = 0.0
+    iso_loop_ms: float = 0.0
+    iso_timestamp: float = 0.0
 
 
 @dataclass

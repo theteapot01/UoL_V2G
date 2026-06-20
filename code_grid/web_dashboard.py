@@ -322,6 +322,10 @@ _HTML = """<!DOCTYPE html>
         <span class="metric-label">EVSE Max Discharge</span>
         <span id="iso-discharge-lim" class="metric-val">—</span>
       </div>
+      <div class="metric-row">
+        <span class="metric-label">Loop Time</span>
+        <span id="iso-loop-ms" class="metric-val">—</span>
+      </div>
     </div>
   </div>
 
@@ -510,6 +514,7 @@ function updateUI(d) {
     pwEl.style.color  = !active ? 'var(--muted)' : pw < -0.05 ? 'var(--red)' : pw > 0.05 ? 'var(--green)' : 'var(--muted)';
     document.getElementById('iso-charge-lim').textContent   = active ? iso.evse_charge_kw.toFixed(1)    + ' kW' : '—';
     document.getElementById('iso-discharge-lim').textContent= active ? iso.evse_discharge_kw.toFixed(1) + ' kW' : '—';
+    document.getElementById('iso-loop-ms').textContent      = active ? iso.loop_ms.toFixed(1) + ' ms'           : '—';
   }
 
   // ── Command log ──
@@ -657,12 +662,13 @@ def _build_payload() -> dict:
             "override": grid_state.manual_override,
         },
         "iso15118": {
-            "voltage_v":         round(ocpp.voltage_v, 1),
-            "current_a":         round(ocpp.current_a, 2),
-            "power_kw":          round((ocpp.voltage_v * ocpp.current_a) / 1000.0, 2),
+            "voltage_v":         round(iec.voltage_v, 1),
+            "current_a":         round(iec.current_a, 2),
+            "power_kw":          round((iec.voltage_v * iec.current_a) / 1000.0, 2),
             "evse_charge_kw":    round(ocpp.evse_max_charge_kw, 1),
             "evse_discharge_kw": round(ocpp.evse_max_discharge_kw, 1),
-            "age_ms":            round((now - ocpp.timestamp) * 1000) if ocpp.timestamp else None,
+            "loop_ms":           round(iec.iso_loop_ms, 1),
+            "age_ms":            round((now - iec.iso_timestamp) * 1000) if iec.iso_timestamp else None,
         },
         "log": [
             {

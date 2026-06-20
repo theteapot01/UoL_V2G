@@ -10,6 +10,9 @@ class Config:
     SOC_VAL = 13
     READ_TEMP = 14
     CHARGE_CMD = 12
+    EV_VOLTAGE = 15
+    EV_CURRENT = 16
+    ISO_LOOP_MS = 17
     # --------------------------------------------------------------
     #                 Network Settings IEC104
     # --------------------------------------------------------------

@@ -51,6 +51,7 @@ class SharedState:
         # each DC_ChargeLoop iteration; read by the OCPP client for reporting.
         self.iso_evse_max_charge_w: float = 0.0    # last EVSE charge limit sent to EV [W]
         self.iso_evse_max_discharge_w: float = 0.0 # last EVSE discharge limit sent to EV [W]
+        self.iso_loop_ms: float = 0.0              # processing time of last charge-loop tick [ms]
 
 
 state = SharedState()
