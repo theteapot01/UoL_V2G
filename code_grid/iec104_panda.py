@@ -125,9 +125,11 @@ async def run_iec104_client():
 
     last_read = 0
     last_transmit = 0
-    # Track what was last staged so we can log it at transmit time.
-    _pending_cmd = "LOWER"
-    _pending_src = "auto"
+    _pending_cmd   = "LOWER"
+    _pending_src   = "auto"
+    _soc_valid     = False   # True once a trusted (>0) SoC reading has been received
+    _prev_auto_cmd = "LOWER" # last auto-logic decision (for debounce)
+    _auto_streak   = 0       # consecutive cycles with the same auto decision
 
     while connection.state == c104.ConnectionState.OPEN:
         now = time.time()
@@ -161,6 +163,8 @@ async def run_iec104_client():
                 grid_state.grid.trafo_loading_pct = trafo_loading
                 grid_state.grid.line_loading_pct  = line_loading
 
+                soc = point_soc.value  # snapshot once; used in decision and print
+
                 # Manual override takes precedence over auto logic
                 if not grid_state.auto_control and grid_state.manual_override:
                     step = (
@@ -168,45 +172,50 @@ async def run_iec104_client():
                         if grid_state.manual_override == "HIGHER"
                         else c104.Step.LOWER
                     )
-                    command.value = step
-                    _pending_cmd  = grid_state.manual_override
-                    _pending_src  = "manual"
+                    command.value  = step
+                    _pending_cmd   = grid_state.manual_override
+                    _pending_src   = "manual"
+                    _auto_streak   = 0
+                    _prev_auto_cmd = _pending_cmd
                 else:
                     # Auto: reduce charge when grid is stressed or battery is full;
                     # increase charge when there is spare capacity and battery needs it.
+                    # SoC conditions are gated on _soc_valid to avoid acting on stale
+                    # startup values; grid-health conditions always apply immediately.
                     prefs = grid_state.prefs
-                    soc   = point_soc.value
                     mins  = _minutes_to_departure(prefs.departure_time)
                     departure_priority = (
                         mins is not None
                         and mins < 60
+                        and _soc_valid
                         and soc < prefs.target_soc_pct
                     )
 
                     if departure_priority:
-                        # Departure imminent and below target — charge regardless of grid state
-                        command.value = c104.Step.LOWER
-                        _pending_cmd  = "LOWER"
+                        auto_cmd = "LOWER"
                     elif trafo_loading > 80 or vm_pu_b2 < 0.95:
-                        # Grid stressed — shed load immediately
-                        command.value = c104.Step.HIGHER
-                        _pending_cmd  = "HIGHER"
-                    elif soc > prefs.max_soc_pct:
-                        # Battery approaching user's max — ramp down (or request V2G)
-                        command.value = c104.Step.HIGHER
-                        _pending_cmd  = "HIGHER"
-                    elif soc < prefs.min_soc_pct:
-                        # Battery below user's min — charge regardless of trafo loading
-                        command.value = c104.Step.LOWER
-                        _pending_cmd  = "LOWER"
+                        auto_cmd = "HIGHER"
+                    elif _soc_valid and soc > prefs.max_soc_pct:
+                        auto_cmd = "HIGHER"
+                    elif _soc_valid and soc < prefs.min_soc_pct:
+                        auto_cmd = "LOWER"
                     elif trafo_loading < 40:
-                        # Spare grid capacity and battery not full — increase charge
-                        command.value = c104.Step.LOWER
-                        _pending_cmd  = "LOWER"
+                        auto_cmd = "LOWER"
                     else:
-                        # Hold current setpoint (no change needed)
-                        command.value = c104.Step.HIGHER
-                        _pending_cmd  = "HIGHER"
+                        auto_cmd = "HIGHER"
+
+                    # Debounce: require 2 consecutive cycles with the same decision
+                    # before staging a direction reversal.  Prevents a single stale
+                    # reading from flipping the command.
+                    if auto_cmd == _prev_auto_cmd:
+                        _auto_streak += 1
+                    else:
+                        _auto_streak = 1
+                        _prev_auto_cmd = auto_cmd
+
+                    if _auto_streak >= 2 or auto_cmd == _pending_cmd:
+                        command.value = c104.Step.HIGHER if auto_cmd == "HIGHER" else c104.Step.LOWER
+                        _pending_cmd  = auto_cmd
                     _pending_src = "auto"
 
                 grid_state.cycle_ms = (time.time() - t_cycle) * 1000
@@ -216,6 +225,7 @@ async def run_iec104_client():
                     f"Bus 2: {vm_pu_b2:.4f} pu | "
                     f"Trafo: {trafo_loading:.1f}% | "
                     f"Line: {line_loading:.1f}% | "
+                    f"SoC: {soc:.1f}%{'✓' if _soc_valid else '?'} | "
                     f"Cmd: {_pending_cmd} ({_pending_src}) | "
                     f"Cycle: {grid_state.cycle_ms:.0f} ms"
                 )
@@ -241,6 +251,8 @@ async def run_iec104_client():
 
             if await loop.run_in_executor( None, point_soc.read ):
                 grid_state.iec104.soc_percent = point_soc.value
+                if not _soc_valid and point_soc.value > 0:
+                    _soc_valid = True
                 print( f"-> SOC {point_soc.value:.1f}%" )
             else:
                 print( "-> SOC READ FAILURE" )
