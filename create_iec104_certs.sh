@@ -56,7 +56,7 @@ openssl genrsa -out "${OUTDIR}/server.key" 4096
 openssl req -new \
     -key  "${OUTDIR}/server.key" \
     -out  "${OUTDIR}/server.csr" \
-    -subj '/CN=IEC104 Server'
+    -subj '/CN=10.42.0.23'
 openssl x509 -req \
     -in   "${OUTDIR}/server.csr" \
     -CA   "${OUTDIR}/ca.crt" \
