@@ -47,6 +47,7 @@ def _build_tls() -> c104.TransportSecurity:
     against the shared CA (IEC 62351-3).
     """
     tls = c104.TransportSecurity(validate=True, only_known=False)
+    tls.set_version(min=c104.TlsVersion.TLS_1_2, max=c104.TlsVersion.TLS_1_2)
     tls.set_ca_certificate(cert=Config.IEC104_CA_CERT)
     tls.set_certificate(cert=Config.IEC104_SERVER_CERT, key=Config.IEC104_SERVER_KEY)
     return tls
