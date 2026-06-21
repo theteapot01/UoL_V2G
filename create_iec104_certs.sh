@@ -48,15 +48,14 @@ echo "    IEC 104 server IP (SAN): ${CHARGER_IP}"
 mkdir -p "${OUTDIR}"
 
 # ── 1. Root CA ────────────────────────────────────────────────────────────────
-# Use SEC1 / PKCS#1 format keys (openssl ecparam / openssl genrsa) rather than
-# openssl genpkey (PKCS#8 / PrivateKeyInfo format).  Older mbedTLS builds
-# bundled in the c104 pip wheel for Raspberry Pi only parse SEC1 EC keys;
-# PKCS#8-wrapped keys are silently dropped, leaving the TLS context without a
-# private key and causing every handshake to fail even with validate=False.
+# Use RSA keys (openssl genrsa) rather than ECDSA.  The c104 pip wheel for
+# Raspberry Pi bundles a minimal mbedTLS build that may have ECDSA support
+# compiled out.  When ECDSA is unavailable, EC keys are silently ignored,
+# the TLS context has no private key, and every handshake fails even with
+# validate=False.  RSA-2048 is universally supported in all mbedTLS builds.
 echo ""
-echo "[1/5] Generating Root CA key (ECDSA P-256, SEC1 format)..."
-openssl ecparam -name prime256v1 -genkey -noout \
-    -out "${OUTDIR}/ca.key"
+echo "[1/5] Generating Root CA key (RSA-4096)..."
+openssl genrsa -out "${OUTDIR}/ca.key" 4096
 
 echo "[2/5] Self-signing Root CA certificate..."
 openssl req -new -x509 \
@@ -71,8 +70,7 @@ openssl req -new -x509 \
 # ── 2. Server certificate (charger Pi — IEC 104 controlled station) ───────────
 echo ""
 echo "[3/5] Generating IEC 104 server certificate (charger Pi, IP SAN = ${CHARGER_IP})..."
-openssl ecparam -name prime256v1 -genkey -noout \
-    -out "${OUTDIR}/server.key"
+openssl genrsa -out "${OUTDIR}/server.key" 2048
 
 openssl req -new \
     -key  "${OUTDIR}/server.key" \
@@ -93,8 +91,7 @@ openssl x509 -req \
 # ── 3. Client certificate (grid Pi — IEC 104 controlling station) ─────────────
 echo ""
 echo "[4/5] Generating IEC 104 client certificate (grid Pi)..."
-openssl ecparam -name prime256v1 -genkey -noout \
-    -out "${OUTDIR}/client.key"
+openssl genrsa -out "${OUTDIR}/client.key" 2048
 
 openssl req -new \
     -key  "${OUTDIR}/client.key" \
