@@ -43,12 +43,14 @@ from config import Config
 def _build_tls() -> c104.TransportSecurity:
     """
     IEC 62351-3: TLS for the IEC 104 controlled station (server side).
-    Requires the grid Pi (client) to present a certificate signed by the
-    shared CA — mutual TLS, matching the OCPP Security Profile 3 approach.
+    Uses cert pinning (only_known=True) rather than relying solely on CA-chain
+    validation, which has known mbedTLS/OpenSSL compatibility quirks.
+    Only the known grid Pi client cert is accepted.
     """
-    tls = c104.TransportSecurity(validate=True, only_known=False)
+    tls = c104.TransportSecurity(validate=True, only_known=True)
     tls.set_ca_certificate(cert=Config.IEC104_CA_CERT)
     tls.set_certificate(cert=Config.IEC104_SERVER_CERT, key=Config.IEC104_SERVER_KEY)
+    tls.add_allowed_remote_certificate(cert=Config.IEC104_CLIENT_CERT)
     return tls
 
 

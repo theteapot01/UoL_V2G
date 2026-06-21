@@ -13,12 +13,14 @@ from config import Config
 def _build_tls() -> c104.TransportSecurity:
     """
     IEC 62351-3: TLS for the IEC 104 controlling station (client side).
-    Presents the grid Pi's client certificate; validates the charger Pi's
-    server certificate against the shared CA.
+    Uses cert pinning (only_known=True) — pins the charger Pi's server cert
+    explicitly rather than relying on CA-chain validation, which has known
+    mbedTLS/OpenSSL compatibility quirks.
     """
-    tls = c104.TransportSecurity(validate=True, only_known=False)
+    tls = c104.TransportSecurity(validate=True, only_known=True)
     tls.set_ca_certificate(cert=Config.IEC104_CA_CERT)
     tls.set_certificate(cert=Config.IEC104_CLIENT_CERT, key=Config.IEC104_CLIENT_KEY)
+    tls.add_allowed_remote_certificate(cert=Config.IEC104_SERVER_CERT)
     return tls
 
 os.environ["PYTHONUNBUFFERED"] = "1"
