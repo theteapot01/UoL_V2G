@@ -154,11 +154,13 @@ def before_read(point: c104.Point) -> None:
 # ------------------------------------------------------------
 
 async def run_iec104_server():
-    # server and station preparation
+    c104.set_debug_mode(c104.Debug.Server | c104.Debug.Connection)
+    tls = _build_tls()
+    print(f"IEC104 TLS: validate={tls.validate}, only_known={tls.only_known}")
     server = c104.Server(
         ip="0.0.0.0",
         port=Config.PORT_TLS,
-        transport_security=_build_tls(),
+        transport_security=tls,
     )
     station = server.add_station(common_address=Config.COMMON_ADDRESS)
 
@@ -210,7 +212,11 @@ async def run_iec104_server():
     command.on_receive(callable=on_step_command)
 
     # start
-    server.start()
+    started = server.start()
+    print(f"IEC104 server.start() returned: {started}  (port {Config.PORT_TLS})")
+    if not started:
+        print("ERROR: IEC104 server failed to start — check TLS cert paths and port availability")
+        return
 
     while not server.has_active_connections:
         print("Waiting for connection")
