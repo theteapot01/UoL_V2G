@@ -49,10 +49,20 @@ LINE_STRESS_PCT      = 90.0   # line above this  → grid stressed, immediate HI
 VOLTAGE_MIN_PU       = 0.95   # bus 2 below this → grid stressed, immediate HIGHER
 TRAFO_TARGET_PCT     = 70.0   # desired trafo operating point (centre of dead zone)
 TRAFO_HYSTERESIS_PCT =  3.0   # ± half-width of dead zone around target
-# Resulting bands:
-#   trafo < TARGET − HYSTERESIS  (< 37 %)  → LOWER  (spare capacity)
-#   trafo > TARGET + HYSTERESIS  (> 43 %)  → HIGHER (approaching capacity)
-#   37 – 43 %                               → HOLD   (no command sent)
+# Resulting trafo bands:
+#   trafo < TARGET − HYSTERESIS  (< 67 %)  → contributes to LOWER
+#   trafo > TARGET + HYSTERESIS  (> 73 %)  → contributes to HIGHER
+#   67 – 73 %                               → contributes to HOLD
+LINE_TARGET_PCT      = 80.0   # desired line operating point (centre of dead zone)
+LINE_HYSTERESIS_PCT  =  5.0   # ± half-width of dead zone around target
+# Resulting line bands:
+#   line < LINE_TARGET − LINE_HYSTERESIS (< 75 %)  → contributes to LOWER
+#   line > LINE_TARGET + LINE_HYSTERESIS (> 85 %)  → contributes to HIGHER
+#   75 – 85 %                                        → contributes to HOLD
+# LOWER is only sent when BOTH trafo and line are below their lower thresholds.
+# HIGHER is sent when EITHER trafo or line exceeds its upper threshold.
+# This causes the power to ramp up until the binding constraint (trafo or line)
+# enters its dead zone, then hold there rather than oscillate.
 
 
 # --------------------------------------------------------------
@@ -204,8 +214,10 @@ async def run_iec104_client():
                         and soc < prefs.target_soc_pct
                     )
 
-                    _high = TRAFO_TARGET_PCT + TRAFO_HYSTERESIS_PCT
-                    _low  = TRAFO_TARGET_PCT - TRAFO_HYSTERESIS_PCT
+                    _high      = TRAFO_TARGET_PCT + TRAFO_HYSTERESIS_PCT
+                    _low       = TRAFO_TARGET_PCT - TRAFO_HYSTERESIS_PCT
+                    _line_high = LINE_TARGET_PCT  + LINE_HYSTERESIS_PCT
+                    _line_low  = LINE_TARGET_PCT  - LINE_HYSTERESIS_PCT
 
                     if departure_priority:
                         auto_cmd = "LOWER"
@@ -213,15 +225,21 @@ async def run_iec104_client():
                           or line_loading > LINE_STRESS_PCT
                           or vm_pu_b2 < VOLTAGE_MIN_PU):
                         auto_cmd = "HIGHER"
-                    elif _soc_valid and soc > prefs.max_soc_pct:
-                        auto_cmd = "HIGHER"
+                    elif _soc_valid and soc >= prefs.max_soc_pct:
+                        # Battery at user max — ramp charge to idle; hold there.
+                        # V2G is only triggered by the grid-stress emergency above,
+                        # not automatically whenever the battery is full.
+                        auto_cmd = "HIGHER" if point_meter.value > 1.0 else "HOLD"
                     elif _soc_valid and soc < prefs.min_soc_pct:
                         auto_cmd = "LOWER"
-                    elif trafo_loading > _high or line_loading > _high:
+                    elif trafo_loading > _high or line_loading > _line_high:
+                        # Either constraint approaching capacity — reduce power.
                         auto_cmd = "HIGHER"
-                    elif trafo_loading < _low:
+                    elif trafo_loading < _low and line_loading < _line_low:
+                        # Both constraints have spare capacity — increase power.
                         auto_cmd = "LOWER"
                     else:
+                        # At least one constraint is in its dead zone — hold.
                         auto_cmd = "HOLD"
 
                     # HOLD applies immediately (safe default).
