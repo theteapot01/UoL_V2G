@@ -54,11 +54,16 @@ Sign convention (matches the OCPP MeterValues usage in the project):
     power < 0  ->  discharging / V2G export (SoC falls)
 """
 
+import json
 import threading
 import time
 from typing import Optional
 
 from battery_profile import BatteryProfile, BatteryState
+
+# Shared preferences file written by the SECC when the dashboard changes settings.
+# The EVCC polls this file to pick up a new target_soc without requiring a restart.
+_PREFS_FILE = "/tmp/v2g_prefs.json"
 
 
 class SimulatedBattery(BatteryProfile):
@@ -136,14 +141,11 @@ class SimulatedBattery(BatteryProfile):
 
         self._soc_init = float(soc_init)
 
-        # To avoid circular imports, import state here if needed
-        # but better to let the controller push the data.
-        # However, the user asked for SoC/SoH calculation in this file.
-        # It's already here.
-
         # Live state (guarded by _lock; mutated from both the asyncio charge
         # loop via advance() and the c104 callback thread via apply_step()).
         self._lock = threading.Lock()
+        # Counter used to throttle polling of the shared prefs file.
+        self._prefs_counter = 0
         self._soc = self._soc_init            # [%]
         self._soh = 1.0                       # [0-1]
         self._throughput_kwh = 0.0            # cumulative |energy| through cells
@@ -268,8 +270,23 @@ class SimulatedBattery(BatteryProfile):
         with self._lock:
             return self._snapshot_state()
 
+    def _refresh_target_soc(self) -> None:
+        """Check the shared prefs file every 10 steps and update target_soc if changed."""
+        self._prefs_counter += 1
+        if self._prefs_counter % 10 != 0:
+            return
+        try:
+            with open(_PREFS_FILE) as f:
+                prefs = json.load(f)
+            new_target = float(prefs["target_soc_pct"])
+            if new_target != self.target_soc:
+                self.target_soc = new_target
+        except (OSError, ValueError, KeyError):
+            pass
+
     def advance(self) -> BatteryState:
         """Integrate one real-time tick and return the new state."""
+        self._refresh_target_soc()
         self.tick(dt_s=None)
         with self._lock:
             return self._snapshot_state()

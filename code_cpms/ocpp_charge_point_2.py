@@ -1,9 +1,30 @@
 import asyncio
+import json
 import logging
+import os
 import random
 import ssl
 from datetime import datetime, timezone
 from charger_state import state
+
+# Shared preferences file read by the EVCC process to pick up target_soc changes.
+_PREFS_FILE = "/tmp/v2g_prefs.json"
+
+
+def _write_prefs_file() -> None:
+    """Atomically write current state preferences so the EVCC can read them."""
+    prefs = {
+        "target_soc_pct": state.pref_target_soc_pct,
+        "min_soc_pct":    state.pref_min_soc_pct,
+        "max_soc_pct":    state.pref_max_soc_pct,
+    }
+    try:
+        tmp = _PREFS_FILE + ".tmp"
+        with open(tmp, "w") as f:
+            json.dump(prefs, f)
+        os.replace(tmp, _PREFS_FILE)
+    except OSError:
+        pass
 
 try:
     import websockets
@@ -41,11 +62,15 @@ def simulate_power_watt():
         return round( random.uniform( -20000, -500 ), 2 )  # V2G discharge back to grid
 
 
+def _handle_target_soc(v: str) -> None:
+    state.pref_target_soc_pct = float(v)
+    _write_prefs_file()
+
 _PREF_HANDLERS = {
-    "MinSoC":        lambda v: setattr(state, "pref_min_soc_pct",    float(v)),
-    "MaxSoC":        lambda v: setattr(state, "pref_max_soc_pct",    float(v)),
-    "TargetSoC":     lambda v: setattr(state, "pref_target_soc_pct", float(v)),
-    "DepartureTime": lambda v: setattr(state, "pref_departure_time",  str(v)),
+    "MinSoC":        lambda v: setattr(state, "pref_min_soc_pct",   float(v)),
+    "MaxSoC":        lambda v: setattr(state, "pref_max_soc_pct",   float(v)),
+    "TargetSoC":     _handle_target_soc,
+    "DepartureTime": lambda v: setattr(state, "pref_departure_time", str(v)),
 }
 
 
