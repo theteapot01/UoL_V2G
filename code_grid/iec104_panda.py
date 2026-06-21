@@ -19,6 +19,9 @@ def _build_tls() -> c104.TransportSecurity:
     tls = c104.TransportSecurity(validate=True, only_known=False)
     tls.set_certificate(cert=Config.IEC104_CLIENT_CERT, key=Config.IEC104_CLIENT_KEY)
     tls.set_ca_certificate(cert=Config.IEC104_CA_CERT)
+    # c104 bug: mbedTLS does hostname verification even without set_hostname_verification(),
+    # checking the cert CN against the connecting IP and failing. Set it explicitly to match.
+    tls.set_hostname_verification(hostname="IEC104 Server")
     return tls
 
 os.environ["PYTHONUNBUFFERED"] = "1"
