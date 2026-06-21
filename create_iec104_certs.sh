@@ -48,9 +48,11 @@ echo "    IEC 104 server IP (SAN): ${CHARGER_IP}"
 mkdir -p "${OUTDIR}"
 
 # ── 1. Root CA ────────────────────────────────────────────────────────────────
+# ECDSA P-256 keys: natively supported in TLS 1.3 by mbedTLS without RSA-PSS.
 echo ""
-echo "[1/5] Generating Root CA key..."
-openssl genrsa -out "${OUTDIR}/ca.key" 4096
+echo "[1/5] Generating Root CA key (ECDSA P-256)..."
+openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 \
+    -out "${OUTDIR}/ca.key"
 
 echo "[2/5] Self-signing Root CA certificate..."
 openssl req -new -x509 \
@@ -65,7 +67,8 @@ openssl req -new -x509 \
 # ── 2. Server certificate (charger Pi — IEC 104 controlled station) ───────────
 echo ""
 echo "[3/5] Generating IEC 104 server certificate (charger Pi, IP SAN = ${CHARGER_IP})..."
-openssl genrsa -out "${OUTDIR}/server.key" 2048
+openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 \
+    -out "${OUTDIR}/server.key"
 
 openssl req -new \
     -key  "${OUTDIR}/server.key" \
@@ -80,13 +83,14 @@ openssl x509 -req \
     -CAcreateserial \
     -out  "${OUTDIR}/server.crt" \
     -extfile <(printf \
-        "subjectAltName=IP:%s\nbasicConstraints=CA:FALSE\nsubjectKeyIdentifier=hash\nauthorityKeyIdentifier=keyid,issuer\nkeyUsage=digitalSignature,keyEncipherment\nextendedKeyUsage=serverAuth" \
+        "subjectAltName=IP:%s\nbasicConstraints=CA:FALSE\nsubjectKeyIdentifier=hash\nauthorityKeyIdentifier=keyid,issuer\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth" \
         "${CHARGER_IP}")
 
 # ── 3. Client certificate (grid Pi — IEC 104 controlling station) ─────────────
 echo ""
 echo "[4/5] Generating IEC 104 client certificate (grid Pi)..."
-openssl genrsa -out "${OUTDIR}/client.key" 2048
+openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 \
+    -out "${OUTDIR}/client.key"
 
 openssl req -new \
     -key  "${OUTDIR}/client.key" \
