@@ -57,7 +57,10 @@ openssl req -new -x509 \
     -days "${VALIDITY_ROOT}" \
     -key  "${OUTDIR}/ca.key" \
     -out  "${OUTDIR}/ca.crt" \
-    -subj "${SUBJ_BASE}/CN=IEC104 Root CA"
+    -subj "${SUBJ_BASE}/CN=IEC104 Root CA" \
+    -addext "basicConstraints=critical,CA:TRUE" \
+    -addext "subjectKeyIdentifier=hash" \
+    -addext "keyUsage=critical,keyCertSign,cRLSign"
 
 # ── 2. Server certificate (charger Pi — IEC 104 controlled station) ───────────
 echo ""
@@ -77,7 +80,7 @@ openssl x509 -req \
     -CAcreateserial \
     -out  "${OUTDIR}/server.crt" \
     -extfile <(printf \
-        "subjectAltName=IP:%s\nbasicConstraints=CA:FALSE\nkeyUsage=digitalSignature,keyEncipherment\nextendedKeyUsage=serverAuth" \
+        "subjectAltName=IP:%s\nbasicConstraints=CA:FALSE\nsubjectKeyIdentifier=hash\nauthorityKeyIdentifier=keyid,issuer\nkeyUsage=digitalSignature,keyEncipherment\nextendedKeyUsage=serverAuth" \
         "${CHARGER_IP}")
 
 # ── 3. Client certificate (grid Pi — IEC 104 controlling station) ─────────────
@@ -97,7 +100,7 @@ openssl x509 -req \
     -CAkey "${OUTDIR}/ca.key" \
     -out  "${OUTDIR}/client.crt" \
     -extfile <(printf \
-        "basicConstraints=CA:FALSE\nkeyUsage=digitalSignature\nextendedKeyUsage=clientAuth")
+        "basicConstraints=CA:FALSE\nsubjectKeyIdentifier=hash\nauthorityKeyIdentifier=keyid,issuer\nkeyUsage=digitalSignature\nextendedKeyUsage=clientAuth")
 
 # ── Cleanup CSRs ─────────────────────────────────────────────────────────────
 echo ""
