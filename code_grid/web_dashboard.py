@@ -487,15 +487,19 @@ function updateUI(d) {
   vEl.textContent  = v.toFixed(4) + ' pu';
   vEl.style.color  = v < 0.95 ? 'var(--red)' : v > 1.05 ? 'var(--orange)' : 'var(--green)';
 
-  const tr = d.grid.trafo_pct;
   const trEl = document.getElementById('g-trafo');
-  trEl.textContent = tr.toFixed(1) + '%';
-  setColor(trEl, tr, 80, 90);
-
-  const li = d.grid.line_pct;
   const liEl = document.getElementById('g-line');
-  liEl.textContent = li.toFixed(1) + '%';
-  setColor(liEl, li, 80, 90);
+  if (d.grid.idle) {
+    trEl.textContent = '—';  trEl.style.color = 'var(--text)';
+    liEl.textContent = '—';  liEl.style.color = 'var(--text)';
+  } else {
+    const tr = d.grid.trafo_pct;
+    trEl.textContent = tr.toFixed(1) + '%';
+    setColor(trEl, tr, 80, 90);
+    const li = d.grid.line_pct;
+    liEl.textContent = li.toFixed(1) + '%';
+    setColor(liEl, li, 80, 90);
+  }
 
   const iecAge = d.iec104.age_ms;
   const iecAgeEl = document.getElementById('iec-age');
@@ -746,6 +750,7 @@ def _build_payload() -> dict:
             "voltage_pu": round(grid.bus2_voltage_pu, 4),
             "trafo_pct":  round(grid.trafo_loading_pct, 1),
             "line_pct":   round(grid.line_loading_pct, 1),
+            "idle":       grid_state.charger_idle,
         },
         "timing": {
             "read_ms":     round(grid_state.iec104_read_ms, 1),

@@ -68,6 +68,9 @@ class GridDashboardState:
         self.manual_override: Optional[str] = None  # "HIGHER", "LOWER", or None
         self.auto_control: bool = True
 
+        # True when the charger is reporting ~0 kW (no EV connected / standby)
+        self.charger_idle: bool = True
+
         # User preferences (editable via dashboard, pushed to charge point via OCPP SetVariables)
         self.prefs: UserPreferences = UserPreferences()
 

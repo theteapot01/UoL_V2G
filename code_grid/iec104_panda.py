@@ -182,9 +182,11 @@ async def run_iec104_client():
                 voltages.append( vm_pu_b2 )
                 trafo_loadings.append( trafo_loading )
 
-                grid_state.grid.bus2_voltage_pu  = vm_pu_b2
-                grid_state.grid.trafo_loading_pct = trafo_loading
-                grid_state.grid.line_loading_pct  = line_loading
+                idle = abs(point_meter.value) < 0.5
+                grid_state.charger_idle           = idle
+                grid_state.grid.bus2_voltage_pu   = vm_pu_b2
+                grid_state.grid.trafo_loading_pct = 0.0 if idle else trafo_loading
+                grid_state.grid.line_loading_pct  = 0.0 if idle else line_loading
 
                 soc = point_soc.value  # snapshot once; used in decision and print
 
