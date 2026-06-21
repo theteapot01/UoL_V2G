@@ -41,6 +41,19 @@ load_values = [-0.010, -0.015, -0.020, 0.05, 0.010, 0.025, 0.030, 0.035]
 voltages = []
 trafo_loadings = []
 
+# ── Control thresholds ────────────────────────────────────────────────────
+# Values are % of rated equipment capacity for the 0.4 MVA transformer and
+# NA2XS2Y line configured above.  Adjust here to retune the controller.
+TRAFO_STRESS_PCT     = 80.0   # trafo above this → grid stressed, immediate HIGHER
+LINE_STRESS_PCT      = 90.0   # line above this  → grid stressed, immediate HIGHER
+VOLTAGE_MIN_PU       = 0.95   # bus 2 below this → grid stressed, immediate HIGHER
+TRAFO_TARGET_PCT     = 70.0   # desired trafo operating point (centre of dead zone)
+TRAFO_HYSTERESIS_PCT =  3.0   # ± half-width of dead zone around target
+# Resulting bands:
+#   trafo < TARGET − HYSTERESIS  (< 37 %)  → LOWER  (spare capacity)
+#   trafo > TARGET + HYSTERESIS  (> 43 %)  → HIGHER (approaching capacity)
+#   37 – 43 %                               → HOLD   (no command sent)
+
 
 # --------------------------------------------------------------
 #                   Functions
@@ -191,27 +204,24 @@ async def run_iec104_client():
                         and soc < prefs.target_soc_pct
                     )
 
+                    _high = TRAFO_TARGET_PCT + TRAFO_HYSTERESIS_PCT
+                    _low  = TRAFO_TARGET_PCT - TRAFO_HYSTERESIS_PCT
+
                     if departure_priority:
-                        # Departure imminent — charge regardless of grid state
                         auto_cmd = "LOWER"
-                    elif trafo_loading > 80 or vm_pu_b2 < 0.95:
-                        # Grid stressed — shed load immediately
+                    elif (trafo_loading > TRAFO_STRESS_PCT
+                          or line_loading > LINE_STRESS_PCT
+                          or vm_pu_b2 < VOLTAGE_MIN_PU):
                         auto_cmd = "HIGHER"
                     elif _soc_valid and soc > prefs.max_soc_pct:
-                        # Battery at user max — ramp down / request V2G
                         auto_cmd = "HIGHER"
                     elif _soc_valid and soc < prefs.min_soc_pct:
-                        # Battery at user min — charge regardless of trafo loading
                         auto_cmd = "LOWER"
-                    elif trafo_loading > 80 or line_loading > 90:
-                        # Approaching capacity — reduce charge
+                    elif trafo_loading > _high or line_loading > _high:
                         auto_cmd = "HIGHER"
-                    elif trafo_loading < 40:
-                        # Spare capacity — increase charge
+                    elif trafo_loading < _low:
                         auto_cmd = "LOWER"
                     else:
-                        # 37–43 % dead zone: do not transmit — setpoint stays where
-                        # it is and power converges to a stable value naturally
                         auto_cmd = "HOLD"
 
                     # HOLD applies immediately (safe default).
