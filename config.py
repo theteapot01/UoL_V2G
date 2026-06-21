@@ -29,22 +29,22 @@ class Config:
     # Run create_iec104_certs.sh once to populate certs/iec104/.
     # Copy the full certs/iec104/ directory to both Pis.
     # Server = charger Pi (controlled station); client = grid Pi (controlling station).
-    IEC104_CA_CERT     = "certs/iec104/ca.crt"     # trusted by both Pis
-    IEC104_SERVER_CERT = "certs/iec104/server.crt"  # charger Pi server identity
-    IEC104_SERVER_KEY  = "certs/iec104/server.key"  # charger Pi server private key
-    IEC104_CLIENT_CERT = "certs/iec104/client.crt"  # grid Pi client identity
-    IEC104_CLIENT_KEY  = "certs/iec104/client.key"  # grid Pi client private key
+    IEC104_CA_CERT     = "/home/pi/UoL_V2G/certs/iec104/ca.crt"     # trusted by both Pis
+    IEC104_SERVER_CERT = "/home/pi/UoL_V2G/certs/iec104/server.crt"  # charger Pi server identity
+    IEC104_SERVER_KEY  = "/home/pi/UoL_V2G/certs/iec104/server.key"  # charger Pi server private key
+    IEC104_CLIENT_CERT = "/home/pi/UoL_V2G/certs/iec104/client.crt"  # grid Pi client identity
+    IEC104_CLIENT_KEY  = "/home/pi/UoL_V2G/certs/iec104/client.key"  # grid Pi client private key
 
     # --------------------------------------------------------------
     #      OCPP Security Profile 3 — mutual TLS (mTLS)
     # --------------------------------------------------------------
     # Run create_ocpp_certs.sh once to populate certs/ocpp/.
     # Copy the full certs/ocpp/ directory to both Pis.
-    OCPP_CA_CERT   = "certs/ocpp/ca.crt"    # trusted by both sides
-    OCPP_CSMS_CERT = "certs/ocpp/csms.crt"  # grid Pi server identity
-    OCPP_CSMS_KEY  = "certs/ocpp/csms.key"  # grid Pi server private key
-    OCPP_CP_CERT   = "certs/ocpp/cp.crt"    # charger Pi client identity
-    OCPP_CP_KEY    = "certs/ocpp/cp.key"    # charger Pi client private key
+    OCPP_CA_CERT   = "/home/pi/UoL_V2G/certs/ocpp/ca.crt"    # trusted by both sides
+    OCPP_CSMS_CERT = "/home/pi/UoL_V2G/certs/ocpp/csms.crt"  # grid Pi server identity
+    OCPP_CSMS_KEY  = "/home/pi/UoL_V2G/certs/ocpp/csms.key"  # grid Pi server private key
+    OCPP_CP_CERT   = "/home/pi/UoL_V2G/certs/ocpp/cp.crt"    # charger Pi client identity
+    OCPP_CP_KEY    = "/home/pi/UoL_V2G/certs/ocpp/cp.key"    # charger Pi client private key
 
     # --------------------------------------------------------------
     #      Voltage Setup for PandaPower power flow simulation
