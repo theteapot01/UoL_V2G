@@ -203,7 +203,7 @@ async def run_iec104_client():
                     elif _soc_valid and soc < prefs.min_soc_pct:
                         # Battery at user min — charge regardless of trafo loading
                         auto_cmd = "LOWER"
-                    elif trafo_loading > 43:
+                    elif trafo_loading > 80:
                         # Approaching capacity — reduce charge
                         auto_cmd = "HIGHER"
                     elif trafo_loading < 37:
