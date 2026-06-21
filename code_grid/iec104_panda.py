@@ -19,6 +19,16 @@ def _build_tls() -> c104.TransportSecurity:
     tls = c104.TransportSecurity(validate=True, only_known=False)
     tls.set_certificate(cert=Config.IEC104_CLIENT_CERT, key=Config.IEC104_CLIENT_KEY)
     tls.set_ca_certificate(cert=Config.IEC104_CA_CERT)
+    # Explicitly enable ECDSA cipher suites — the c104 arm32 wheel does not
+    # include ECDHE_ECDSA in its default list, so negotiation silently falls
+    # back to RSA-only suites which are incompatible with our ECDSA certs.
+    tls.set_version(min=c104.TlsVersion.TLS_1_2, max=c104.TlsVersion.TLS_1_2)
+    tls.set_ciphers(ciphers=[
+        c104.TlsCipher.ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+        c104.TlsCipher.ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
+        c104.TlsCipher.ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+        c104.TlsCipher.ECDHE_RSA_WITH_AES_256_GCM_SHA384,
+    ])
     return tls
 
 os.environ["PYTHONUNBUFFERED"] = "1"
