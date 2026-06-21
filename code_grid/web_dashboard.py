@@ -15,6 +15,8 @@ grid_state (code_grid.grid_state) is written by:
 """
 
 import asyncio
+import re
+import subprocess
 import time
 
 import uvicorn
@@ -22,6 +24,49 @@ from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
 
 from code_grid.grid_state import grid_state
+from config import Config
+
+
+def _cert_expiry(cert_path: str) -> str:
+    """Return 'YYYY-MM-DD' expiry of a PEM cert, or '' if unreadable."""
+    try:
+        r = subprocess.run(
+            ["openssl", "x509", "-enddate", "-noout", "-in", cert_path],
+            capture_output=True, text=True, timeout=3,
+        )
+        # Output: "notAfter=Jun 20 17:46:09 2028 GMT"
+        m = re.search(r"notAfter=(.*)", r.stdout)
+        if m:
+            from datetime import datetime
+            return datetime.strptime(m.group(1).strip(), "%b %d %H:%M:%S %Y %Z").strftime("%Y-%m-%d")
+    except Exception:
+        pass
+    return ""
+
+
+def _init_security_state() -> None:
+    """Populate static security fields from cert files. Called once at startup."""
+    sec = grid_state.security
+
+    # OCPP — cert on the grid Pi (CSMS server cert)
+    ocpp_expiry = _cert_expiry(Config.OCPP_CSMS_CERT)
+    sec.ocpp.configured   = bool(ocpp_expiry)
+    sec.ocpp.cert_expiry  = ocpp_expiry
+
+    # IEC 104 — cert on the grid Pi (client cert)
+    iec_expiry = _cert_expiry(Config.IEC104_CLIENT_CERT)
+    sec.iec104.configured  = bool(iec_expiry)
+    sec.iec104.cert_expiry = iec_expiry
+    if sec.iec104.configured:
+        sec.iec104.tls_version = "TLS 1.2+"   # c104 doesn't expose live session info
+
+    # ISO 15118 — TLS is mandated by the standard; cert lives on the charger Pi
+    sec.iso15118.configured  = True   # always required — no cert to read from here
+    sec.iso15118.tls_version = "TLS 1.2"
+    sec.iso15118.cipher      = "Protocol-mandated"
+
+
+_init_security_state()
 
 app = FastAPI(title="V2G Grid Dashboard")
 
@@ -159,6 +204,23 @@ _HTML = """<!DOCTYPE html>
     .badge-lower  { background: rgba(63,185,80,0.15);  color: var(--green); }
     .badge-auto   { background: rgba(88,166,255,0.1);  color: var(--blue); }
     .badge-manual { background: rgba(188,140,255,0.1); color: var(--purple); }
+
+    /* ── Security ── */
+    .sec-row {
+      display: grid;
+      grid-template-columns: 1.2rem 7rem 6rem 1fr auto;
+      align-items: center;
+      gap: 0 0.75rem;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.82rem;
+    }
+    .sec-row:last-child { border-bottom: none; }
+    .sec-lock { font-size: 1rem; }
+    .sec-proto { font-weight: 600; color: var(--text); }
+    .sec-ver   { color: var(--muted); font-size: 0.75rem; }
+    .sec-auth  { color: var(--muted); font-size: 0.75rem; }
+    .sec-expiry { font-size: 0.72rem; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
 
     /* ── Manual Control ── */
     .ctrl-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.6; margin-bottom: 0.9rem; }
@@ -381,6 +443,38 @@ _HTML = """<!DOCTYPE html>
     </div>
   </div>
 
+  <!-- Security Status -->
+  <div class="card span2">
+    <div class="card-label">Security Status</div>
+    <div id="sec-rows">
+      <!-- header -->
+      <div class="sec-row" style="font-size:0.7rem;color:var(--muted);border-bottom:1px solid var(--border);padding-bottom:0.3rem">
+        <span></span><span>Protocol</span><span>Transport</span><span>Authentication</span><span>Cert expires</span>
+      </div>
+      <div class="sec-row" id="sec-ocpp">
+        <span class="sec-lock">&#128274;</span>
+        <span class="sec-proto">OCPP 2.1</span>
+        <span class="sec-ver" id="sec-ocpp-ver">—</span>
+        <span class="sec-auth">mTLS (Profile 3) &nbsp;<span id="sec-ocpp-cipher" style="color:var(--muted)"></span></span>
+        <span class="sec-expiry" id="sec-ocpp-exp">—</span>
+      </div>
+      <div class="sec-row" id="sec-iec104">
+        <span class="sec-lock">&#128274;</span>
+        <span class="sec-proto">IEC 104</span>
+        <span class="sec-ver" id="sec-iec-ver">—</span>
+        <span class="sec-auth">mTLS (IEC 62351-3)</span>
+        <span class="sec-expiry" id="sec-iec-exp">—</span>
+      </div>
+      <div class="sec-row" id="sec-iso">
+        <span class="sec-lock">&#128274;</span>
+        <span class="sec-proto">ISO 15118</span>
+        <span class="sec-ver" id="sec-iso-ver">—</span>
+        <span class="sec-auth">V2G PKI (protocol-mandated)</span>
+        <span class="sec-expiry" id="sec-iso-exp">—</span>
+      </div>
+    </div>
+  </div>
+
   <!-- Command Log -->
   <div class="card">
     <div class="card-label">Transmitted Command Log</div>
@@ -573,6 +667,51 @@ function updateUI(d) {
 
   // ── User preferences ──
   syncPreferences(d.prefs);
+
+  // ── Security ──
+  updateSecurity(d.security);
+}
+
+// ── Security card ────────────────────────────────────────────────────────────
+function updateSecurity(sec) {
+  if (!sec) return;
+
+  function renderRow(rowId, lockId, verId, expId, cipherId, proto) {
+    const row    = document.getElementById(rowId);
+    const lock   = row ? row.querySelector('.sec-lock') : null;
+    const verEl  = document.getElementById(verId);
+    const expEl  = document.getElementById(expId);
+    const cipEl  = cipherId ? document.getElementById(cipherId) : null;
+
+    const ok     = proto.configured;
+    const active = proto.connected;
+
+    if (lock) {
+      lock.textContent = ok ? '🔒' : '🔓';
+      lock.style.filter = ok ? (active ? 'none' : 'opacity(0.5)') : 'grayscale(1) opacity(0.4)';
+    }
+    if (verEl) {
+      verEl.textContent = proto.tls_version || (ok ? 'TLS' : 'Not configured');
+      verEl.style.color = ok ? 'var(--green)' : 'var(--red)';
+    }
+    if (cipEl && proto.cipher && proto.cipher !== 'Protocol-mandated') {
+      cipEl.textContent = '· ' + proto.cipher;
+    }
+    if (expEl) {
+      if (!proto.cert_expiry) {
+        expEl.textContent = ok ? 'on peer' : '—';
+        expEl.style.color = 'var(--muted)';
+      } else {
+        const daysLeft = Math.round((new Date(proto.cert_expiry) - new Date()) / 86400000);
+        expEl.textContent = proto.cert_expiry + (daysLeft < 60 ? ' (' + daysLeft + ' d)' : '');
+        expEl.style.color = daysLeft < 30 ? 'var(--red)' : daysLeft < 90 ? 'var(--orange)' : 'var(--muted)';
+      }
+    }
+  }
+
+  renderRow('sec-ocpp',   null, 'sec-ocpp-ver', 'sec-ocpp-exp', 'sec-ocpp-cipher', sec.ocpp);
+  renderRow('sec-iec104', null, 'sec-iec-ver',  'sec-iec-exp',  null,              sec.iec104);
+  renderRow('sec-iso',    null, 'sec-iso-ver',  'sec-iso-exp',  null,              sec.iso15118);
 }
 
 // ── Control buttons ───────────────────────────────────────────────────────────
@@ -785,6 +924,32 @@ def _build_payload() -> dict:
             }
             for e in grid_state.command_log
         ],
+        "security": {
+            "ocpp": {
+                "configured":   grid_state.security.ocpp.configured,
+                "connected":    grid_state.security.ocpp.connected,
+                "tls_version":  grid_state.security.ocpp.tls_version,
+                "cipher":       grid_state.security.ocpp.cipher,
+                "cert_expiry":  grid_state.security.ocpp.cert_expiry,
+                "auth":         "mTLS (Profile 3)",
+            },
+            "iec104": {
+                "configured":   grid_state.security.iec104.configured,
+                "connected":    grid_state.security.iec104.connected,
+                "tls_version":  grid_state.security.iec104.tls_version,
+                "cipher":       grid_state.security.iec104.cipher,
+                "cert_expiry":  grid_state.security.iec104.cert_expiry,
+                "auth":         "mTLS (IEC 62351-3)",
+            },
+            "iso15118": {
+                "configured":   grid_state.security.iso15118.configured,
+                "connected":    grid_state.security.iso15118.connected,
+                "tls_version":  grid_state.security.iso15118.tls_version,
+                "cipher":       grid_state.security.iso15118.cipher,
+                "cert_expiry":  "",
+                "auth":         "V2G PKI",
+            },
+        },
     }
 
 

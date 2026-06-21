@@ -40,6 +40,18 @@ from charger_state import state
 from config import Config
 
 
+def _build_tls() -> c104.TransportSecurity:
+    """
+    IEC 62351-3: TLS for the IEC 104 controlled station (server side).
+    Requires the grid Pi (client) to present a certificate signed by the
+    shared CA — mutual TLS, matching the OCPP Security Profile 3 approach.
+    """
+    tls = c104.TransportSecurity(validate=True, only_known=False)
+    tls.set_ca_certificate(cert=Config.IEC104_CA_CERT)
+    tls.set_certificate(cert=Config.IEC104_SERVER_CERT, key=Config.IEC104_SERVER_KEY)
+    return tls
+
+
 # ------------------------------------------------------------
 #                        Callbacks
 # ------------------------------------------------------------
@@ -143,8 +155,12 @@ def before_read(point: c104.Point) -> None:
 
 async def run_iec104_server():
     # server and station preparation
-    server = c104.Server()
-    station = server.add_station(common_address=47)
+    server = c104.Server(
+        ip="0.0.0.0",
+        port=Config.PORT_TLS,
+        transport_security=_build_tls(),
+    )
+    station = server.add_station(common_address=Config.COMMON_ADDRESS)
 
     # monitoring point: power [kW]
     point_meter = station.add_point(

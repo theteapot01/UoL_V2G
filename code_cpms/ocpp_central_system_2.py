@@ -202,6 +202,22 @@ class ChargePoint( cp ):
 #                   Example on connect
 # --------------------------------------------------------------
 
+def _extract_tls_info(websocket) -> None:
+    """Populate grid_state.security.ocpp with live cipher/version from the SSL socket."""
+    try:
+        ssl_obj = websocket.transport.get_extra_info("ssl_object")
+        if ssl_obj is None:
+            # Fallback for older websockets versions
+            ssl_obj = getattr(websocket, "socket", None)
+        if ssl_obj is not None:
+            cipher_info = ssl_obj.cipher()          # (name, protocol, bits) or None
+            grid_state.security.ocpp.tls_version = ssl_obj.version() or "TLS"
+            grid_state.security.ocpp.cipher      = cipher_info[0] if cipher_info else ""
+    except Exception:
+        pass
+    grid_state.security.ocpp.connected = True
+
+
 async def on_connect( websocket ):
     """For every new charge point that connects, create a ChargePoint
     instance and start listening for messages.
@@ -222,6 +238,8 @@ async def on_connect( websocket ):
             )
         return await websocket.close()
 
+    _extract_tls_info(websocket)
+
     charge_point_id = websocket.request.path.strip( "/" )
     charge_point = ChargePoint( charge_point_id, websocket )
 
@@ -230,6 +248,7 @@ async def on_connect( websocket ):
         await charge_point.start()
     finally:
         grid_state.connected_charge_point = None
+        grid_state.security.ocpp.connected = False
 
 
 def _build_server_ssl_context() -> ssl.SSLContext:

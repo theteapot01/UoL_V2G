@@ -9,6 +9,18 @@ import pandapower as pp
 from code_grid.grid_state import grid_state
 from config import Config
 
+
+def _build_tls() -> c104.TransportSecurity:
+    """
+    IEC 62351-3: TLS for the IEC 104 controlling station (client side).
+    Presents the grid Pi's client certificate; validates the charger Pi's
+    server certificate against the shared CA.
+    """
+    tls = c104.TransportSecurity(validate=True, only_known=False)
+    tls.set_ca_certificate(cert=Config.IEC104_CA_CERT)
+    tls.set_certificate(cert=Config.IEC104_CLIENT_CERT, key=Config.IEC104_CLIENT_KEY)
+    return tls
+
 os.environ["PYTHONUNBUFFERED"] = "1"
 
 net = pp.create_empty_network()
@@ -110,9 +122,9 @@ def con_on_unexpected_message(
 
 async def run_iec104_client():
     # client, connection and station preparation
-    client = c104.Client()
+    client = c104.Client(transport_security=_build_tls())
     connection = client.add_connection(
-        ip=Config.IP_ADDRESS, port=Config.PORT, init=c104.Init.ALL
+        ip=Config.IP_ADDRESS, port=Config.PORT_TLS, init=c104.Init.ALL
         )
     connection.on_unexpected_message( callable=con_on_unexpected_message )
     station = connection.add_station( common_address=Config.COMMON_ADDRESS )

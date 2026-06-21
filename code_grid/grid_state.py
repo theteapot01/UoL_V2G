@@ -1,6 +1,6 @@
 import time
 from collections import deque
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Deque, Optional
 
 
@@ -45,6 +45,23 @@ class UserPreferences:
 
 
 @dataclass
+class ProtocolSecurity:
+    """Live TLS status for one protocol link."""
+    configured: bool = False   # cert files exist and are readable
+    connected: bool = False    # at least one authenticated connection is up
+    tls_version: str = ""      # e.g. "TLSv1.3"  (populated from live socket where possible)
+    cipher: str = ""           # e.g. "TLS_AES_256_GCM_SHA384"
+    cert_expiry: str = ""      # "YYYY-MM-DD" parsed from the cert file
+
+
+@dataclass
+class SecurityState:
+    ocpp: ProtocolSecurity = field(default_factory=ProtocolSecurity)
+    iec104: ProtocolSecurity = field(default_factory=ProtocolSecurity)
+    iso15118: ProtocolSecurity = field(default_factory=ProtocolSecurity)
+
+
+@dataclass
 class CommandEntry:
     timestamp: float
     command: str
@@ -77,6 +94,9 @@ class GridDashboardState:
         # Live reference to the connected OCPP ChargePoint instance (set by CPMS on_connect).
         # Used by the dashboard to send SetVariables without a circular import.
         self.connected_charge_point: Optional[Any] = None
+
+        # Per-protocol TLS/security status — populated at startup and on connect events.
+        self.security: SecurityState = SecurityState()
 
     def log_command(self, command: str, source: str) -> None:
         self.command_log.appendleft(
