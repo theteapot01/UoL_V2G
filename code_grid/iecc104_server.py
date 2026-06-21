@@ -63,6 +63,10 @@ def on_step_command(
         .format(point.io_address, message, previous_info, point.info)
     )
 
+    if not state.ev_connected:
+        print("No EV connected — ignoring step command")
+        return c104.ResponseState.SUCCESS
+
     state.command_received = True
 
     if point.value == c104.Step.HIGHER:

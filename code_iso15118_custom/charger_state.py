@@ -47,6 +47,11 @@ class SharedState:
         # "setpoint stepped through zero during a direction change".
         self.command_received: bool = False
 
+        # True while an ISO 15118 charge session is active (EV plugged in).
+        # Set by TelemetryEVSEController on first send_charging_command tick;
+        # cleared by session_ended(). on_step_command ignores commands when False.
+        self.ev_connected: bool = False
+
         # ISO 15118 charge-loop stats — written by TelemetryEVSEController
         # each DC_ChargeLoop iteration; read by the OCPP client for reporting.
         self.iso_evse_max_charge_w: float = 0.0    # last EVSE charge limit sent to EV [W]

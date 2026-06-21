@@ -52,6 +52,7 @@ class TelemetryEVSEController(SimEVSEController):
              framework includes them in the next DC_ChargeLoopRes (→ EV).
         """
         _t0 = time.monotonic()
+        state.ev_connected = True
         await super().send_charging_command(
             ev_target_voltage, ev_target_current, is_precharge, is_session_bpt
         )
@@ -105,6 +106,18 @@ class TelemetryEVSEController(SimEVSEController):
             f"discharge={max_discharge_w} W  "
             f"(grid setpoint={state.grid_power_setpoint_kw:+.1f} kW)"
         )
+
+    # ------------------------------------------------------------------
+    #  Session lifecycle hook: clear EV state when the session ends
+    # ------------------------------------------------------------------
+
+    async def session_ended(self, current_state: str, reason: str):
+        logger.info("Session ended in %s (%s) — resetting EV state", current_state, reason)
+        state.ev_connected = False
+        state.grid_power_setpoint_kw = 0.0
+        state.command_received = False
+        state.latest = Telemetry()
+        await super().session_ended(current_state, reason)
 
     # ------------------------------------------------------------------
     #  Helper: translate grid setpoint → EVSE power limits
