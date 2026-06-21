@@ -20,7 +20,18 @@ class Config:
     PORT = 2404  # IEC104 port number
     COMMON_ADDRESS = 47  # common address of IEC104 server/client
 
-    OCPP_SERVER = "10.42.0.1:9000"  # IP of the grid Pi
+    OCPP_SERVER = "10.42.0.1:9000"  # IP:port of the grid Pi CSMS
+
+    # --------------------------------------------------------------
+    #      OCPP Security Profile 3 — mutual TLS (mTLS)
+    # --------------------------------------------------------------
+    # Run create_ocpp_certs.sh once to populate certs/ocpp/.
+    # Copy the full certs/ocpp/ directory to both Pis.
+    OCPP_CA_CERT   = "certs/ocpp/ca.crt"    # trusted by both sides
+    OCPP_CSMS_CERT = "certs/ocpp/csms.crt"  # grid Pi server identity
+    OCPP_CSMS_KEY  = "certs/ocpp/csms.key"  # grid Pi server private key
+    OCPP_CP_CERT   = "certs/ocpp/cp.crt"    # charger Pi client identity
+    OCPP_CP_KEY    = "certs/ocpp/cp.key"    # charger Pi client private key
 
     # --------------------------------------------------------------
     #      Voltage Setup for PandaPower power flow simulation

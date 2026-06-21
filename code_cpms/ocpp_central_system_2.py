@@ -29,8 +29,12 @@ Usage:
     Run this script on the central system (laptop/server):
         $ python3 central_system.py
 
-    The server listens on port 9000. Charge points connect via:
-        ws://<host>:9000/<charge_point_id>
+    The server listens on port 9000 with mutual TLS (Security Profile 3).
+    Charge points connect via:
+        wss://<host>:9000/<charge_point_id>
+
+    Generate certificates once (run from project root):
+        $ ./create_ocpp_certs.sh [CSMS_IP]
 
     If running across subnets (e.g. university network), use an SSH tunnel:
         $ ssh -L 9000:localhost:9000 <user>@<CPMS_host> -N
@@ -44,10 +48,12 @@ Dependencies:
 # --------------------------------------------------------------
 import asyncio
 import logging
+import ssl
 import time
 from datetime import datetime, timezone
 
 from code_grid.grid_state import grid_state
+from config import Config
 
 try:
     import websockets
@@ -226,12 +232,28 @@ async def on_connect( websocket ):
         grid_state.connected_charge_point = None
 
 
+def _build_server_ssl_context() -> ssl.SSLContext:
+    """
+    Security Profile 3: TLS server that requires a valid client certificate.
+    The CSMS presents its own cert; the charge point must present a cert
+    signed by the same CA before the WebSocket handshake proceeds.
+    """
+    ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+    ctx.load_cert_chain(Config.OCPP_CSMS_CERT, Config.OCPP_CSMS_KEY)
+    ctx.load_verify_locations(Config.OCPP_CA_CERT)
+    ctx.verify_mode = ssl.CERT_REQUIRED   # reject connections without a client cert
+    return ctx
+
+
 async def run_ocpp_server():
+    ssl_ctx = _build_server_ssl_context()
     server = await websockets.serve(
-        on_connect, "0.0.0.0", 9000, subprotocols=["ocpp2.1"]
+        on_connect, "0.0.0.0", 9000,
+        subprotocols=["ocpp2.1"],
+        ssl=ssl_ctx,
         )
 
-    logging.info( "Server Started listening to new connections..." )
+    logging.info("CSMS listening on wss://0.0.0.0:9000 (Security Profile 3 — mTLS)")
     await server.wait_closed()
 
 

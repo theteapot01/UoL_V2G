@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import random
+import ssl
 from datetime import datetime, timezone
 from charger_state import state
 
@@ -187,13 +188,28 @@ class ChargePoint( cp ):
                 )
 
 
+def _build_client_ssl_context() -> ssl.SSLContext:
+    """
+    Security Profile 3: TLS client that presents the charge point certificate.
+    The CSMS server is verified against the shared CA; hostname/IP checking
+    uses the SAN embedded in the CSMS cert by create_ocpp_certs.sh.
+    """
+    ctx = ssl.create_default_context()
+    ctx.load_verify_locations(Config.OCPP_CA_CERT)           # trust our CA
+    ctx.load_cert_chain(Config.OCPP_CP_CERT, Config.OCPP_CP_KEY)  # client identity
+    return ctx
+
+
 async def run_ocpp_client():
+    ssl_ctx = _build_client_ssl_context()
     while True:
         try:
-            url = f"ws://{Config.OCPP_SERVER}/CP_1"
+            url = f"wss://{Config.OCPP_SERVER}/CP_1"
             print(f"Connecting to: {url}")
             async with websockets.connect(
-                    url, subprotocols=["ocpp2.1"]
+                    url,
+                    subprotocols=["ocpp2.1"],
+                    ssl=ssl_ctx,
                     ) as ws:
                 charge_point = ChargePoint( "CP_1", ws )
                 await asyncio.gather(
