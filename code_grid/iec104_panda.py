@@ -192,17 +192,27 @@ async def run_iec104_client():
                     )
 
                     if departure_priority:
+                        # Departure imminent — charge regardless of grid state
                         auto_cmd = "LOWER"
                     elif trafo_loading > 80 or vm_pu_b2 < 0.95:
+                        # Grid stressed — shed load immediately
                         auto_cmd = "HIGHER"
                     elif _soc_valid and soc > prefs.max_soc_pct:
+                        # Battery at user max — ramp down / request V2G
                         auto_cmd = "HIGHER"
                     elif _soc_valid and soc < prefs.min_soc_pct:
+                        # Battery at user min — charge regardless of trafo loading
                         auto_cmd = "LOWER"
-                    elif trafo_loading < 40:
+                    elif trafo_loading > 43:
+                        # Approaching capacity — reduce charge
+                        auto_cmd = "HIGHER"
+                    elif trafo_loading < 37:
+                        # Spare capacity — increase charge
                         auto_cmd = "LOWER"
                     else:
-                        auto_cmd = "HIGHER"
+                        # 37–43 % dead zone: hold the current direction to prevent
+                        # oscillation caused by the EV power lagging the setpoint
+                        auto_cmd = _pending_cmd
 
                     # Debounce: require 2 consecutive cycles with the same decision
                     # before staging a direction reversal.  Prevents a single stale
