@@ -203,29 +203,34 @@ async def run_iec104_client():
                     elif _soc_valid and soc < prefs.min_soc_pct:
                         # Battery at user min — charge regardless of trafo loading
                         auto_cmd = "LOWER"
-                    elif trafo_loading > 80:
+                    elif trafo_loading > 80 or line_loading > 90:
                         # Approaching capacity — reduce charge
                         auto_cmd = "HIGHER"
-                    elif trafo_loading < 37:
+                    elif trafo_loading < 40:
                         # Spare capacity — increase charge
                         auto_cmd = "LOWER"
                     else:
-                        # 37–43 % dead zone: hold the current direction to prevent
-                        # oscillation caused by the EV power lagging the setpoint
-                        auto_cmd = _pending_cmd
+                        # 37–43 % dead zone: do not transmit — setpoint stays where
+                        # it is and power converges to a stable value naturally
+                        auto_cmd = "HOLD"
 
-                    # Debounce: require 2 consecutive cycles with the same decision
-                    # before staging a direction reversal.  Prevents a single stale
-                    # reading from flipping the command.
-                    if auto_cmd == _prev_auto_cmd:
-                        _auto_streak += 1
+                    # HOLD applies immediately (safe default).
+                    # HIGHER/LOWER require 2 consecutive cycles before staging so
+                    # a single stale reading cannot flip the command.
+                    if auto_cmd == "HOLD":
+                        _pending_cmd   = "HOLD"
+                        _auto_streak   = 0
+                        _prev_auto_cmd = "HOLD"
                     else:
-                        _auto_streak = 1
-                        _prev_auto_cmd = auto_cmd
+                        if auto_cmd == _prev_auto_cmd:
+                            _auto_streak += 1
+                        else:
+                            _auto_streak   = 1
+                            _prev_auto_cmd = auto_cmd
 
-                    if _auto_streak >= 2 or auto_cmd == _pending_cmd:
-                        command.value = c104.Step.HIGHER if auto_cmd == "HIGHER" else c104.Step.LOWER
-                        _pending_cmd  = auto_cmd
+                        if _auto_streak >= 2 or auto_cmd == _pending_cmd:
+                            command.value = c104.Step.HIGHER if auto_cmd == "HIGHER" else c104.Step.LOWER
+                            _pending_cmd  = auto_cmd
                     _pending_src = "auto"
 
                 grid_state.cycle_ms = (time.time() - t_cycle) * 1000
@@ -246,18 +251,21 @@ async def run_iec104_client():
         if now - last_transmit >= 4:
             last_transmit = now
 
-            t_tx = time.time()
-            if await loop.run_in_executor(
-                    None, lambda: command.transmit( cause=c104.Cot.ACTIVATION )
-                    ):
-                grid_state.transmit_ms = (time.time() - t_tx) * 1000
-                grid_state.log_command( _pending_cmd, _pending_src )
-                print(
-                    f"-> TRANSMIT OK  cmd={_pending_cmd} src={_pending_src} "
-                    f"tx={grid_state.transmit_ms:.0f} ms"
-                )
+            if _pending_cmd == "HOLD":
+                print( "-> HOLD (setpoint stable, no command sent)" )
             else:
-                print( "-> TRANSMIT FAILURE" )
+                t_tx = time.time()
+                if await loop.run_in_executor(
+                        None, lambda: command.transmit( cause=c104.Cot.ACTIVATION )
+                        ):
+                    grid_state.transmit_ms = (time.time() - t_tx) * 1000
+                    grid_state.log_command( _pending_cmd, _pending_src )
+                    print(
+                        f"-> TRANSMIT OK  cmd={_pending_cmd} src={_pending_src} "
+                        f"tx={grid_state.transmit_ms:.0f} ms"
+                    )
+                else:
+                    print( "-> TRANSMIT FAILURE" )
 
             if await loop.run_in_executor( None, point_soc.read ):
                 grid_state.iec104.soc_percent = point_soc.value
