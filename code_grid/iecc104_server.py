@@ -49,15 +49,6 @@ def _build_tls() -> c104.TransportSecurity:
     tls = c104.TransportSecurity(validate=True, only_known=False)
     tls.set_certificate(cert=Config.IEC104_SERVER_CERT, key=Config.IEC104_SERVER_KEY)
     tls.set_ca_certificate(cert=Config.IEC104_CA_CERT)
-    # Restrict to TLS 1.2 with RSA cipher suites.  The c104 arm32 Pi wheel
-    # bundles a minimal mbedTLS that may not have ECDSA compiled in; EC keys
-    # and EC-signed chains are silently ignored, breaking every handshake.
-    # RSA-2048 certs + ECDHE_RSA suites are universally supported.
-    tls.set_version(min=c104.TlsVersion.TLS_1_2, max=c104.TlsVersion.TLS_1_2)
-    tls.set_ciphers(ciphers=[
-        c104.TlsCipher.ECDHE_RSA_WITH_AES_128_GCM_SHA256,
-        c104.TlsCipher.ECDHE_RSA_WITH_AES_256_GCM_SHA384,
-    ])
     return tls
 
 
