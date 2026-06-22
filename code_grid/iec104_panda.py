@@ -234,11 +234,14 @@ async def run_iec104_client():
                     _line_high = LINE_TARGET_PCT  + LINE_HYSTERESIS_PCT
                     _line_low  = LINE_TARGET_PCT  - LINE_HYSTERESIS_PCT
 
-                    if departure_priority:
-                        auto_cmd = "LOWER"
-                    elif (trafo_loading > TRAFO_STRESS_PCT
-                          or line_loading > LINE_STRESS_PCT
-                          or vm_pu_b2 < VOLTAGE_MIN_PU):
+                    grid_stressed = (
+                        trafo_loading > TRAFO_STRESS_PCT
+                        or line_loading > LINE_STRESS_PCT
+                        or vm_pu_b2 < VOLTAGE_MIN_PU
+                    )
+
+                    if grid_stressed:
+                        # Grid safety always beats user preference.
                         auto_cmd = "HIGHER"
                     elif _soc_valid and soc >= prefs.max_soc_pct:
                         # Battery at user max — ramp charge to idle; hold there.
@@ -246,6 +249,10 @@ async def run_iec104_client():
                         # not automatically whenever the battery is full.
                         auto_cmd = "HIGHER" if point_meter.value > 1.0 else "HOLD"
                     elif _soc_valid and soc < prefs.min_soc_pct:
+                        auto_cmd = "LOWER"
+                    elif departure_priority:
+                        # Departure approaching and SoC below target: charge within
+                        # the normal capacity band (grid is not stressed).
                         auto_cmd = "LOWER"
                     elif trafo_loading > _high or line_loading > _line_high:
                         # Either constraint approaching capacity — reduce power.
