@@ -168,6 +168,7 @@ async def run_iec104_server():
     point_meter = station.add_point(
         io_address=Config.METER_VALUES, type=c104.Type.M_ME_NC_1, report_ms=2000
     )
+    point_meter.on_before_auto_transmit(callable=before_auto_transmit)
     point_meter.on_before_read(callable=before_read)
 
     # monitoring point: SoC [%]

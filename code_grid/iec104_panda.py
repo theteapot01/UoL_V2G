@@ -174,14 +174,15 @@ async def run_iec104_client():
             last_read = now
             t_cycle = time.time()
 
+            # c104 point.read() sends C_RD_NA_1 which times out on this server.
+            # The server auto-transmits periodically; point.value is updated by
+            # the background c104 library as those messages arrive.
             t0 = time.time()
-            read_ok = await loop.run_in_executor( None, point_meter.read )
-            grid_state.iec104_read_ms = (time.time() - t0) * 1000
+            grid_state.iec104.power_kw  = point_meter.value
+            grid_state.iec104.timestamp = time.time()
+            grid_state.iec104_read_ms   = (time.time() - t0) * 1000
 
-            if read_ok:
-                grid_state.iec104.power_kw  = point_meter.value
-                grid_state.iec104.timestamp = time.time()
-
+            if True:
                 t_pp = time.time()
                 net.load.at[0, "p_mw"] = point_meter.value / 1000
                 pp.runpp( net )
@@ -286,8 +287,6 @@ async def run_iec104_client():
                     f"Cmd: {_pending_cmd} ({_pending_src}) | "
                     f"Cycle: {grid_state.cycle_ms:.0f} ms"
                 )
-            else:
-                print( "-> IEC104 READ FAILURE" )
 
         # ── 4 s transmit cycle: send command, refresh SoC + temp ────────────
         if now - last_transmit >= 4:
@@ -309,34 +308,17 @@ async def run_iec104_client():
                 else:
                     print( "-> TRANSMIT FAILURE" )
 
-            if await loop.run_in_executor( None, point_soc.read ):
-                grid_state.iec104.soc_percent = point_soc.value
-                if not _soc_valid and point_soc.value > 0:
-                    _soc_valid = True
-                print( f"-> SOC {point_soc.value:.1f}%" )
-            else:
-                print( "-> SOC READ FAILURE" )
+            # Read cached values populated by the server's periodic auto-transmit.
+            grid_state.iec104.soc_percent = point_soc.value
+            if not _soc_valid and point_soc.value > 0:
+                _soc_valid = True
+            print( f"-> SOC {point_soc.value:.1f}%" )
 
-            if await loop.run_in_executor( None, point_temp.read ):
-                grid_state.iec104.temp_c = point_temp.value
-            else:
-                print( "-> TEMP READ FAILURE" )
-
-            if await loop.run_in_executor( None, point_voltage.read ):
-                grid_state.iec104.voltage_v = point_voltage.value
-                grid_state.iec104.iso_timestamp = time.time()
-            else:
-                print( "-> VOLTAGE READ FAILURE" )
-
-            if await loop.run_in_executor( None, point_current.read ):
-                grid_state.iec104.current_a = point_current.value
-            else:
-                print( "-> CURRENT READ FAILURE" )
-
-            if await loop.run_in_executor( None, point_loop_ms.read ):
-                grid_state.iec104.iso_loop_ms = point_loop_ms.value
-            else:
-                print( "-> ISO LOOP MS READ FAILURE" )
+            grid_state.iec104.temp_c      = point_temp.value
+            grid_state.iec104.voltage_v   = point_voltage.value
+            grid_state.iec104.iso_timestamp = time.time()
+            grid_state.iec104.current_a   = point_current.value
+            grid_state.iec104.iso_loop_ms = point_loop_ms.value
 
         await asyncio.sleep( 0.1 )
 
