@@ -208,19 +208,19 @@ _HTML = """<!DOCTYPE html>
     /* ── Security ── */
     .sec-row {
       display: grid;
-      grid-template-columns: 1.2rem 7rem 6rem 1fr auto;
+      grid-template-columns: 1.4rem 1fr auto;
       align-items: center;
-      gap: 0 0.75rem;
-      padding: 0.4rem 0;
+      gap: 0 0.6rem;
+      padding: 0.5rem 0;
       border-bottom: 1px solid var(--border);
       font-size: 0.82rem;
     }
     .sec-row:last-child { border-bottom: none; }
     .sec-lock { font-size: 1rem; }
-    .sec-proto { font-weight: 600; color: var(--text); }
-    .sec-ver   { color: var(--muted); font-size: 0.75rem; }
-    .sec-auth  { color: var(--muted); font-size: 0.75rem; }
-    .sec-expiry { font-size: 0.72rem; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+    .sec-proto { font-weight: 600; color: var(--text); font-size: 0.82rem; }
+    .sec-ver   { font-size: 0.72rem; font-weight: 600; }
+    .sec-auth  { color: var(--muted); font-size: 0.7rem; margin-top: 0.1rem; }
+    .sec-expiry { font-size: 0.7rem; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
 
     /* ── Manual Control ── */
     .ctrl-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.6; margin-bottom: 0.9rem; }
@@ -391,7 +391,53 @@ _HTML = """<!DOCTYPE html>
     </div>
   </div>
 
-  <!-- Billing (2 cols) -->
+  <!-- Security Status (1 col — sits in col 3 next to ISO 15118) -->
+  <div class="card">
+    <div class="card-label">Security Status</div>
+    <div id="sec-rows">
+      <div class="sec-row" id="sec-ocpp">
+        <span class="sec-lock">&#128274;</span>
+        <div>
+          <div class="sec-proto">OCPP 2.1</div>
+          <div class="sec-auth">mTLS &middot; Profile&nbsp;3</div>
+        </div>
+        <div style="text-align:right">
+          <div class="sec-ver" id="sec-ocpp-ver">—</div>
+          <div class="sec-expiry" id="sec-ocpp-exp">—</div>
+        </div>
+      </div>
+      <div class="sec-row" id="sec-iec104">
+        <span class="sec-lock">&#128274;</span>
+        <div>
+          <div class="sec-proto">IEC 104</div>
+          <div class="sec-auth">mTLS &middot; IEC&nbsp;62351-3</div>
+        </div>
+        <div style="text-align:right">
+          <div class="sec-ver" id="sec-iec-ver">—</div>
+          <div class="sec-expiry" id="sec-iec-exp">—</div>
+        </div>
+      </div>
+      <div class="sec-row" id="sec-iso">
+        <span class="sec-lock">&#128274;</span>
+        <div>
+          <div class="sec-proto">ISO 15118</div>
+          <div class="sec-auth">V2G PKI</div>
+        </div>
+        <div style="text-align:right">
+          <div class="sec-ver" id="sec-iso-ver">—</div>
+          <div class="sec-expiry" id="sec-iso-exp">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Command Log (1 col — col 1 of next row) -->
+  <div class="card">
+    <div class="card-label">Transmitted Command Log</div>
+    <div id="log-list" class="log-scroll"></div>
+  </div>
+
+  <!-- Billing (2 cols — cols 2-3 of same row as Command Log) -->
   <div class="card span2">
     <div class="card-label">Session Billing</div>
     <div class="ctrl-desc">
@@ -482,43 +528,6 @@ _HTML = """<!DOCTYPE html>
     </div>
   </div>
 
-  <!-- Security Status -->
-  <div class="card span2">
-    <div class="card-label">Security Status</div>
-    <div id="sec-rows">
-      <!-- header -->
-      <div class="sec-row" style="font-size:0.7rem;color:var(--muted);border-bottom:1px solid var(--border);padding-bottom:0.3rem">
-        <span></span><span>Protocol</span><span>Transport</span><span>Authentication</span><span>Cert expires</span>
-      </div>
-      <div class="sec-row" id="sec-ocpp">
-        <span class="sec-lock">&#128274;</span>
-        <span class="sec-proto">OCPP 2.1</span>
-        <span class="sec-ver" id="sec-ocpp-ver">—</span>
-        <span class="sec-auth">mTLS (Profile 3) &nbsp;<span id="sec-ocpp-cipher" style="color:var(--muted)"></span></span>
-        <span class="sec-expiry" id="sec-ocpp-exp">—</span>
-      </div>
-      <div class="sec-row" id="sec-iec104">
-        <span class="sec-lock">&#128274;</span>
-        <span class="sec-proto">IEC 104</span>
-        <span class="sec-ver" id="sec-iec-ver">—</span>
-        <span class="sec-auth">mTLS (IEC 62351-3)</span>
-        <span class="sec-expiry" id="sec-iec-exp">—</span>
-      </div>
-      <div class="sec-row" id="sec-iso">
-        <span class="sec-lock">&#128274;</span>
-        <span class="sec-proto">ISO 15118</span>
-        <span class="sec-ver" id="sec-iso-ver">—</span>
-        <span class="sec-auth">V2G PKI (protocol-mandated)</span>
-        <span class="sec-expiry" id="sec-iso-exp">—</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Command Log -->
-  <div class="card">
-    <div class="card-label">Transmitted Command Log</div>
-    <div id="log-list" class="log-scroll"></div>
-  </div>
 
 </div><!-- .dashboard -->
 
@@ -718,26 +727,21 @@ function updateUI(d) {
 function updateSecurity(sec) {
   if (!sec) return;
 
-  function renderRow(rowId, lockId, verId, expId, cipherId, proto) {
-    const row    = document.getElementById(rowId);
-    const lock   = row ? row.querySelector('.sec-lock') : null;
-    const verEl  = document.getElementById(verId);
-    const expEl  = document.getElementById(expId);
-    const cipEl  = cipherId ? document.getElementById(cipherId) : null;
-
-    const ok     = proto.configured;
-    const active = proto.connected;
+  function renderRow(rowId, verId, expId, proto) {
+    const row   = document.getElementById(rowId);
+    const lock  = row ? row.querySelector('.sec-lock') : null;
+    const verEl = document.getElementById(verId);
+    const expEl = document.getElementById(expId);
+    const ok    = proto.configured;
+    const active= proto.connected;
 
     if (lock) {
-      lock.textContent = ok ? '🔒' : '🔓';
+      lock.textContent  = ok ? '🔒' : '🔓';
       lock.style.filter = ok ? (active ? 'none' : 'opacity(0.5)') : 'grayscale(1) opacity(0.4)';
     }
     if (verEl) {
       verEl.textContent = proto.tls_version || (ok ? 'TLS' : 'Not configured');
       verEl.style.color = ok ? 'var(--green)' : 'var(--red)';
-    }
-    if (cipEl && proto.cipher && proto.cipher !== 'Protocol-mandated') {
-      cipEl.textContent = '· ' + proto.cipher;
     }
     if (expEl) {
       if (!proto.cert_expiry) {
@@ -751,9 +755,9 @@ function updateSecurity(sec) {
     }
   }
 
-  renderRow('sec-ocpp',   null, 'sec-ocpp-ver', 'sec-ocpp-exp', 'sec-ocpp-cipher', sec.ocpp);
-  renderRow('sec-iec104', null, 'sec-iec-ver',  'sec-iec-exp',  null,              sec.iec104);
-  renderRow('sec-iso',    null, 'sec-iso-ver',  'sec-iso-exp',  null,              sec.iso15118);
+  renderRow('sec-ocpp',   'sec-ocpp-ver', 'sec-ocpp-exp', sec.ocpp);
+  renderRow('sec-iec104', 'sec-iec-ver',  'sec-iec-exp',  sec.iec104);
+  renderRow('sec-iso',    'sec-iso-ver',  'sec-iso-exp',  sec.iso15118);
 }
 
 // ── Control buttons ───────────────────────────────────────────────────────────
