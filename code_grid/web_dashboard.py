@@ -431,13 +431,7 @@ _HTML = """<!DOCTYPE html>
     </div>
   </div>
 
-  <!-- Command Log (1 col — col 1 of next row) -->
-  <div class="card">
-    <div class="card-label">Transmitted Command Log</div>
-    <div id="log-list" class="log-scroll"></div>
-  </div>
-
-  <!-- Billing (2 cols — cols 2-3 of same row as Command Log) -->
+  <!-- Billing (2 cols — cols 1-2) -->
   <div class="card span2">
     <div class="card-label">Session Billing</div>
     <div class="ctrl-desc">
@@ -474,6 +468,12 @@ _HTML = """<!DOCTYPE html>
         <span style="font-size:0.75rem;color:var(--muted)">charge cost − V2G credit</span>
       </div>
     </div>
+  </div>
+
+  <!-- Command Log (1 col — col 3, same row as Billing) -->
+  <div class="card">
+    <div class="card-label">Transmitted Command Log</div>
+    <div id="log-list" class="log-scroll"></div>
   </div>
 
   <!-- Manual Control (2 cols) -->
