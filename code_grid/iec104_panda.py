@@ -297,7 +297,9 @@ async def run_iec104_client():
                         # overshoot caused by the inertia of a large setpoint.
                         # Suppressed during departure priority so the EV can still
                         # reach the user's target SoC before leaving.
-                        auto_cmd = "HIGHER"
+                        # Guard: once power reaches zero, hold — do not step into
+                        # discharge just to keep SoC at the ceiling.
+                        auto_cmd = "HIGHER" if point_meter.value > 1.0 else "HOLD"
                     elif departure_priority:
                         # Departure approaching and SoC below target: charge within
                         # the normal capacity band (grid is not stressed).
