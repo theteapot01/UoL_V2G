@@ -19,7 +19,8 @@ class IEC104Snapshot:
 @dataclass
 class OCPPSnapshot:
     power_w: float = 0.0
-    energy_wh: float = 0.0
+    energy_wh: float = 0.0        # cumulative charge energy (Wh) — from Energy.Active.Import.Register
+    v2g_energy_wh: float = 0.0    # cumulative V2G export energy (Wh) — integrated from negative power
     soc_percent: float = 0.0
     timestamp: float = 0.0
     # ISO 15118 stats forwarded via OCPP MeterValues custom measurands
@@ -27,6 +28,12 @@ class OCPPSnapshot:
     current_a: float = 0.0
     evse_max_charge_kw: float = 0.0
     evse_max_discharge_kw: float = 0.0
+
+
+@dataclass
+class TariffSettings:
+    charge_pence_per_kwh: float = 28.0   # cost to charge EV (p/kWh)
+    v2g_pence_per_kwh: float = 15.0      # credit for V2G export (p/kWh)
 
 
 @dataclass
@@ -90,6 +97,9 @@ class GridDashboardState:
 
         # User preferences (editable via dashboard, pushed to charge point via OCPP SetVariables)
         self.prefs: UserPreferences = UserPreferences()
+
+        # Tariff configuration — used by billing card on the dashboard.
+        self.tariff: TariffSettings = TariffSettings()
 
         # Live reference to the connected OCPP ChargePoint instance (set by CPMS on_connect).
         # Used by the dashboard to send SetVariables without a circular import.

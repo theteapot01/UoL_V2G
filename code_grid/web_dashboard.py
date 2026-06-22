@@ -391,6 +391,45 @@ _HTML = """<!DOCTYPE html>
     </div>
   </div>
 
+  <!-- Billing (2 cols) -->
+  <div class="card span2">
+    <div class="card-label">Session Billing</div>
+    <div class="ctrl-desc">
+      Set your energy tariff rates. Charge cost and V2G credit are calculated from OCPP metered energy this session.
+    </div>
+    <div style="display:flex;align-items:flex-end;gap:1rem;margin-bottom:1rem;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:0.3rem">
+        <label class="metric-label" for="tariff-charge">Charge rate (p/kWh)</label>
+        <input id="tariff-charge" type="number" min="0" step="0.1" value="28.0"
+               style="width:130px;padding:0.35rem 0.5rem;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;color:var(--fg);font-size:0.95rem">
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.3rem">
+        <label class="metric-label" for="tariff-v2g">V2G export rate (p/kWh)</label>
+        <input id="tariff-v2g" type="number" min="0" step="0.1" value="15.0"
+               style="width:130px;padding:0.35rem 0.5rem;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;color:var(--fg);font-size:0.95rem">
+      </div>
+      <button class="ctrl-btn" onclick="saveTariff()">&#10003; Apply</button>
+      <span id="tariff-status" style="font-size:0.85rem;color:var(--green)"></span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem 1.2rem">
+      <div class="metric-row" style="flex-direction:column;align-items:flex-start;gap:0.15rem;padding:0.6rem 0">
+        <span class="metric-label">Energy Charged</span>
+        <span id="bill-charge-kwh" class="metric-val" style="font-size:1.4rem;color:var(--green)">—</span>
+        <span id="bill-charge-cost" style="font-size:0.8rem;color:var(--muted)">£—</span>
+      </div>
+      <div class="metric-row" style="flex-direction:column;align-items:flex-start;gap:0.15rem;padding:0.6rem 0">
+        <span class="metric-label">V2G Energy Exported</span>
+        <span id="bill-v2g-kwh" class="metric-val" style="font-size:1.4rem;color:var(--red)">—</span>
+        <span id="bill-v2g-credit" style="font-size:0.8rem;color:var(--muted)">£—</span>
+      </div>
+      <div class="metric-row" style="flex-direction:column;align-items:flex-start;gap:0.15rem;padding:0.6rem 0">
+        <span class="metric-label">Net Session Cost</span>
+        <span id="bill-net" class="metric-val" style="font-size:1.4rem">—</span>
+        <span style="font-size:0.75rem;color:var(--muted)">charge cost − V2G credit</span>
+      </div>
+    </div>
+  </div>
+
   <!-- Manual Control (2 cols) -->
   <div class="card span2">
     <div class="card-label">Grid Demand Control</div>
@@ -665,6 +704,9 @@ function updateUI(d) {
   // ── Control mode ──
   syncControlButtons(d.control);
 
+  // ── Billing ──
+  updateBilling(d.billing);
+
   // ── User preferences ──
   syncPreferences(d.prefs);
 
@@ -741,6 +783,49 @@ function setControl(action) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ action })
+  });
+}
+
+// ── Billing ───────────────────────────────────────────────────────────────────
+function updateBilling(b) {
+  if (!b) return;
+  const chKwh = b.charge_kwh;
+  const v2Kwh = b.v2g_kwh;
+  const chCost = b.charge_cost_gbp;
+  const v2Cred = b.v2g_credit_gbp;
+  const net    = b.net_cost_gbp;
+
+  document.getElementById('bill-charge-kwh').textContent  = chKwh.toFixed(3) + ' kWh';
+  document.getElementById('bill-charge-cost').textContent = '£' + chCost.toFixed(2) + ' charge cost';
+  document.getElementById('bill-v2g-kwh').textContent     = v2Kwh.toFixed(3) + ' kWh';
+  document.getElementById('bill-v2g-credit').textContent  = '£' + v2Cred.toFixed(2) + ' credit';
+
+  const netEl = document.getElementById('bill-net');
+  netEl.textContent  = (net >= 0 ? '£' : '−£') + Math.abs(net).toFixed(2);
+  netEl.style.color  = net < 0 ? 'var(--green)' : net > 0 ? 'var(--red)' : 'var(--text)';
+
+  // Sync tariff inputs (don't overwrite if focused)
+  const chEl = document.getElementById('tariff-charge');
+  const v2El = document.getElementById('tariff-v2g');
+  if (document.activeElement !== chEl) chEl.value = b.tariff_charge_p;
+  if (document.activeElement !== v2El) v2El.value = b.tariff_v2g_p;
+}
+
+function saveTariff() {
+  const body = {
+    charge_pence_per_kwh: parseFloat(document.getElementById('tariff-charge').value),
+    v2g_pence_per_kwh:    parseFloat(document.getElementById('tariff-v2g').value),
+  };
+  fetch('/api/tariff', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  }).then(r => r.json()).then(() => {
+    const el = document.getElementById('tariff-status');
+    el.textContent = '✓ Applied';
+    setTimeout(() => { el.textContent = ''; }, 3000);
+  }).catch(() => {
+    document.getElementById('tariff-status').textContent = '✗ Failed';
   });
 }
 
@@ -831,6 +916,16 @@ async def control(request: Request):
     return {"status": "ok", "action": action}
 
 
+@app.post("/api/tariff")
+async def set_tariff(request: Request):
+    body = await request.json()
+    if "charge_pence_per_kwh" in body:
+        grid_state.tariff.charge_pence_per_kwh = max(0.0, float(body["charge_pence_per_kwh"]))
+    if "v2g_pence_per_kwh" in body:
+        grid_state.tariff.v2g_pence_per_kwh = max(0.0, float(body["v2g_pence_per_kwh"]))
+    return {"status": "ok"}
+
+
 @app.post("/api/preferences")
 async def set_preferences(request: Request):
     body = await request.json()
@@ -863,6 +958,23 @@ async def ws_endpoint(websocket: WebSocket):
             await asyncio.sleep(0.5)
     except (WebSocketDisconnect, Exception):
         pass
+
+
+def _build_billing(ocpp) -> dict:
+    t = grid_state.tariff
+    charge_kwh   = ocpp.energy_wh   / 1000.0
+    v2g_kwh      = ocpp.v2g_energy_wh / 1000.0
+    charge_cost  = charge_kwh * t.charge_pence_per_kwh / 100.0
+    v2g_credit   = v2g_kwh   * t.v2g_pence_per_kwh    / 100.0
+    return {
+        "charge_kwh":      round(charge_kwh,  4),
+        "v2g_kwh":         round(v2g_kwh,     4),
+        "charge_cost_gbp": round(charge_cost, 4),
+        "v2g_credit_gbp":  round(v2g_credit,  4),
+        "net_cost_gbp":    round(charge_cost - v2g_credit, 4),
+        "tariff_charge_p": t.charge_pence_per_kwh,
+        "tariff_v2g_p":    t.v2g_pence_per_kwh,
+    }
 
 
 def _build_payload() -> dict:
@@ -924,6 +1036,7 @@ def _build_payload() -> dict:
             }
             for e in grid_state.command_log
         ],
+        "billing": _build_billing(ocpp),
         "security": {
             "ocpp": {
                 "configured":   grid_state.security.ocpp.configured,

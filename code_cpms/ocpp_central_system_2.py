@@ -86,6 +86,10 @@ class ChargePoint( cp ):
     # notification from charge point when booting
     @on( Action.boot_notification )
     def on_boot_notification( self, charging_station, reason, **kwargs ):
+        # Reset per-session energy accumulators on each new charge point boot.
+        grid_state.ocpp.energy_wh     = 0.0
+        grid_state.ocpp.v2g_energy_wh = 0.0
+        grid_state.ocpp.timestamp     = 0.0
         return call_result.BootNotification(
             current_time=datetime.now( timezone.utc ).isoformat(),
             interval=10,
@@ -180,11 +184,18 @@ class ChargePoint( cp ):
                         timestamp,
                         )
 
+        # Accumulate V2G export energy by integrating negative power over the MeterValues interval.
+        now = time.time()
+        prev_ts = grid_state.ocpp.timestamp
+        if prev_ts > 0 and _power_w < 0:
+            dt_h = (now - prev_ts) / 3600.0
+            grid_state.ocpp.v2g_energy_wh += abs(_power_w) * dt_h
+
         # Persist to shared state so the web dashboard can display OCPP data.
-        grid_state.ocpp.power_w    = _power_w
-        grid_state.ocpp.energy_wh  = _energy_wh
+        grid_state.ocpp.power_w     = _power_w
+        grid_state.ocpp.energy_wh   = _energy_wh
         grid_state.ocpp.soc_percent = _soc_pct
-        grid_state.ocpp.timestamp  = time.time()
+        grid_state.ocpp.timestamp   = now
 
         return call_result.MeterValues()
 
