@@ -75,11 +75,50 @@ LINE_HYSTERESIS_PCT  =  5.0   # ± half-width of dead zone around target
 # HIGHER is sent when EITHER trafo or line exceeds its upper threshold.
 # This causes the power to ramp up until the binding constraint (trafo or line)
 # enters its dead zone, then hold there rather than oscillate.
+SOC_APPROACH_BAND_PCT = 5.0   # start pre-emptive ramp-down this many % below max_soc
 
 
 # --------------------------------------------------------------
 #                   Functions
 # --------------------------------------------------------------
+
+def _adaptive_bursts(
+    cmd: str,
+    trafo_pct: float,
+    line_pct: float,
+    soc: float,
+    max_soc_pct: float,
+    soc_valid: bool,
+) -> int:
+    """
+    Return how many IEC 104 step commands to send in one 4-second transmit
+    cycle.  Sending N commands applies N × step_kw of setpoint change in a
+    single cycle, so the effective rate scales with urgency without touching
+    the step size or the cycle period.
+
+    HIGHER burst rules (shed load / ramp down charge):
+      4 × — grid emergency  (trafo > STRESS or line > STRESS)
+      3 × — SoC at or above ceiling (sustained overshoot prevention)
+      2 × — grid approaching capacity OR SoC within approach band
+      1 × — all other cases
+
+    LOWER burst rules (ramp up charge): always 1 × for now; the grid has
+    spare capacity by definition when LOWER is chosen, so urgency is low.
+    """
+    if cmd == "HIGHER":
+        if trafo_pct > TRAFO_STRESS_PCT or line_pct > LINE_STRESS_PCT:
+            return 4
+        if soc_valid and soc >= max_soc_pct:
+            return 3
+        approaching_capacity = (
+            trafo_pct > TRAFO_TARGET_PCT + TRAFO_HYSTERESIS_PCT
+            or line_pct > LINE_TARGET_PCT + LINE_HYSTERESIS_PCT
+        )
+        approaching_ceiling = soc_valid and soc >= max_soc_pct - SOC_APPROACH_BAND_PCT
+        if approaching_capacity or approaching_ceiling:
+            return 2
+    return 1
+
 
 def _minutes_to_departure(departure_str: str):
     """Return minutes until the user's departure time, or None if not set."""
@@ -250,6 +289,15 @@ async def run_iec104_client():
                         auto_cmd = "HIGHER" if point_meter.value > 1.0 else "HOLD"
                     elif _soc_valid and soc < prefs.min_soc_pct:
                         auto_cmd = "LOWER"
+                    elif (_soc_valid
+                          and not departure_priority
+                          and soc >= prefs.max_soc_pct - SOC_APPROACH_BAND_PCT):
+                        # Pre-emptive ramp-down: SoC is within the approach band
+                        # below max.  Starting HIGHER early prevents the 2-3 %
+                        # overshoot caused by the inertia of a large setpoint.
+                        # Suppressed during departure priority so the EV can still
+                        # reach the user's target SoC before leaving.
+                        auto_cmd = "HIGHER"
                     elif departure_priority:
                         # Departure approaching and SoC below target: charge within
                         # the normal capacity band (grid is not stressed).
@@ -302,15 +350,30 @@ async def run_iec104_client():
             if _pending_cmd == "HOLD":
                 print( "-> HOLD (setpoint stable, no command sent)" )
             else:
+                n_bursts = _adaptive_bursts(
+                    _pending_cmd,
+                    grid_state.grid.trafo_loading_pct,
+                    grid_state.grid.line_loading_pct,
+                    point_soc.value,
+                    grid_state.prefs.max_soc_pct,
+                    _soc_valid,
+                )
                 t_tx = time.time()
-                if await loop.run_in_executor(
-                        None, lambda: command.transmit( cause=c104.Cot.ACTIVATION )
-                        ):
+                ok = 0
+                for _ in range(n_bursts):
+                    if await loop.run_in_executor(
+                            None, lambda: command.transmit( cause=c104.Cot.ACTIVATION )
+                            ):
+                        ok += 1
+                    else:
+                        break  # stop burst on first failure
+                if ok:
                     grid_state.transmit_ms = (time.time() - t_tx) * 1000
                     grid_state.log_command( _pending_cmd, _pending_src )
+                    burst_tag = f" ×{ok}" if ok > 1 else ""
                     print(
-                        f"-> TRANSMIT OK  cmd={_pending_cmd} src={_pending_src} "
-                        f"tx={grid_state.transmit_ms:.0f} ms"
+                        f"-> TRANSMIT OK  cmd={_pending_cmd}{burst_tag} "
+                        f"src={_pending_src} tx={grid_state.transmit_ms:.0f} ms"
                     )
                 else:
                     print( "-> TRANSMIT FAILURE" )
