@@ -14,6 +14,7 @@ respect the grid's wishes.
 """
 
 import logging
+import math
 import time
 from typing import Optional
 
@@ -23,8 +24,16 @@ from charger_state import state, Telemetry
 logger = logging.getLogger(__name__)
 
 class TelemetryEVSEController(SimEVSEController):
+    # RC thermal model constants for the SECC-side connector temperature estimate.
+    # Represents a charge-connector/cable thermal sensor, not the pack itself.
+    _T_AMB = 25.0   # ambient [°C]
+    _R_TH  = 0.05   # °C per kW — +15 °C at 300 kW, +1 °C at 20 kW
+    _TAU   = 300.0  # time constant [s]
+
     def __init__(self):
         super().__init__()
+        self._temperature_c: float = self._T_AMB
+        self._last_thermal_t: Optional[float] = None
         logger.info("TelemetryEVSEController initialized")
 
     @classmethod
@@ -76,12 +85,22 @@ class TelemetryEVSEController(SimEVSEController):
             soc = ev_data.present_soc if ev_data.present_soc is not None else 0.0
             soh = 100.0
 
+        # RC thermal estimate: connector temperature rising with delivered power
+        now_t = time.monotonic()
+        if self._last_thermal_t is not None:
+            dt_s = now_t - self._last_thermal_t
+            alpha = 1.0 - math.exp(-dt_s / self._TAU)
+            target_t = self._T_AMB + self._R_TH * abs(power_kw)
+            self._temperature_c += alpha * (target_t - self._temperature_c)
+        self._last_thermal_t = now_t
+
         state.latest = Telemetry(
             soc_percent=float(soc),
             soh_percent=float(soh),
             power_kw=float(power_kw),
             voltage_v=float(voltage),
             current_a=float(current),
+            temperature_c=self._temperature_c,
             charging=not is_precharge and (power_kw != 0),
         )
 
@@ -117,6 +136,8 @@ class TelemetryEVSEController(SimEVSEController):
         state.grid_power_setpoint_kw = 0.0
         state.command_received = False
         state.latest = Telemetry()
+        self._temperature_c = self._T_AMB
+        self._last_thermal_t = None
         await super().session_ended(current_state, reason)
 
     # ------------------------------------------------------------------

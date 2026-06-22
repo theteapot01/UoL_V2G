@@ -57,6 +57,7 @@ class BatteryState:
     power_kw: float
     phase: str
     soh_percent: float = 100.0
+    temperature_c: float = 25.0
 
     @property
     def is_done(self) -> bool:

@@ -69,8 +69,7 @@ async def main():
     #   "sim"         → stock SimEVController (no battery profile)
     #   "battery_csv" → BatterySimEVController with a CsvProfile
     #   "battery"     → BatterySimEVController with a live SimulatedBattery
-    #                    (default; grid-responsive when the Josev hook is in
-    #                    place — see battery_ev_controller.update_evse_limits)
+    #                    (default; grid-responsive via update_evse_limits)
     controller_choice = (
         os.environ.get( "EVCC_CONTROLLER", "battery" ).strip().lower()
     )

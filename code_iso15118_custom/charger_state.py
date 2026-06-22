@@ -20,6 +20,7 @@ class Telemetry:
     power_kw: float = 0.0
     voltage_v: float = 0.0
     current_a: float = 0.0
+    temperature_c: float = 25.0
     charging: bool = False
 
 class SharedState:

@@ -24,12 +24,13 @@ IOA map
   IOA 11 (M_ME_NC_1) : power [kW]          — from state.latest.power_kw
   IOA 12 (C_RC_TA_1) : regulating step command (HIGHER / LOWER)
   IOA 13 (M_ME_NC_1) : SoC [%]             — from state.latest.soc_percent
-  IOA 14 (M_ME_NC_1) : temperature [°C]    — placeholder 25.0
+  IOA 14 (M_ME_NC_1) : temperature [°C]    — from state.latest.temperature_c
   IOA 15 (M_ME_NC_1) : EV voltage [V]      — from state.latest.voltage_v
   IOA 16 (M_ME_NC_1) : EV current [A]      — from state.latest.current_a
   IOA 17 (M_ME_NC_1) : loop time [ms]      — from state.iso_loop_ms
 """
 
+import datetime
 import os
 
 os.environ["PYTHONUNBUFFERED"] = "1"
@@ -50,6 +51,34 @@ def _build_tls() -> c104.TransportSecurity:
     tls.set_certificate(cert=Config.IEC104_SERVER_CERT, key=Config.IEC104_SERVER_KEY)
     tls.set_ca_certificate(cert=Config.IEC104_CA_CERT)
     return tls
+
+
+# ------------------------------------------------------------
+#                        Helpers
+# ------------------------------------------------------------
+
+def _departure_blocks_v2g() -> bool:
+    """
+    Return True when the user's departure window is approaching and SoC is
+    below their target, so a HIGHER (discharge / V2G) command should be
+    suppressed to allow the battery to charge up before departure.
+
+    The threshold matches the grid-side logic in iec104_panda.py: within 60
+    minutes of departure AND SoC below pref_target_soc_pct.
+    """
+    departure = state.pref_departure_time
+    if not departure:
+        return False
+    try:
+        now = datetime.datetime.now()
+        h, m = map(int, departure.split(":"))
+        dep = now.replace(hour=h, minute=m, second=0, microsecond=0)
+        if dep <= now:
+            dep += datetime.timedelta(days=1)
+        minutes = (dep - now).total_seconds() / 60.0
+        return minutes < 60 and state.latest.soc_percent < state.pref_target_soc_pct
+    except (ValueError, AttributeError):
+        return False
 
 
 # ------------------------------------------------------------
@@ -88,6 +117,13 @@ def on_step_command(
                 f"(SoC={state.latest.soc_percent:.1f}%)"
             )
             return c104.ResponseState.SUCCESS
+        if _departure_blocks_v2g():
+            print(
+                f"Departure window ({state.pref_departure_time}) < 60 min, "
+                f"SoC {state.latest.soc_percent:.1f}% < target "
+                f"{state.pref_target_soc_pct:.0f}% — ignoring HIGHER"
+            )
+            return c104.ResponseState.SUCCESS
         state.grid_power_setpoint_kw -= state.step_kw
     elif point.value == c104.Step.LOWER:
         state.grid_power_setpoint_kw += state.step_kw
@@ -122,7 +158,7 @@ def _update_point(point: c104.Point) -> None:
     elif point.io_address == Config.SOC_VAL:
         point.value = telemetry.soc_percent
     elif point.io_address == Config.READ_TEMP:
-        point.value = 25.0  # placeholder until real BMS integration
+        point.value = telemetry.temperature_c
     elif point.io_address == Config.EV_VOLTAGE:
         point.value = telemetry.voltage_v
     elif point.io_address == Config.EV_CURRENT:

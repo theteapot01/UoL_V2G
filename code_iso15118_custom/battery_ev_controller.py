@@ -32,9 +32,8 @@ grid's IEC 104 commands.
 
 On this (EVCC) side, ``get_scheduled_dc_charge_loop_params()`` clamps the
 target current to ``self.evse_max_charge_power`` / ``self.evse_max_discharge_power``.
-These are initialised from the ChargeParameterDiscovery response and can be
-updated per-loop-iteration if a hook into the Josev state machine is added
-(see ``update_evse_limits()`` and the TODO note below).
+These are initialised from the ChargeParameterDiscovery response and updated
+each loop iteration via ``update_evse_limits()``, called from the Josev state machine.
 """
 
 import logging
@@ -143,11 +142,10 @@ class BatterySimEVController(SimEVController):
         #
         # Seeded with large defaults so the profile runs unclamped until the
         # SECC starts relaying the grid's setpoint through the charge-loop
-        # response.  update_evse_limits() overwrites them each loop iteration
-        # once the Josev hook is in place (see the TODO below).
+        # response.  update_evse_limits() overwrites them each loop iteration.
         # -----------------------------------------------------------------
         self.evse_max_charge_power: float = 300_000.0      # 300 kW [W]
-        self.evse_max_discharge_power: float = 20_000.0   # 300 kW [W]
+        self.evse_max_discharge_power: float = 20_000.0    # 20 kW [W]
 
         # Initialise SoC from the first profile point so that
         # ChargeParameterDiscovery reports the real starting SoC.
@@ -167,30 +165,6 @@ class BatterySimEVController(SimEVController):
     def update_evse_limits(self, max_charge_w: float, max_discharge_w: float):
         """
         Update the EVSE power limits from the latest DC_ChargeLoopRes.
-
-        Call this from the Josev EVCC state machine after parsing the
-        charge-loop response. For example:
-
-        In iso15118/evcc/states/iso15118_20_states.py, inside the class that
-        handles DC_ChargeLoopRes (search for ``DC_ChargeLoopRes``), after the
-        response is parsed and before ``continue_charging()`` is called, add::
-
-            ctrl = self.comm_session.ev_controller
-            if hasattr(ctrl, 'update_evse_limits'):
-                res_ctrl = charge_loop_res.bpt_scheduled_dc_charge_loop_res
-                if res_ctrl is not None:
-                    charge_w = res_ctrl.evse_maximum_charge_power
-                    discharge_w = res_ctrl.evse_max_discharge_power
-                    ctrl.update_evse_limits(
-                        float(charge_w.value * 10 ** charge_w.exponent),
-                        float(discharge_w.value * 10 ** discharge_w.exponent),
-                    )
-
-        To find the right spot, run::
-
-            grep -rn "ChargeLoopRes\\|charge_loop_res\\|bpt_scheduled"
-                iso15118/evcc/states/iso15118_20_states.py
-
         Parameters
         ----------
         max_charge_w : float

@@ -55,6 +55,7 @@ Sign convention (matches the OCPP MeterValues usage in the project):
 """
 
 import json
+import math
 import threading
 import time
 from typing import Optional
@@ -103,6 +104,14 @@ class SimulatedBattery(BatteryProfile):
     max_step_s:
         Safety clamp on the integration timestep [s]; guards against a huge
         SoC jump if a long real-time gap occurs between advance() calls.
+    ambient_temp_c:
+        Baseline cell temperature [°C] when the pack is idle.
+    thermal_resistance_c_per_kw:
+        Steady-state temperature rise per kW of delivered power [°C/kW].
+        At 20 kW discharge → +1 °C; at 300 kW charge → +15 °C above ambient.
+    thermal_time_constant_s:
+        RC time constant of the pack thermal mass [s]. 300 s ≈ 5-minute lag
+        typical of an actively-cooled large-format LFP pack.
     """
 
     def __init__(
@@ -119,6 +128,9 @@ class SimulatedBattery(BatteryProfile):
         default_step_kw: float = 1.0,
         target_soc: Optional[float] = 100.0,
         max_step_s: float = 30.0,
+        ambient_temp_c: float = 25.0,
+        thermal_resistance_c_per_kw: float = 0.05,
+        thermal_time_constant_s: float = 300.0,
     ):
         if capacity_kwh <= 0:
             raise ValueError("capacity_kwh must be positive")
@@ -138,6 +150,9 @@ class SimulatedBattery(BatteryProfile):
         self.default_step_kw = float(default_step_kw)
         self.target_soc = target_soc
         self.max_step_s = float(max_step_s)
+        self.ambient_temp_c = float(ambient_temp_c)
+        self.thermal_resistance_c_per_kw = float(thermal_resistance_c_per_kw)
+        self.thermal_time_constant_s = float(thermal_time_constant_s)
 
         self._soc_init = float(soc_init)
 
@@ -151,6 +166,7 @@ class SimulatedBattery(BatteryProfile):
         self._throughput_kwh = 0.0            # cumulative |energy| through cells
         self._power_setpoint_kw = 0.0         # commanded (+charge / -discharge)
         self._actual_power_kw = 0.0           # delivered after limit clamping
+        self._temperature_c = float(ambient_temp_c)  # pack temperature [°C]
         self._elapsed_min = 0.0               # wall-clock minutes since reset
         self._last_t: Optional[float] = None  # monotonic timestamp of last tick
 
@@ -229,6 +245,9 @@ class SimulatedBattery(BatteryProfile):
 
             if power == 0.0:
                 self._actual_power_kw = 0.0
+                # Temperature decays toward ambient when idle
+                _alpha = 1.0 - math.exp(-dt_s / self.thermal_time_constant_s)
+                self._temperature_c += _alpha * (self.ambient_temp_c - self._temperature_c)
                 self._elapsed_min += dt_s / 60.0
                 return
 
@@ -259,6 +278,11 @@ class SimulatedBattery(BatteryProfile):
             self._soh = max(
                 0.0, 1.0 - (1.0 - self.soh_eol) * (efc / self.cycle_life)
             )
+
+            # --- Thermal: RC relaxation toward (ambient + resistive heating) ---
+            _alpha = 1.0 - math.exp(-dt_s / self.thermal_time_constant_s)
+            _target_t = self.ambient_temp_c + self.thermal_resistance_c_per_kw * abs(self._actual_power_kw)
+            self._temperature_c += _alpha * (_target_t - self._temperature_c)
 
             self._elapsed_min += dt_s / 60.0
 
@@ -309,6 +333,7 @@ class SimulatedBattery(BatteryProfile):
         with self._lock:
             self._soc = self._soc_init
             self._actual_power_kw = 0.0
+            self._temperature_c = self.ambient_temp_c
             self._elapsed_min = 0.0
             self._last_t = None
             # NOTE: self._power_setpoint_kw is NOT reset here, because in a
@@ -337,6 +362,7 @@ class SimulatedBattery(BatteryProfile):
             soh_percent=self._soh * 100.0,
             power_kw=self._actual_power_kw,
             phase=phase,
+            temperature_c=self._temperature_c,
         )
 
     # ------------------------------------------------------------------
@@ -360,6 +386,11 @@ class SimulatedBattery(BatteryProfile):
     def power_setpoint_kw(self) -> float:
         """The currently commanded power, before SoC-limit clamping."""
         return self._power_setpoint_kw
+
+    @property
+    def temperature_c(self) -> float:
+        """Battery pack temperature [°C]."""
+        return self._temperature_c
 
     @property
     def usable_capacity_kwh(self) -> float:
