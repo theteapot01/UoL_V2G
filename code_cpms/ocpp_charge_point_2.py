@@ -1,8 +1,30 @@
 import asyncio
+import json
 import logging
+import os
 import random
+import ssl
 from datetime import datetime, timezone
 from charger_state import state
+
+# Shared preferences file read by the EVCC process to pick up target_soc changes.
+_PREFS_FILE = "/tmp/v2g_prefs.json"
+
+
+def _write_prefs_file() -> None:
+    """Atomically write current state preferences so the EVCC can read them."""
+    prefs = {
+        "target_soc_pct": state.pref_target_soc_pct,
+        "min_soc_pct":    state.pref_min_soc_pct,
+        "max_soc_pct":    state.pref_max_soc_pct,
+    }
+    try:
+        tmp = _PREFS_FILE + ".tmp"
+        with open(tmp, "w") as f:
+            json.dump(prefs, f)
+        os.replace(tmp, _PREFS_FILE)
+    except OSError:
+        pass
 
 try:
     import websockets
@@ -15,9 +37,11 @@ except ModuleNotFoundError:
 
     sys.exit( 1 )
 
+from ocpp.routing import on
 from ocpp.v21 import ChargePoint as cp
-from ocpp.v21 import call
+from ocpp.v21 import call, call_result
 from ocpp.v21.datatypes import ChargingStationType
+from ocpp.v21.enums import Action
 
 from config import Config
 
@@ -38,7 +62,45 @@ def simulate_power_watt():
         return round( random.uniform( -20000, -500 ), 2 )  # V2G discharge back to grid
 
 
+def _handle_target_soc(v: str) -> None:
+    state.pref_target_soc_pct = float(v)
+    _write_prefs_file()
+
+_PREF_HANDLERS = {
+    "MinSoC":        lambda v: setattr(state, "pref_min_soc_pct",   float(v)),
+    "MaxSoC":        lambda v: setattr(state, "pref_max_soc_pct",   float(v)),
+    "TargetSoC":     _handle_target_soc,
+    "DepartureTime": lambda v: setattr(state, "pref_departure_time", str(v)),
+}
+
+
 class ChargePoint( cp ):
+
+    @on(Action.set_variables)
+    async def on_set_variables(self, set_variable_data, **kwargs):
+        results = []
+        for item in set_variable_data:
+            component = item.get("component", {}).get("name", "")
+            variable  = item.get("variable",  {}).get("name", "")
+            value     = item.get("attribute_value", "")
+
+            if component == "UserPreferences" and variable in _PREF_HANDLERS:
+                try:
+                    _PREF_HANDLERS[variable](value)
+                    status = "Accepted"
+                    logging.info("Preference set: %s = %s", variable, value)
+                except (ValueError, TypeError) as exc:
+                    status = "Rejected"
+                    logging.warning("Bad preference value %s=%r: %s", variable, value, exc)
+            else:
+                status = "UnknownComponent" if component != "UserPreferences" else "UnknownVariable"
+
+            results.append({
+                "attribute_status": status,
+                "component": {"name": component},
+                "variable":  {"name": variable},
+            })
+        return call_result.SetVariables(set_variable_result=results)
 
     async def send_heartbeat( self, interval ):
         request = call.Heartbeat()
@@ -89,6 +151,34 @@ class ChargePoint( cp ):
                                 "unit_of_measure": { "unit": "Percent" },
                                 "context": "Sample.Periodic",
                                 },
+                            {
+                                # EV target voltage from ISO 15118 DC_ChargeLoopReq
+                                "value": round( telemetry.voltage_v, 1 ),
+                                "measurand": "Voltage",
+                                "unit_of_measure": { "unit": "V" },
+                                "context": "Sample.Periodic",
+                                },
+                            {
+                                # EV target current from ISO 15118 DC_ChargeLoopReq
+                                "value": round( telemetry.current_a, 2 ),
+                                "measurand": "Current.Import",
+                                "unit_of_measure": { "unit": "A" },
+                                "context": "Sample.Periodic",
+                                },
+                            {
+                                # EVSE max charge power offered to EV in DC_ChargeLoopRes [W]
+                                "value": round( state.iso_evse_max_charge_w, 1 ),
+                                "measurand": "Power.Import.Offered",
+                                "unit_of_measure": { "unit": "W" },
+                                "context": "Sample.Periodic",
+                                },
+                            {
+                                # EVSE max discharge power offered to grid in DC_ChargeLoopRes [W]
+                                "value": round( state.iso_evse_max_discharge_w, 1 ),
+                                "measurand": "Power.Export.Offered",
+                                "unit_of_measure": { "unit": "W" },
+                                "context": "Sample.Periodic",
+                                },
                             ],
                         }
                     ],
@@ -98,8 +188,8 @@ class ChargePoint( cp ):
 
             direction = "⬆ V2G discharge" if power_w < 0 else "⬇ Charging"
             logging.info(
-                "MeterValues sent | EVSE %s | Power: %.1f W (%s) | SoC: %.1f%% | Energy: %.2f Wh",
-                evse_id, power_w, direction, telemetry.soc_percent, cumulative_energy_wh
+                "MeterValues sent | EVSE %s | Power: %.1f W (%s) | SoC: %.1f%% | SoH: %.1f%% | Energy: %.2f Wh",
+                evse_id, power_w, direction, telemetry.soc_percent, telemetry.soh_percent, cumulative_energy_wh
                 )
 
             await asyncio.sleep( interval )
@@ -123,13 +213,28 @@ class ChargePoint( cp ):
                 )
 
 
+def _build_client_ssl_context() -> ssl.SSLContext:
+    """
+    Security Profile 3: TLS client that presents the charge point certificate.
+    The CSMS server is verified against the shared CA; hostname/IP checking
+    uses the SAN embedded in the CSMS cert by create_ocpp_certs.sh.
+    """
+    ctx = ssl.create_default_context()
+    ctx.load_verify_locations(Config.OCPP_CA_CERT)           # trust our CA
+    ctx.load_cert_chain(Config.OCPP_CP_CERT, Config.OCPP_CP_KEY)  # client identity
+    return ctx
+
+
 async def run_ocpp_client():
+    ssl_ctx = _build_client_ssl_context()
     while True:
         try:
-            url = f"ws://{Config.OCPP_SERVER}/CP_1"
+            url = f"wss://{Config.OCPP_SERVER}/CP_1"
             print(f"Connecting to: {url}")
             async with websockets.connect(
-                    url, subprotocols=["ocpp2.1"]
+                    url,
+                    subprotocols=["ocpp2.1"],
+                    ssl=ssl_ctx,
                     ) as ws:
                 charge_point = ChargePoint( "CP_1", ws )
                 await asyncio.gather(

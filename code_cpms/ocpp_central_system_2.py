@@ -29,8 +29,12 @@ Usage:
     Run this script on the central system (laptop/server):
         $ python3 central_system.py
 
-    The server listens on port 9000. Charge points connect via:
-        ws://<host>:9000/<charge_point_id>
+    The server listens on port 9000 with mutual TLS (Security Profile 3).
+    Charge points connect via:
+        wss://<host>:9000/<charge_point_id>
+
+    Generate certificates once (run from project root):
+        $ ./create_ocpp_certs.sh [CSMS_IP]
 
     If running across subnets (e.g. university network), use an SSH tunnel:
         $ ssh -L 9000:localhost:9000 <user>@<CPMS_host> -N
@@ -44,7 +48,12 @@ Dependencies:
 # --------------------------------------------------------------
 import asyncio
 import logging
+import ssl
+import time
 from datetime import datetime, timezone
+
+from code_grid.grid_state import grid_state
+from config import Config
 
 try:
     import websockets
@@ -59,7 +68,7 @@ except ModuleNotFoundError:
 
 from ocpp.routing import on
 from ocpp.v21 import ChargePoint as cp
-from ocpp.v21 import call_result
+from ocpp.v21 import call, call_result
 from ocpp.v21.enums import Action
 
 logging.basicConfig( level=logging.INFO )
@@ -77,6 +86,10 @@ class ChargePoint( cp ):
     # notification from charge point when booting
     @on( Action.boot_notification )
     def on_boot_notification( self, charging_station, reason, **kwargs ):
+        # Reset per-session energy accumulators on each new charge point boot.
+        grid_state.ocpp.energy_wh     = 0.0
+        grid_state.ocpp.v2g_energy_wh = 0.0
+        grid_state.ocpp.timestamp     = 0.0
         return call_result.BootNotification(
             current_time=datetime.now( timezone.utc ).isoformat(),
             interval=10,
@@ -115,6 +128,10 @@ class ChargePoint( cp ):
         Receives MeterValues from the charge point and logs them.
         Negative Power.Active.Import = EV feeding energy back to grid (V2G).
         """
+        _power_w   = 0.0
+        _energy_wh = 0.0
+        _soc_pct   = 0.0
+
         for mv in meter_value:
             timestamp = mv.get( "timestamp", "unknown time" )
             for sample in mv.get( "sampled_value", [] ):
@@ -122,6 +139,22 @@ class ChargePoint( cp ):
                 value = sample.get( "value", 0 )
                 unit_obj = sample.get( "unit_of_measure", { } )
                 unit = unit_obj.get( "unit", "" ) if isinstance( unit_obj, dict ) else ""
+
+                # Snapshot for dashboard
+                if measurand == "Power.Active.Import":
+                    _power_w = float( value )
+                elif measurand == "Energy.Active.Import.Register":
+                    _energy_wh = float( value )
+                elif measurand == "SoC":
+                    _soc_pct = float( value )
+                elif measurand == "Voltage":
+                    grid_state.ocpp.voltage_v = float( value )
+                elif measurand == "Current.Import":
+                    grid_state.ocpp.current_a = float( value )
+                elif measurand == "Power.Import.Offered":
+                    grid_state.ocpp.evse_max_charge_kw = float( value ) / 1000.0
+                elif measurand == "Power.Export.Offered":
+                    grid_state.ocpp.evse_max_discharge_kw = float( value ) / 1000.0
 
                 # Flag V2G discharge events specifically
                 if measurand == "Power.Active.Import":
@@ -151,12 +184,50 @@ class ChargePoint( cp ):
                         timestamp,
                         )
 
+        # Accumulate V2G export energy by integrating negative power over the MeterValues interval.
+        now = time.time()
+        prev_ts = grid_state.ocpp.timestamp
+        if prev_ts > 0 and _power_w < 0:
+            dt_h = (now - prev_ts) / 3600.0
+            grid_state.ocpp.v2g_energy_wh += abs(_power_w) * dt_h
+
+        # Persist to shared state so the web dashboard can display OCPP data.
+        grid_state.ocpp.power_w     = _power_w
+        grid_state.ocpp.energy_wh   = _energy_wh
+        grid_state.ocpp.soc_percent = _soc_pct
+        grid_state.ocpp.timestamp   = now
+
         return call_result.MeterValues()
+
+    async def send_preferences(self, prefs) -> None:
+        """Push user preferences to the charge point via OCPP SetVariables."""
+        await self.call(call.SetVariables(set_variable_data=[
+            {"attribute_value": str(prefs.min_soc_pct),    "component": {"name": "UserPreferences"}, "variable": {"name": "MinSoC"}},
+            {"attribute_value": str(prefs.max_soc_pct),    "component": {"name": "UserPreferences"}, "variable": {"name": "MaxSoC"}},
+            {"attribute_value": str(prefs.target_soc_pct), "component": {"name": "UserPreferences"}, "variable": {"name": "TargetSoC"}},
+            {"attribute_value": prefs.departure_time,       "component": {"name": "UserPreferences"}, "variable": {"name": "DepartureTime"}},
+        ]))
 
 
 # --------------------------------------------------------------
 #                   Example on connect
 # --------------------------------------------------------------
+
+def _extract_tls_info(websocket) -> None:
+    """Populate grid_state.security.ocpp with live cipher/version from the SSL socket."""
+    try:
+        ssl_obj = websocket.transport.get_extra_info("ssl_object")
+        if ssl_obj is None:
+            # Fallback for older websockets versions
+            ssl_obj = getattr(websocket, "socket", None)
+        if ssl_obj is not None:
+            cipher_info = ssl_obj.cipher()          # (name, protocol, bits) or None
+            grid_state.security.ocpp.tls_version = ssl_obj.version() or "TLS"
+            grid_state.security.ocpp.cipher      = cipher_info[0] if cipher_info else ""
+    except Exception:
+        pass
+    grid_state.security.ocpp.connected = True
+
 
 async def on_connect( websocket ):
     """For every new charge point that connects, create a ChargePoint
@@ -178,18 +249,41 @@ async def on_connect( websocket ):
             )
         return await websocket.close()
 
+    _extract_tls_info(websocket)
+
     charge_point_id = websocket.request.path.strip( "/" )
     charge_point = ChargePoint( charge_point_id, websocket )
 
-    await charge_point.start()
+    grid_state.connected_charge_point = charge_point
+    try:
+        await charge_point.start()
+    finally:
+        grid_state.connected_charge_point = None
+        grid_state.security.ocpp.connected = False
+
+
+def _build_server_ssl_context() -> ssl.SSLContext:
+    """
+    Security Profile 3: TLS server that requires a valid client certificate.
+    The CSMS presents its own cert; the charge point must present a cert
+    signed by the same CA before the WebSocket handshake proceeds.
+    """
+    ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+    ctx.load_cert_chain(Config.OCPP_CSMS_CERT, Config.OCPP_CSMS_KEY)
+    ctx.load_verify_locations(Config.OCPP_CA_CERT)
+    ctx.verify_mode = ssl.CERT_REQUIRED   # reject connections without a client cert
+    return ctx
 
 
 async def run_ocpp_server():
+    ssl_ctx = _build_server_ssl_context()
     server = await websockets.serve(
-        on_connect, "0.0.0.0", 9000, subprotocols=["ocpp2.1"]
+        on_connect, "0.0.0.0", 9000,
+        subprotocols=["ocpp2.1"],
+        ssl=ssl_ctx,
         )
 
-    logging.info( "Server Started listening to new connections..." )
+    logging.info("CSMS listening on wss://0.0.0.0:9000 (Security Profile 3 — mTLS)")
     await server.wait_closed()
 
 

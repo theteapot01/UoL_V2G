@@ -23,6 +23,17 @@ We override only the few methods that decide:
 Everything else (charge parameter discovery, precharge logic, welding
 detection, all AC and Dynamic-mode -20 methods) is inherited unchanged
 from SimEVController.
+
+EVSE limit clamping
+-------------------
+The EV respects the EVSE's power limits from each DC_ChargeLoopRes.  The
+TelemetryEVSEController on the SECC side adjusts those limits based on the
+grid's IEC 104 commands.
+
+On this (EVCC) side, ``get_scheduled_dc_charge_loop_params()`` clamps the
+target current to ``self.evse_max_charge_power`` / ``self.evse_max_discharge_power``.
+These are initialised from the ChargeParameterDiscovery response and updated
+each loop iteration via ``update_evse_limits()``, called from the Josev state machine.
 """
 
 import logging
@@ -36,10 +47,6 @@ from iso15118.shared.messages.din_spec.datatypes import (
 )
 from iso15118.shared.messages.datatypes import (
     DCEVChargeParams,
-    PVEVMaxCurrentLimit,
-    PVEVMaxPowerLimit,
-    PVEVMaxVoltageLimit,
-    PVEVEnergyCapacity,
     PVEVTargetCurrent,
     PVEVTargetVoltage,
 )
@@ -64,11 +71,11 @@ class BatterySimEVController(SimEVController):
         The EVCC configuration, as for SimEVController.
     profile:
         A BatteryProfile supplying the battery state at each charge-loop step.
-        Defaults to a CsvProfile reading the LFP 50 kWh profile if not given.
+        Defaults to a CsvProfile reading the LFP 82 kWh profile if not given.
     """
 
     DEFAULT_PROFILE_PATH = (
-        "/home/pi/UoL_V2G/code_battery_sim/profiles/lfp_50kwh.csv"
+        "/home/pi/UoL_V2G/code_battery_sim/profiles/lfp_82kwh.csv"
     )
     DEFAULT_PARAMS_PATH = (
         "/home/pi/UoL_V2G/code_battery_sim/evtype/lfp_parameters.csv"
@@ -129,6 +136,17 @@ class BatterySimEVController(SimEVController):
         # Trickle current requested during precharge, in amperes.
         self.precharge_current_a = 1.0
 
+        # -----------------------------------------------------------------
+        # EVSE power limits [W] — the charger's (and hence the grid's)
+        # allowed envelope for this session.
+        #
+        # Seeded with large defaults so the profile runs unclamped until the
+        # SECC starts relaying the grid's setpoint through the charge-loop
+        # response.  update_evse_limits() overwrites them each loop iteration.
+        # -----------------------------------------------------------------
+        self.evse_max_charge_power: float = 300_000.0      # 300 kW [W]
+        self.evse_max_discharge_power: float = 20_000.0    # 20 kW [W]
+
         # Initialise SoC from the first profile point so that
         # ChargeParameterDiscovery reports the real starting SoC.
         start = self.profile.current()
@@ -140,6 +158,55 @@ class BatterySimEVController(SimEVController):
             if hasattr(self.profile, "__len__")
             else f"BatterySimEVController initialised (start SoC {self._soc}%)"
         )
+
+    # ------------------------------------------------------------------
+    #  EVSE-limit update hook
+    # ------------------------------------------------------------------
+    def update_evse_limits(self, max_charge_w: float, max_discharge_w: float):
+        """
+        Update the EVSE power limits from the latest DC_ChargeLoopRes.
+        Parameters
+        ----------
+        max_charge_w : float
+            Maximum charge power the EVSE allows this iteration [W].
+        max_discharge_w : float
+            Maximum discharge (V2G) power the EVSE allows this iteration [W].
+        """
+        self.evse_max_charge_power = max_charge_w
+        self.evse_max_discharge_power = max_discharge_w
+        logger.debug(
+            f"EVSE limits received: charge={max_charge_w:.0f} W, "
+            f"discharge={max_discharge_w:.0f} W"
+        )
+
+        # If we're using the live SimulatedBattery, follow the grid's offered
+        # power. The grid's EVSE limits are treated as a *target* the EV charges
+        # toward, not just a ceiling: a higher charge offer makes the EV draw
+        # more, a lower offer makes it draw less, and a discharge-only offer
+        # flips it into V2G. The SimulatedBattery clamps internally to its own
+        # physical max_charge_kw / max_discharge_kw, so aiming for the full
+        # offer is safe.
+        from simulated_battery import SimulatedBattery
+        if isinstance(self.profile, SimulatedBattery):
+            max_charge_kw = max_charge_w / 1000.0
+            max_discharge_kw = max_discharge_w / 1000.0
+
+            if max_charge_kw > 0:
+                # Grid is offering charge: aim to charge at the offered power.
+                target_kw = max_charge_kw
+            elif max_discharge_kw > 0:
+                # Grid is offering discharge only (V2G): feed back at the
+                # offered power.
+                target_kw = -max_discharge_kw
+            else:
+                # Grid offering nothing in either direction: idle.
+                target_kw = 0.0
+
+            self.profile.set_power_setpoint(target_kw)
+
+    # ------------------------------------------------------------------
+    #  Charge-loop lifecycle
+    # ------------------------------------------------------------------
 
     async def continue_charging(self) -> bool:
         """
@@ -162,20 +229,22 @@ class BatterySimEVController(SimEVController):
 
         # Report the current row, then advance for the next call. This means
         # the SoC set here is the one carried into the next CurrentDemandReq.
-        state = self.profile.current()
-        self._soc = int(round(state.soc_percent))
+        bp_state = self.profile.current()
+        self._soc = int(round(bp_state.soc_percent))
         self._steps_taken += 1
         logger.info(
-            f"Charge loop step {self._steps_taken}: t={state.time_min:.0f} min, "
-            f"SoC={state.soc_percent:.1f}%, power={state.power_kw:.2f} kW, "
-            f"phase={state.phase}"
+            f"Charge loop step {self._steps_taken}: "
+            f"t={bp_state.time_min:.0f} min, "
+            f"SoC={bp_state.soc_percent:.1f}%, "
+            f"power={bp_state.power_kw:.2f} kW, "
+            f"phase={bp_state.phase}"
         )
 
         # End if we've run out of rows or hit a terminal 'done' row.
-        if self.profile.at_end() or state.is_done:
+        if self.profile.at_end() or bp_state.is_done:
             logger.info(
                 f"Charge loop ending after step {self._steps_taken} "
-                f"(SoC {self._soc}%, phase '{state.phase}')"
+                f"(SoC {self._soc}%, phase '{bp_state.phase}')"
             )
             return False
 
@@ -257,8 +326,8 @@ class BatterySimEVController(SimEVController):
         Overrides SimEVController.get_dc_charge_params(), which returned a fixed
         1 A target.
         """
-        state = self.profile.current()
-        power_w = state.power_kw * 1000.0
+        bp_state = self.profile.current()
+        power_w = bp_state.power_kw * 1000.0
         voltage = self.nominal_voltage if self.nominal_voltage > 0 else 1.0
 
         if self._precharge_complete:
@@ -306,18 +375,37 @@ class BatterySimEVController(SimEVController):
     ) -> ScheduledDCChargeLoopReqParams:
         """
         Build the Scheduled-mode DC charge-loop parameters with target current
-        and voltage derived from the current battery profile point.
+        and voltage derived from the current battery profile point, clamped to
+        the EVSE limits (which reflect the grid's wishes).
 
-        Target current = profile power / nominal voltage (I = P / V).
+        Target current = profile power / nominal voltage (I = P / V), after
+        clamping the power to [0, evse_max_charge_power] for charging and
+        [-evse_max_discharge_power, 0] for discharging.
+
         Target voltage = nominal pack voltage.
 
         Overrides SimEVController.get_scheduled_dc_charge_loop_params(), which
         returned a fixed (Exponent=1, Value=20) placeholder for both fields.
         """
-        state = self.profile.current()
-        power_w = state.power_kw * 1000.0
+        bp_state = self.profile.current()
+        power_w = bp_state.power_kw * 1000.0
         voltage = self.nominal_voltage if self.nominal_voltage > 0 else 1.0
+
+        # Clamp to what the EVSE (and hence the grid) is currently allowing.
+        if power_w > 0:
+            power_w = min(power_w, self.evse_max_charge_power)
+        elif power_w < 0:
+            power_w = max(power_w, -self.evse_max_discharge_power)
+
         target_current_a = power_w / voltage
+
+        logger.debug(
+            f"ChargeLoopReq: profile={bp_state.power_kw:.2f} kW, "
+            f"clamped={power_w / 1000:.2f} kW, "
+            f"I={target_current_a:.2f} A, V={voltage:.0f} V  "
+            f"(EVSE limits: +{self.evse_max_charge_power:.0f} W / "
+            f"-{self.evse_max_discharge_power:.0f} W)"
+        )
 
         return ScheduledDCChargeLoopReqParams(
             ev_target_current=self._as_rational_number(target_current_a),

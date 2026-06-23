@@ -23,8 +23,8 @@ as with the upstream main.py.
 import asyncio
 import logging
 import sys
-
 import pathlib
+
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 
 from iso15118.secc import SECCHandler
@@ -42,12 +42,13 @@ logger = logging.getLogger(__name__)
 async def main():
     config = Config()
     config.load_envs()
-    if len(sys.argv) > 1:
+    if len( sys.argv ) > 1:
         secc_config_file_path = sys.argv[1]
         if secc_config_file_path:
             config.secc_config_file_path = secc_config_file_path
 
-    # Initialize the EVSE controller
+    # TelemetryEVSEController forwards EV data to shared state and relays
+    # grid commands back to the EV via EVSE session limits.
     evse_controller = await TelemetryEVSEController.create()
     logger.info("Using TelemetryEVSEController")
 
@@ -55,20 +56,20 @@ async def main():
         SECCHandler(
             exi_codec=ExificientEXICodec(),
             evse_controller=evse_controller,
-            config=config
-        ).start(config.iface),
+            config=config,
+            ).start( config.iface ),
         run_iec104_server(),
         run_ocpp_client(),
-    )
+        )
 
 
 def run():
     try:
-        asyncio.run(main())
+        asyncio.run( main() )
     except KeyboardInterrupt:
-        logger.info("Closing connections...")
+        logger.info( "Closing connections..." )
     except Exception as e:
-        logger.exception(f"SECC program terminated with error: {e}")
+        logger.exception( f"SECC program terminated with error: {e}" )
 
 
 if __name__ == "__main__":
