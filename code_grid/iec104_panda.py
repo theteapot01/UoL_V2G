@@ -82,6 +82,7 @@ LINE_HYSTERESIS_PCT  =  5.0   # ± half-width of dead zone around target
 # This causes the power to ramp up until the binding constraint (trafo or line)
 # enters its dead zone, then hold there rather than oscillate.
 SOC_APPROACH_BAND_PCT = 5.0   # start pre-emptive ramp-down this many % below max_soc
+STEP_KW               = 5.0   # one regulating step; must match SharedState.step_kw on the charger
 
 # ── Voltage-stabilisation demo constants ──────────────────────────────────────
 # Background sine disturbance injected at bus 3 to stress the bus voltage.
@@ -426,6 +427,11 @@ async def run_iec104_client():
                     vm_pu=grid_state.grid.bus2_voltage_pu,
                     voltage_stab=grid_state.voltage_stab_mode,
                 )
+                # Prevent burst overshoot across zero: when power is within one
+                # step of zero a multi-command burst can step into discharge before
+                # the measured value updates and the guard catches it.
+                if _pending_cmd == "HIGHER" and 0.0 < point_meter.value <= STEP_KW:
+                    n_bursts = 1
                 t_tx = time.time()
                 ok = 0
                 for _ in range(n_bursts):
