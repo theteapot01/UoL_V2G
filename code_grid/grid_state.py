@@ -41,6 +41,7 @@ class GridSnapshot:
     bus2_voltage_pu: float = 1.0
     trafo_loading_pct: float = 0.0
     line_loading_pct: float = 0.0
+    sim_bg_load_kw: float = 0.0   # background disturbance in voltage_stab_mode
 
 
 @dataclass
@@ -91,6 +92,7 @@ class GridDashboardState:
         # Manual control state
         self.manual_override: Optional[str] = None  # "HIGHER", "LOWER", or None
         self.auto_control: bool = True
+        self.voltage_stab_mode: bool = False  # V2G voltage-stabilisation demo
 
         # True when the charger is reporting ~0 kW (no EV connected / standby)
         self.charger_idle: bool = True

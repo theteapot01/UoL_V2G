@@ -1,5 +1,6 @@
 import asyncio
 import datetime
+import math
 import os
 import time
 
@@ -37,6 +38,10 @@ pp.create_ext_grid( net, bus=b1, vm_pu=0.98, name="Grid Connection" )
 pp.create_load( net, bus=b3, p_mw=Config.LOAD_MW, q_mvar=Config.LOAD_MVAR, name="Load" )
 
 pp.create_transformer( net, hv_bus=b1, lv_bus=b2, std_type=Config.TRAFO_TYPE, name="Trafo" )
+
+# Background disturbance load — only active in voltage_stab_mode.
+# Kept at 0 W in normal operation; driven by a sine wave in stabilisation demo.
+bg_load_idx = pp.create_load( net, bus=b3, p_mw=0.0, q_mvar=0.0, name="BackgroundSim" )
 
 pp.create_line(
     net,
@@ -77,6 +82,15 @@ LINE_HYSTERESIS_PCT  =  5.0   # ± half-width of dead zone around target
 # enters its dead zone, then hold there rather than oscillate.
 SOC_APPROACH_BAND_PCT = 5.0   # start pre-emptive ramp-down this many % below max_soc
 
+# ── Voltage-stabilisation demo constants ──────────────────────────────────────
+# Background sine disturbance injected at bus 3 to stress the bus voltage.
+SIM_BG_AMPLITUDE_MW = 0.040   # ±40 kW — within V2G capability so effect is visible
+SIM_BG_PERIOD_S     = 60.0    # one full oscillation per minute
+
+# Voltage-droop control band for the stabilisation mode.
+VDROOP_TARGET    = 0.975   # desired bus 2 voltage (pu)
+VDROOP_DEADBAND  = 0.003   # ±0.003 pu dead zone — avoids chattering at target
+
 
 # --------------------------------------------------------------
 #                   Functions
@@ -89,6 +103,8 @@ def _adaptive_bursts(
     soc: float,
     max_soc_pct: float,
     soc_valid: bool,
+    vm_pu: float = 1.0,
+    voltage_stab: bool = False,
 ) -> int:
     """
     Return how many IEC 104 step commands to send in one 4-second transmit
@@ -96,15 +112,26 @@ def _adaptive_bursts(
     single cycle, so the effective rate scales with urgency without touching
     the step size or the cycle period.
 
-    HIGHER burst rules (shed load / ramp down charge):
+    Normal HIGHER burst rules (shed load / ramp down charge):
       4 × — grid emergency  (trafo > STRESS or line > STRESS)
       3 × — SoC at or above ceiling (sustained overshoot prevention)
       2 × — grid approaching capacity OR SoC within approach band
       1 × — all other cases
 
-    LOWER burst rules (ramp up charge): always 1 × for now; the grid has
-    spare capacity by definition when LOWER is chosen, so urgency is low.
+    Voltage-stabilisation HIGHER burst rules (voltage droop):
+      4 × — voltage below emergency floor (< 0.95 pu)
+      2 × — voltage more than 2× deadband below target
+      1 × — inside droop band
+
+    LOWER burst rules: always 1 × — grid has spare capacity by definition.
     """
+    if voltage_stab and cmd == "HIGHER":
+        if vm_pu < VOLTAGE_MIN_PU:
+            return 4
+        if vm_pu < VDROOP_TARGET - VDROOP_DEADBAND * 2:
+            return 2
+        return 1
+
     if cmd == "HIGHER":
         if trafo_pct > TRAFO_STRESS_PCT or line_pct > LINE_STRESS_PCT:
             return 4
@@ -224,6 +251,13 @@ async def run_iec104_client():
             if True:
                 t_pp = time.time()
                 net.load.at[0, "p_mw"] = point_meter.value / 1000
+                # Background disturbance: sine wave active only in voltage_stab_mode.
+                if grid_state.voltage_stab_mode:
+                    bg_mw = SIM_BG_AMPLITUDE_MW * math.sin(2 * math.pi * now / SIM_BG_PERIOD_S)
+                else:
+                    bg_mw = 0.0
+                net.load.at[bg_load_idx, "p_mw"] = bg_mw
+                grid_state.grid.sim_bg_load_kw = round(bg_mw * 1000, 1)
                 pp.runpp( net )
                 grid_state.pandapower_ms = (time.time() - t_pp) * 1000
 
@@ -254,6 +288,35 @@ async def run_iec104_client():
                     _pending_src   = "manual"
                     _auto_streak   = 0
                     _prev_auto_cmd = _pending_cmd
+                elif grid_state.voltage_stab_mode:
+                    # Voltage-droop control: track bus 2 voltage toward VDROOP_TARGET.
+                    # HIGHER = reduce charge / start V2G → raises bus voltage.
+                    # LOWER  = increase charge → lowers bus voltage.
+                    # SoC floor is still respected as a safety guard.
+                    prefs = grid_state.prefs
+                    if _soc_valid and soc < prefs.min_soc_pct:
+                        auto_cmd = "HOLD"   # battery too low to support V2G
+                    elif vm_pu_b2 < VDROOP_TARGET - VDROOP_DEADBAND:
+                        auto_cmd = "HIGHER"
+                    elif vm_pu_b2 > VDROOP_TARGET + VDROOP_DEADBAND:
+                        auto_cmd = "LOWER"
+                    else:
+                        auto_cmd = "HOLD"
+
+                    if auto_cmd == "HOLD":
+                        _pending_cmd   = "HOLD"
+                        _auto_streak   = 0
+                        _prev_auto_cmd = "HOLD"
+                    else:
+                        if auto_cmd == _prev_auto_cmd:
+                            _auto_streak += 1
+                        else:
+                            _auto_streak   = 1
+                            _prev_auto_cmd = auto_cmd
+                        if _auto_streak >= 2 or auto_cmd == _pending_cmd:
+                            command.value = c104.Step.HIGHER if auto_cmd == "HIGHER" else c104.Step.LOWER
+                            _pending_cmd  = auto_cmd
+                    _pending_src = "auto"
                 else:
                     # Auto: reduce charge when grid is stressed or battery is full;
                     # increase charge when there is spare capacity and battery needs it.
@@ -359,6 +422,8 @@ async def run_iec104_client():
                     point_soc.value,
                     grid_state.prefs.max_soc_pct,
                     _soc_valid,
+                    vm_pu=grid_state.grid.bus2_voltage_pu,
+                    voltage_stab=grid_state.voltage_stab_mode,
                 )
                 t_tx = time.time()
                 ok = 0

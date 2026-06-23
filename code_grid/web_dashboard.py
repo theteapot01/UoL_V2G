@@ -240,14 +240,16 @@ _HTML = """<!DOCTYPE html>
     .ctrl-btn.active-auto   { border-color: var(--blue);   color: var(--blue);   background: rgba(88,166,255,0.1); font-weight: 700; }
     .ctrl-btn.active-v2g    { border-color: var(--red);    color: var(--red);    background: rgba(248,81,73,0.1);  font-weight: 700; }
     .ctrl-btn.active-charge { border-color: var(--green);  color: var(--green);  background: rgba(63,185,80,0.1);  font-weight: 700; }
+    .ctrl-btn.active-vstab  { border-color: var(--purple); color: var(--purple); background: rgba(188,140,255,0.1); font-weight: 700; }
     .ctrl-status {
       font-size: 0.78rem; padding: 0.4rem 0.8rem;
       border-radius: 4px; border: 1px solid transparent;
       transition: all 0.3s;
     }
-    .ctrl-status.mode-auto   { background: rgba(88,166,255,0.08); color: var(--blue);  border-color: rgba(88,166,255,0.2); }
-    .ctrl-status.mode-v2g    { background: rgba(248,81,73,0.08);  color: var(--red);   border-color: rgba(248,81,73,0.2);  }
-    .ctrl-status.mode-charge { background: rgba(63,185,80,0.08);  color: var(--green); border-color: rgba(63,185,80,0.2);  }
+    .ctrl-status.mode-auto   { background: rgba(88,166,255,0.08); color: var(--blue);   border-color: rgba(88,166,255,0.2); }
+    .ctrl-status.mode-v2g    { background: rgba(248,81,73,0.08);  color: var(--red);    border-color: rgba(248,81,73,0.2);  }
+    .ctrl-status.mode-charge { background: rgba(63,185,80,0.08);  color: var(--green);  border-color: rgba(63,185,80,0.2);  }
+    .ctrl-status.mode-vstab  { background: rgba(188,140,255,0.08); color: var(--purple); border-color: rgba(188,140,255,0.2); }
 
     @media (max-width: 800px) {
       .dashboard { grid-template-columns: 1fr; }
@@ -316,6 +318,16 @@ _HTML = """<!DOCTYPE html>
     <div class="metric-row">
       <span class="metric-label">OCPP Data Age</span>
       <span id="ocpp-age" class="metric-val">—</span>
+    </div>
+    <div id="vstab-rows" style="display:none">
+      <div class="metric-row" style="margin-top:0.5rem;border-top:1px solid var(--border);padding-top:0.5rem">
+        <span class="metric-label" style="color:var(--purple)">Voltage Target</span>
+        <span class="metric-val" style="color:var(--purple)">0.975 pu</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-label" style="color:var(--purple)">Sim Background Load</span>
+        <span id="vstab-bg-load" class="metric-val" style="color:var(--purple)">0.0 kW</span>
+      </div>
     </div>
   </div>
 
@@ -489,6 +501,7 @@ _HTML = """<!DOCTYPE html>
       <button id="btn-auto"   class="ctrl-btn" onclick="setControl('auto')">&#9679; Auto</button>
       <button id="btn-v2g"    class="ctrl-btn" onclick="setControl('v2g')">&#8593; Force V2G Demand</button>
       <button id="btn-charge" class="ctrl-btn" onclick="setControl('charge')">&#8595; Force Charge</button>
+      <button id="btn-vstab"  class="ctrl-btn" onclick="setControl('voltage_stab')">&#9889; Voltage Stabilisation</button>
     </div>
     <div id="ctrl-status" class="ctrl-status mode-auto">Mode: Auto — grid-controlled via PandaPower load-flow</div>
   </div>
@@ -657,6 +670,14 @@ function updateUI(d) {
   document.getElementById('dot-iec').className  = 'dot ' + (iecAge !== null  && iecAge  < 3000  ? 'ok' : 'warn');
   document.getElementById('dot-ocpp').className = 'dot ' + (ocppAge !== null && ocppAge < 15000 ? 'ok' : ocppAge !== null ? 'warn' : '');
 
+  // ── Voltage stab background load display ──
+  if (d.grid.sim_bg_load_kw !== undefined) {
+    const bgEl = document.getElementById('vstab-bg-load');
+    const bgKw = d.grid.sim_bg_load_kw;
+    bgEl.textContent = (bgKw >= 0 ? '+' : '') + bgKw.toFixed(1) + ' kW';
+    bgEl.style.color = bgKw > 0 ? 'var(--red)' : bgKw < 0 ? 'var(--green)' : 'var(--purple)';
+  }
+
   // ── Timing bars ──
   const t    = d.timing;
   const peak = Math.max(t.cycle_ms, 50);
@@ -764,13 +785,20 @@ function updateSecurity(sec) {
 function syncControlButtons(ctrl) {
   const isAuto   = ctrl.auto;
   const override = ctrl.override;
+  const isVStab  = ctrl.voltage_stab;
 
-  document.getElementById('btn-auto').className   = 'ctrl-btn' + (isAuto                   ? ' active-auto'   : '');
-  document.getElementById('btn-v2g').className    = 'ctrl-btn' + (!isAuto && override === 'HIGHER' ? ' active-v2g'    : '');
-  document.getElementById('btn-charge').className = 'ctrl-btn' + (!isAuto && override === 'LOWER'  ? ' active-charge' : '');
+  document.getElementById('btn-auto').className   = 'ctrl-btn' + (isAuto && !isVStab               ? ' active-auto'   : '');
+  document.getElementById('btn-v2g').className    = 'ctrl-btn' + (!isAuto && override === 'HIGHER'  ? ' active-v2g'    : '');
+  document.getElementById('btn-charge').className = 'ctrl-btn' + (!isAuto && override === 'LOWER'   ? ' active-charge' : '');
+  document.getElementById('btn-vstab').className  = 'ctrl-btn' + (isVStab                           ? ' active-vstab'  : '');
+
+  document.getElementById('vstab-rows').style.display = isVStab ? '' : 'none';
 
   const s = document.getElementById('ctrl-status');
-  if (isAuto) {
+  if (isVStab) {
+    s.textContent = 'Mode: Voltage Stabilisation — V2G responding to bus 2 voltage, target 0.975 pu (±0.003 deadband)';
+    s.className   = 'ctrl-status mode-vstab';
+  } else if (isAuto) {
     s.textContent  = 'Mode: Auto — grid-controlled via PandaPower load-flow';
     s.className    = 'ctrl-status mode-auto';
   } else if (override === 'HIGHER') {
@@ -909,14 +937,21 @@ async def control(request: Request):
     body = await request.json()
     action = body.get("action", "")
     if action == "v2g":
-        grid_state.manual_override = "HIGHER"
-        grid_state.auto_control = False
+        grid_state.manual_override   = "HIGHER"
+        grid_state.auto_control      = False
+        grid_state.voltage_stab_mode = False
     elif action == "charge":
-        grid_state.manual_override = "LOWER"
-        grid_state.auto_control = False
+        grid_state.manual_override   = "LOWER"
+        grid_state.auto_control      = False
+        grid_state.voltage_stab_mode = False
     elif action == "auto":
-        grid_state.manual_override = None
-        grid_state.auto_control = True
+        grid_state.manual_override   = None
+        grid_state.auto_control      = True
+        grid_state.voltage_stab_mode = False
+    elif action == "voltage_stab":
+        grid_state.manual_override   = None
+        grid_state.auto_control      = True
+        grid_state.voltage_stab_mode = True
     return {"status": "ok", "action": action}
 
 
@@ -1002,10 +1037,11 @@ def _build_payload() -> dict:
             "age_ms":    round((now - ocpp.timestamp) * 1000) if ocpp.timestamp else None,
         },
         "grid": {
-            "voltage_pu": round(grid.bus2_voltage_pu, 4),
-            "trafo_pct":  round(grid.trafo_loading_pct, 1),
-            "line_pct":   round(grid.line_loading_pct, 1),
-            "idle":       grid_state.charger_idle,
+            "voltage_pu":     round(grid.bus2_voltage_pu, 4),
+            "trafo_pct":      round(grid.trafo_loading_pct, 1),
+            "line_pct":       round(grid.line_loading_pct, 1),
+            "idle":           grid_state.charger_idle,
+            "sim_bg_load_kw": round(grid.sim_bg_load_kw, 1),
         },
         "timing": {
             "read_ms":     round(grid_state.iec104_read_ms, 1),
@@ -1014,8 +1050,9 @@ def _build_payload() -> dict:
             "cycle_ms":    round(grid_state.cycle_ms, 1),
         },
         "control": {
-            "auto":     grid_state.auto_control,
-            "override": grid_state.manual_override,
+            "auto":          grid_state.auto_control,
+            "override":      grid_state.manual_override,
+            "voltage_stab":  grid_state.voltage_stab_mode,
         },
         "iso15118": {
             "voltage_v":         round(iec.voltage_v, 1),
