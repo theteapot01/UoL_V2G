@@ -358,13 +358,23 @@ async def run_iec104_client():
                           and not departure_priority
                           and soc >= prefs.max_soc_pct - SOC_APPROACH_BAND_PCT):
                         # Pre-emptive ramp-down: SoC is within the approach band
-                        # below max.  Starting HIGHER early prevents the 2-3 %
-                        # overshoot caused by the inertia of a large setpoint.
+                        # below max.  Starting HIGHER early prevents overshoot
+                        # caused by the inertia of a large setpoint.
                         # Suppressed during departure priority so the EV can still
                         # reach the user's target SoC before leaving.
-                        # Guard: once power reaches zero, hold — do not step into
-                        # discharge just to keep SoC at the ceiling.
-                        auto_cmd = "HIGHER" if point_meter.value > 1.0 else "HOLD"
+                        if point_meter.value > 1.0:
+                            auto_cmd = "HIGHER"
+                        elif soc < prefs.max_soc_pct:
+                            # Power ramped to zero but SoC hasn't reached the
+                            # ceiling yet — trickle-charge if grid has spare
+                            # capacity rather than holding below the user's max.
+                            auto_cmd = (
+                                "LOWER"
+                                if trafo_loading < _low and line_loading < _line_low
+                                else "HOLD"
+                            )
+                        else:
+                            auto_cmd = "HOLD"
                     elif departure_priority:
                         # Departure approaching and SoC below target: charge within
                         # the normal capacity band (grid is not stressed).
