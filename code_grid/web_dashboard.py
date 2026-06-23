@@ -21,9 +21,10 @@ import time
 
 import uvicorn
 from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
-from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse
 
 from code_grid.grid_state import grid_state
+from code_grid.perf_logger import perf_logger
 from config import Config
 
 
@@ -132,6 +133,7 @@ _HTML = """<!DOCTYPE html>
       padding: 1rem 1.25rem;
     }
     .card.span2 { grid-column: span 2; }
+    .card.span3 { grid-column: 1 / -1; }
     .card-label {
       font-size: 0.68rem;
       font-weight: 600;
@@ -542,6 +544,65 @@ _HTML = """<!DOCTYPE html>
   </div>
 
 
+  <!-- Performance Statistics (full width) -->
+  <div class="card span3">
+    <div class="card-label">Performance Statistics
+      <span id="perf-session" style="font-weight:400;color:var(--muted);margin-left:0.5rem;font-size:0.68rem"></span>
+      <span style="margin-left:auto;display:inline-flex;gap:0.5rem;float:right">
+        <a id="dl-iec104"   href="/api/perf/csv/iec104"   download style="font-size:0.7rem;color:var(--blue);text-decoration:none">&#11015; IEC 104 CSV</a>
+        <a id="dl-ocpp"     href="/api/perf/csv/ocpp"     download style="font-size:0.7rem;color:var(--blue);text-decoration:none">&#11015; OCPP CSV</a>
+        <a id="dl-iso15118" href="/api/perf/csv/iso15118" download style="font-size:0.7rem;color:var(--blue);text-decoration:none">&#11015; ISO 15118 CSV</a>
+      </span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.4rem 1.5rem">
+
+      <!-- IEC 104 Latency -->
+      <div>
+        <div style="font-size:0.72rem;color:var(--muted);font-weight:600;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.07em">IEC 104 Latency</div>
+        <div class="metric-row"><span class="metric-label">Transmit mean</span><span id="ps-tx-mean" class="metric-val">—</span></div>
+        <div class="metric-row"><span class="metric-label">Transmit p95</span><span id="ps-tx-p95" class="metric-val">—</span></div>
+        <div class="metric-row"><span class="metric-label">PandaPower mean</span><span id="ps-pp-mean" class="metric-val">—</span></div>
+        <div class="metric-row"><span class="metric-label">PandaPower p95</span><span id="ps-pp-p95" class="metric-val">—</span></div>
+        <div class="metric-row"><span class="metric-label">Command success</span><span id="ps-success" class="metric-val">—</span></div>
+        <div class="metric-row"><span class="metric-label">Samples</span><span id="ps-tx-n" class="metric-val" style="color:var(--muted)">—</span></div>
+      </div>
+
+      <!-- OCPP Message Sizes -->
+      <div>
+        <div style="font-size:0.72rem;color:var(--muted);font-weight:600;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.07em">OCPP Frame Sizes</div>
+        <div class="metric-row"><span class="metric-label">Incoming mean</span><span id="ps-oin-mean" class="metric-val">—</span></div>
+        <div class="metric-row"><span class="metric-label">Incoming min / max</span><span id="ps-oin-range" class="metric-val">—</span></div>
+        <div class="metric-row"><span class="metric-label">Outgoing mean</span><span id="ps-oout-mean" class="metric-val">—</span></div>
+        <div class="metric-row"><span class="metric-label">Outgoing min / max</span><span id="ps-oout-range" class="metric-val">—</span></div>
+        <div class="metric-row"><span class="metric-label">Handler mean</span><span id="ps-oproc-mean" class="metric-val">—</span></div>
+        <div class="metric-row"><span class="metric-label">Samples (in/out)</span><span id="ps-o-n" class="metric-val" style="color:var(--muted)">—</span></div>
+      </div>
+
+      <!-- ISO 15118 -->
+      <div>
+        <div style="font-size:0.72rem;color:var(--muted);font-weight:600;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.07em">ISO 15118 Charge Loop</div>
+        <div class="metric-row"><span class="metric-label">Loop time mean</span><span id="ps-iso-mean" class="metric-val">—</span></div>
+        <div class="metric-row"><span class="metric-label">Loop time p95</span><span id="ps-iso-p95" class="metric-val">—</span></div>
+        <div class="metric-row"><span class="metric-label">Loop time min</span><span id="ps-iso-min" class="metric-val">—</span></div>
+        <div class="metric-row"><span class="metric-label">Loop time max</span><span id="ps-iso-max" class="metric-val">—</span></div>
+        <div class="metric-row"><span class="metric-label">Samples</span><span id="ps-iso-n" class="metric-val" style="color:var(--muted)">—</span></div>
+      </div>
+
+      <!-- IEC 104 Theoretical Message Sizes -->
+      <div>
+        <div style="font-size:0.72rem;color:var(--muted);font-weight:600;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.07em">IEC 104 APDU Sizes (theoretical)</div>
+        <div class="metric-row"><span class="metric-label">C_RC_TA_1 (cmd)</span><span class="metric-val" style="color:var(--purple)">23 B</span></div>
+        <div class="metric-row"><span class="metric-label">M_ME_NC_1 (meas.)</span><span class="metric-val" style="color:var(--purple)">20 B</span></div>
+        <div class="metric-row"><span class="metric-label">U-frame (ctrl)</span><span class="metric-val" style="color:var(--purple)">6 B</span></div>
+        <div class="metric-row"><span class="metric-label">S-frame (ack)</span><span class="metric-val" style="color:var(--purple)">6 B</span></div>
+        <div class="metric-row" style="border-top:1px solid var(--border);margin-top:0.4rem;padding-top:0.4rem">
+          <span class="metric-label" style="font-size:0.68rem">Per IEC&nbsp;60870-5-104</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 </div><!-- .dashboard -->
 
 <script>
@@ -737,6 +798,9 @@ function updateUI(d) {
   // ── Billing ──
   updateBilling(d.billing);
 
+  // ── Performance stats ──
+  updatePerf(d.perf);
+
   // ── User preferences ──
   syncPreferences(d.prefs);
 
@@ -816,6 +880,63 @@ function setControl(action) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ action })
   });
+}
+
+// ── Performance statistics ────────────────────────────────────────────────────
+function updatePerf(p) {
+  if (!p) return;
+
+  function fmt(stats, unit) {
+    if (!stats || !stats.count) return '—';
+    return stats.mean.toFixed(unit === 'B' ? 0 : 1) + ' ' + unit;
+  }
+  function fmtRange(stats, unit) {
+    if (!stats || !stats.count) return '—';
+    return stats.min.toFixed(0) + '–' + stats.max.toFixed(0) + ' ' + unit;
+  }
+  function fmtP95(stats, unit) {
+    if (!stats || !stats.count) return '—';
+    return stats.p95.toFixed(1) + ' ' + unit;
+  }
+
+  // IEC 104
+  const tx = p.iec104_transmit_ms;
+  const pp = p.iec104_pandapower_ms;
+  setText('ps-tx-mean',  fmt(tx, 'ms'));
+  setText('ps-tx-p95',   fmtP95(tx, 'ms'));
+  setText('ps-pp-mean',  fmt(pp, 'ms'));
+  setText('ps-pp-p95',   fmtP95(pp, 'ms'));
+  setText('ps-tx-n',     tx && tx.count ? tx.count + ' tx' : '—');
+  const sr = p.iec104_success_rate;
+  const srEl = document.getElementById('ps-success');
+  if (srEl) {
+    srEl.textContent  = sr !== null && sr !== undefined ? (sr * 100).toFixed(1) + '%' : '—';
+    srEl.style.color  = sr === null ? 'var(--muted)' : sr >= 0.99 ? 'var(--green)' : sr >= 0.95 ? 'var(--orange)' : 'var(--red)';
+  }
+
+  // OCPP
+  const oin  = p.ocpp_incoming_bytes;
+  const oout = p.ocpp_outgoing_bytes;
+  const oproc = p.ocpp_processing_ms;
+  setText('ps-oin-mean',  fmt(oin, 'B'));
+  setText('ps-oin-range', fmtRange(oin, 'B'));
+  setText('ps-oout-mean', fmt(oout, 'B'));
+  setText('ps-oout-range',fmtRange(oout, 'B'));
+  setText('ps-oproc-mean',fmt(oproc, 'ms'));
+  setText('ps-o-n', (oin && oin.count ? oin.count : 0) + ' / ' + (oout && oout.count ? oout.count : 0));
+
+  // ISO 15118
+  const iso = p.iso_loop_ms;
+  setText('ps-iso-mean', fmt(iso, 'ms'));
+  setText('ps-iso-p95',  fmtP95(iso, 'ms'));
+  setText('ps-iso-min',  iso && iso.count ? iso.min.toFixed(1) + ' ms' : '—');
+  setText('ps-iso-max',  iso && iso.count ? iso.max.toFixed(1) + ' ms' : '—');
+  setText('ps-iso-n',    iso && iso.count ? iso.count + ' samples' : '—');
+}
+
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
 }
 
 // ── Billing ───────────────────────────────────────────────────────────────────
@@ -1078,6 +1199,7 @@ def _build_payload() -> dict:
             for e in grid_state.command_log
         ],
         "billing": _build_billing(ocpp),
+        "perf":    perf_logger.get_live_stats(),
         "security": {
             "ocpp": {
                 "configured":   grid_state.security.ocpp.configured,
@@ -1105,6 +1227,24 @@ def _build_payload() -> dict:
             },
         },
     }
+
+
+@app.get("/api/perf/summary")
+async def perf_summary():
+    return perf_logger.get_summary()
+
+
+@app.get("/api/perf/csv/{name}")
+async def perf_csv(name: str):
+    paths = perf_logger.csv_paths()
+    if name not in paths:
+        return {"error": f"unknown log name '{name}' — valid: {list(paths)}"}
+    from pathlib import Path
+    p = Path(paths[name])
+    if not p.exists():
+        return {"error": "log file not yet created (no data recorded this session)"}
+    return FileResponse(p, filename=p.name, media_type="text/csv",
+                        headers={"Content-Disposition": f'attachment; filename="{p.name}"'})
 
 
 async def run_web_server():

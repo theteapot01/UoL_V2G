@@ -8,6 +8,7 @@ import c104
 import pandapower as pp
 
 from code_grid.grid_state import grid_state
+from code_grid.perf_logger import perf_logger
 from config import Config
 
 
@@ -451,11 +452,29 @@ async def run_iec104_client():
                 _soc_valid = True
             print( f"-> SOC {point_soc.value:.1f}%" )
 
-            grid_state.iec104.temp_c      = point_temp.value
-            grid_state.iec104.voltage_v   = point_voltage.value
+            grid_state.iec104.temp_c        = point_temp.value
+            grid_state.iec104.voltage_v     = point_voltage.value
             grid_state.iec104.iso_timestamp = time.time()
-            grid_state.iec104.current_a   = point_current.value
-            grid_state.iec104.iso_loop_ms = point_loop_ms.value
+            grid_state.iec104.current_a     = point_current.value
+            grid_state.iec104.iso_loop_ms   = point_loop_ms.value
+
+            # Performance logging — one row per 4-second transmit cycle.
+            perf_logger.log_iec104(
+                cmd=_pending_cmd,
+                bursts=n_bursts if _pending_cmd != "HOLD" else 0,
+                success=ok > 0 if _pending_cmd != "HOLD" else True,
+                transmit_ms=grid_state.transmit_ms,
+                read_ms=grid_state.iec104_read_ms,
+                pandapower_ms=grid_state.pandapower_ms,
+                cycle_ms=grid_state.cycle_ms,
+            )
+            perf_logger.log_iso15118(
+                loop_ms=point_loop_ms.value,
+                voltage_v=point_voltage.value,
+                current_a=point_current.value,
+                power_kw=point_meter.value,
+                soc_pct=point_soc.value,
+            )
 
         await asyncio.sleep( 0.1 )
 
