@@ -28,6 +28,7 @@ _LOG_DIR = Path(__file__).parent.parent / "Logs"
 _SESSION = time.strftime("%Y%m%d_%H%M%S")
 
 _P95_WINDOW = 1000  # rolling window size for percentile calculation
+_RATE_WINDOW_S = 60.0  # sliding window for throughput rate calculation
 
 
 # ── Online statistics accumulator ─────────────────────────────────────────────
@@ -60,6 +61,58 @@ class _Stats:
             "min":   round(self.min, 3),
             "max":   round(self.max, 3),
             "p95":   round(p95, 3),
+        }
+
+
+# ── Throughput rate counter ───────────────────────────────────────────────────
+
+class _RateCounter:
+    """Counts events and bytes in a sliding time window.
+
+    Records (timestamp, bytes) pairs; evicts entries older than window_s on
+    each access so memory stays bounded.
+    """
+
+    def __init__(self, window_s: float = _RATE_WINDOW_S) -> None:
+        self._window = window_s
+        self._timestamps: deque = deque()
+        self._sizes: deque = deque()
+
+    def record(self, size_bytes: int = 0) -> None:
+        now = time.monotonic()
+        self._timestamps.append(now)
+        self._sizes.append(size_bytes)
+        self._evict(now)
+
+    def _evict(self, now: float) -> None:
+        cutoff = now - self._window
+        while self._timestamps and self._timestamps[0] < cutoff:
+            self._timestamps.popleft()
+            self._sizes.popleft()
+
+    def _elapsed(self) -> float:
+        if len(self._timestamps) < 2:
+            return self._window
+        return self._timestamps[-1] - self._timestamps[0]
+
+    def rate_per_sec(self) -> float:
+        now = time.monotonic()
+        self._evict(now)
+        return len(self._timestamps) / max(self._elapsed(), 1.0)
+
+    def bytes_per_sec(self) -> float:
+        now = time.monotonic()
+        self._evict(now)
+        return sum(self._sizes) / max(self._elapsed(), 1.0)
+
+    def to_dict(self) -> dict:
+        now = time.monotonic()
+        self._evict(now)
+        return {
+            "msgs_per_sec":  round(self.rate_per_sec(), 4),
+            "bytes_per_sec": round(self.bytes_per_sec(), 2),
+            "window_s":      self._window,
+            "sample_count":  len(self._timestamps),
         }
 
 
@@ -144,6 +197,12 @@ class PerfLogger:
 
         self.iso_loop_ms          = _Stats()
 
+        # Throughput rate counters (60 s sliding window)
+        self.iec104_rate          = _RateCounter()
+        self.ocpp_incoming_rate   = _RateCounter()
+        self.ocpp_outgoing_rate   = _RateCounter()
+        self.iso_rate             = _RateCounter()
+
     # ── IEC 104 ──────────────────────────────────────────────────────────────
 
     def log_iec104(
@@ -166,6 +225,8 @@ class PerfLogger:
                 self.iec104_transmit_ms.record(transmit_ms)
                 if success:
                     self._iec104_ok += 1
+                    # C_RC_TA_1 step command size (theoretical, see IEC104_MSG_SIZES)
+                    self.iec104_rate.record(23 * bursts)
             _append(self._iec104_path, [
                 f"{now:.3f}",
                 time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime(now)),
@@ -188,8 +249,10 @@ class PerfLogger:
             if size_bytes > 0:
                 if direction == "incoming":
                     self.ocpp_incoming_bytes.record(size_bytes)
+                    self.ocpp_incoming_rate.record(size_bytes)
                 else:
                     self.ocpp_outgoing_bytes.record(size_bytes)
+                    self.ocpp_outgoing_rate.record(size_bytes)
             if processing_ms > 0:
                 self.ocpp_processing_ms.record(processing_ms)
             _append(self._ocpp_path, [
@@ -213,6 +276,7 @@ class PerfLogger:
         now = time.time()
         with self._lock:
             self.iso_loop_ms.record(loop_ms)
+            self.iso_rate.record()
             _append(self._iso_path, [
                 f"{now:.3f}",
                 time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime(now)),
@@ -237,14 +301,18 @@ class PerfLogger:
                     "success_rate":    round(ok / total, 4) if total else None,
                     "total_transmits": total,
                     "message_sizes":   self.IEC104_MSG_SIZES,
+                    "throughput":      self.iec104_rate.to_dict(),
                 },
                 "ocpp": {
-                    "processing_ms":   self.ocpp_processing_ms.to_dict(),
-                    "incoming_bytes":  self.ocpp_incoming_bytes.to_dict(),
-                    "outgoing_bytes":  self.ocpp_outgoing_bytes.to_dict(),
+                    "processing_ms":      self.ocpp_processing_ms.to_dict(),
+                    "incoming_bytes":     self.ocpp_incoming_bytes.to_dict(),
+                    "outgoing_bytes":     self.ocpp_outgoing_bytes.to_dict(),
+                    "incoming_throughput": self.ocpp_incoming_rate.to_dict(),
+                    "outgoing_throughput": self.ocpp_outgoing_rate.to_dict(),
                 },
                 "iso15118": {
-                    "loop_ms": self.iso_loop_ms.to_dict(),
+                    "loop_ms":    self.iso_loop_ms.to_dict(),
+                    "throughput": self.iso_rate.to_dict(),
                 },
             }
 
@@ -254,12 +322,16 @@ class PerfLogger:
             total = self._iec104_total
             ok    = self._iec104_ok
             return {
-                "iec104_transmit_ms":   self.iec104_transmit_ms.to_dict(),
-                "iec104_pandapower_ms": self.iec104_pandapower_ms.to_dict(),
-                "iec104_success_rate":  round(ok / total, 4) if total else None,
-                "ocpp_incoming_bytes":  self.ocpp_incoming_bytes.to_dict(),
-                "ocpp_processing_ms":   self.ocpp_processing_ms.to_dict(),
-                "iso_loop_ms":          self.iso_loop_ms.to_dict(),
+                "iec104_transmit_ms":      self.iec104_transmit_ms.to_dict(),
+                "iec104_pandapower_ms":    self.iec104_pandapower_ms.to_dict(),
+                "iec104_success_rate":     round(ok / total, 4) if total else None,
+                "iec104_throughput":       self.iec104_rate.to_dict(),
+                "ocpp_incoming_bytes":     self.ocpp_incoming_bytes.to_dict(),
+                "ocpp_processing_ms":      self.ocpp_processing_ms.to_dict(),
+                "ocpp_incoming_throughput": self.ocpp_incoming_rate.to_dict(),
+                "ocpp_outgoing_throughput": self.ocpp_outgoing_rate.to_dict(),
+                "iso_loop_ms":             self.iso_loop_ms.to_dict(),
+                "iso_throughput":          self.iso_rate.to_dict(),
             }
 
     def csv_paths(self) -> dict:

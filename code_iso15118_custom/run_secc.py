@@ -30,11 +30,26 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 from iso15118.secc import SECCHandler
 from iso15118.secc.secc_settings import Config
 from iso15118.shared.exificient_exi_codec import ExificientEXICodec
+import iso15118.secc.transport.tcp_server as _tcp_secc_mod
 
 from telemetry_evse_controller import TelemetryEVSEController
+from iso15118_perf import CountingStreamReader, CountingStreamWriter
 
 from code_grid.iecc104_server import run_iec104_server
 from code_cpms.ocpp_charge_point_2 import run_ocpp_client
+
+# Wrap the SECC TCP callback to count raw ISO 15118 bytes without modifying
+# the upstream Josev submodule.
+_orig_tcp_secc_call = _tcp_secc_mod.TCPServer.__call__
+
+async def _counting_tcp_secc_call(self, reader, writer):
+    await _orig_tcp_secc_call(
+        self,
+        CountingStreamReader(reader),
+        CountingStreamWriter(writer),
+    )
+
+_tcp_secc_mod.TCPServer.__call__ = _counting_tcp_secc_call
 
 logger = logging.getLogger(__name__)
 

@@ -37,11 +37,28 @@ from iso15118.evcc import Config, EVCCHandler
 from iso15118.evcc.evcc_config import load_from_file
 from iso15118.evcc.controller.simulator import SimEVController
 from iso15118.shared.exificient_exi_codec import ExificientEXICodec
+import iso15118.evcc.transport.tcp_client as _tcp_evcc_mod
 
 from battery_ev_controller import BatterySimEVController
 from battery_profile import CsvProfile
 from simulated_battery import SimulatedBattery
 from charger_state import state as shared_state
+from iso15118_perf import CountingStreamReader, CountingStreamWriter
+
+# Wrap the EVCC TCP client's reader/writer to count raw ISO 15118 bytes without
+# modifying the upstream Josev submodule.
+_orig_tcp_evcc_create = _tcp_evcc_mod.TCPClient.create
+
+@staticmethod
+async def _counting_tcp_evcc_create(host, port, session_handler_queue, is_tls, iface):
+    client = await _orig_tcp_evcc_create(
+        host, port, session_handler_queue, is_tls, iface
+    )
+    client.reader = CountingStreamReader(client.reader)
+    client.writer = CountingStreamWriter(client.writer)
+    return client
+
+_tcp_evcc_mod.TCPClient.create = _counting_tcp_evcc_create
 
 logger = logging.getLogger(__name__)
 
