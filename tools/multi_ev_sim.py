@@ -183,7 +183,7 @@ def _adaptive_bursts(cmd: str, trafo_pct: float, line_pct: float, mean_soc: floa
 
 # ── Fleet factory ─────────────────────────────────────────────────────────────
 
-def _make_fleet(n: int) -> List[SimulatedBattery]:
+def _make_fleet(n: int, no_v2g: bool = False) -> List[SimulatedBattery]:
     """Create N batteries with initial SoC spread uniformly from 20% to 60%."""
     batteries = []
     for i in range(n):
@@ -192,7 +192,7 @@ def _make_fleet(n: int) -> List[SimulatedBattery]:
             soc_init=soc_init,
             target_soc=TARGET_SOC_PCT,
             max_charge_kw=300.0,
-            max_discharge_kw=20.0,
+            max_discharge_kw=0.0 if no_v2g else 20.0,
             default_step_kw=5.0,
         )
         bat.set_power_setpoint(INIT_SETPOINT_KW)
@@ -202,17 +202,20 @@ def _make_fleet(n: int) -> List[SimulatedBattery]:
 
 # ── Scenario runner ───────────────────────────────────────────────────────────
 
-def run_scenario(n_evs: int, n_ticks: int, dt_s: float) -> dict:
+def run_scenario(n_evs: int, n_ticks: int, dt_s: float, no_v2g: bool = False) -> dict:
     """
     Simulate one fleet-size scenario.
 
     Returns a summary dict; also writes a per-tick CSV to Logs/.
+    When no_v2g=True batteries cannot discharge; HIGHER commands reduce charge
+    to zero but never enable V2G export.
     """
     net, b1, b2, b3, load_idx = _build_network()
-    fleet = _make_fleet(n_evs)
+    fleet = _make_fleet(n_evs, no_v2g=no_v2g)
 
     _LOG_DIR.mkdir(parents=True, exist_ok=True)
-    out_path = _LOG_DIR / f"multi_ev_{n_evs}ev_{_SESSION}.csv"
+    _mode = "_nov2g" if no_v2g else ""
+    out_path = _LOG_DIR / f"multi_ev_{n_evs}ev{_mode}_{_SESSION}.csv"
 
     ev_soc_cols = [f"ev{i}_soc_pct" for i in range(n_evs)]
     headers = [
@@ -357,6 +360,7 @@ def run_scenario(n_evs: int, n_ticks: int, dt_s: float) -> dict:
         "total_higher_cmds":       higher_count,
         "total_lower_cmds":        lower_count,
         "grid_stress_ticks":       stress_count,
+        "v2g_enabled":             not no_v2g,
         "out_csv":                 str(out_path),
     }
 
@@ -440,10 +444,19 @@ def main() -> None:
         "--dt", type=float, default=4.0,
         help="Seconds of simulated time per tick (= one IEC 104 transmit cycle).",
     )
+    parser.add_argument(
+        "--no-v2g", action="store_true", default=False,
+        help=(
+            "Disable V2G discharge: batteries are clamped to ≥ 0 kW (charge only). "
+            "Use this to run a baseline scenario for comparison with the V2G-enabled run. "
+            "Output files are tagged _nov2g to avoid overwriting V2G results."
+        ),
+    )
     args = parser.parse_args()
 
     total_sim_h = args.ticks * args.dt / 3600.0
-    print(f"\nMulti-EV scalability simulation")
+    mode_label  = "charge-only (no V2G)" if args.no_v2g else "V2G enabled"
+    print(f"\nMulti-EV scalability simulation  [{mode_label}]")
     print(f"  Fleet sizes : {args.fleet}")
     print(f"  Max ticks   : {args.ticks} × {args.dt}s = {total_sim_h:.1f} h simulated")
     print(f"  Output dir  : {_LOG_DIR}/")
@@ -452,14 +465,15 @@ def main() -> None:
     for n in args.fleet:
         print(f"\n→ Running fleet size N={n} ...", end="", flush=True)
         t0 = time.time()
-        r = run_scenario(n, args.ticks, args.dt)
+        r = run_scenario(n, args.ticks, args.dt, no_v2g=args.no_v2g)
         elapsed = time.time() - t0
         print(f" done in {elapsed:.1f}s  (CSV: {r['out_csv']})")
         results.append(r)
 
     print_summary(results)
 
-    summary_path = _LOG_DIR / f"multi_ev_summary_{_SESSION}.csv"
+    _mode = "_nov2g" if args.no_v2g else ""
+    summary_path = _LOG_DIR / f"multi_ev_summary{_mode}_{_SESSION}.csv"
     _LOG_DIR.mkdir(parents=True, exist_ok=True)
     save_summary_csv(results, summary_path)
 

@@ -510,6 +510,173 @@ def plot_multiev_scalability(summaries: list[dict], out_dir: Path) -> None:
     _save(fig, out_dir / "multiev_scalability.png")
 
 
+# ── Degradation — data loading & plotting ─────────────────────────────────────
+
+def _load_degradation_csv(path: Path) -> list[dict]:
+    rows = []
+    with open(path, newline="") as f:
+        for row in csv.DictReader(f):
+            rows.append({
+                "cycle":          int(row["cycle"]),
+                "soh_pct":        float(row["soh_pct"]),
+                "throughput_kwh": float(row["throughput_kwh"]),
+                "efc":            float(row["efc"]),
+                "energy_in_kwh":  float(row["energy_in_kwh"]),
+                "energy_out_kwh": float(row["energy_out_kwh"]),
+                "peak_temp_c":    float(row["peak_temp_c"]),
+                "end_temp_c":     float(row["end_temp_c"]),
+            })
+    return rows
+
+
+def plot_degradation(
+    datasets: list[tuple[str, list[dict]]],   # (label, records)
+    out_dir: Path,
+) -> None:
+    """Two-panel figure: SOH vs cycles | SOH vs EFC; plus temperature figure."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    # Figure 1: SOH vs cycle count and vs EFC
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
+    for (label, recs), colour in zip(datasets, _C):
+        cycles = [r["cycle"]   for r in recs]
+        efcs   = [r["efc"]     for r in recs]
+        sohs   = [r["soh_pct"] for r in recs]
+        ax1.plot(cycles, sohs, label=label, color=colour, linewidth=1.5)
+        ax2.plot(efcs,   sohs, label=label, color=colour, linewidth=1.5)
+
+    for ax in (ax1, ax2):
+        ax.axhline(80.0, color="red", linewidth=0.9, linestyle="--", label="EOL (80% SOH)")
+        ax.set_ylabel("State of Health (%)")
+        ax.set_ylim(76, 101)
+        ax.legend(fontsize=8)
+    ax1.set_xlabel("Charge/Discharge Cycle")
+    ax1.set_title("SOH Degradation vs Cycle Count")
+    ax2.set_xlabel("Equivalent Full Cycles (EFC)")
+    ax2.set_title("SOH Degradation vs EFC")
+
+    _save(fig, out_dir / "degradation_soh.png")
+
+    # Figure 2: Peak temperature vs cycle
+    fig, ax = plt.subplots(figsize=(8, 4))
+    for (label, recs), colour in zip(datasets, _C):
+        ax.plot([r["cycle"] for r in recs], [r["peak_temp_c"] for r in recs],
+                label=label, color=colour, linewidth=1.2)
+    ax.set_xlabel("Charge/Discharge Cycle")
+    ax.set_ylabel("Peak Pack Temperature (°C)")
+    ax.set_title("Peak Temperature per Cycle")
+    ax.legend(fontsize=8)
+    _save(fig, out_dir / "degradation_temperature.png")
+
+
+# ── Resource — data loading & plotting ────────────────────────────────────────
+
+def _load_resource_csv(path: Path) -> list[dict]:
+    rows = []
+    with open(path, newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            rows.append(row)
+    return rows
+
+
+def plot_resource(rows: list[dict], out_dir: Path) -> None:
+    """CPU and memory usage over session time."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    if not rows:
+        return
+
+    t0    = float(rows[0]["timestamp_unix"])
+    t_min = [(float(r["timestamp_unix"]) - t0) / 60.0 for r in rows]
+    cpu   = [float(r["system_cpu_pct"])      for r in rows]
+    mem   = [float(r["system_mem_used_mb"])  for r in rows]
+
+    proc_cols = [k for k in rows[0].keys() if k.endswith("_rss_mb")]
+    proc_names = [k[:-len("_rss_mb")] for k in proc_cols]
+    n_extra = len(proc_names)
+
+    fig, axes = plt.subplots(2 + n_extra, 1, figsize=(9, 3 * (2 + n_extra)), squeeze=False)
+
+    axes[0][0].plot(t_min, cpu, linewidth=1, color=_C[0])
+    axes[0][0].set_ylabel("CPU (%)")
+    axes[0][0].set_title("System CPU Usage")
+    axes[0][0].set_ylim(0, max(100, max(cpu) * 1.1))
+
+    axes[1][0].plot(t_min, mem, linewidth=1, color=_C[1])
+    axes[1][0].set_ylabel("Memory Used (MB)")
+    axes[1][0].set_title("System Memory Usage")
+
+    for i, name in enumerate(proc_names):
+        ax = axes[2 + i][0]
+        ax2 = ax.twinx()
+        rss   = [float(r[f"{name}_rss_mb"])  for r in rows]
+        cpu_p = [float(r[f"{name}_cpu_pct"]) for r in rows]
+        ax.plot(t_min, rss,   linewidth=1, color=_C[i % len(_C)], label="RSS MB")
+        ax2.plot(t_min, cpu_p, linewidth=1, color=_C[i % len(_C)],
+                 linestyle="--", alpha=0.6, label="CPU %")
+        ax.set_ylabel("RSS (MB)")
+        ax2.set_ylabel("CPU (%)")
+        ax.set_title(f"Process: {name}")
+        ax.legend(loc="upper left", fontsize=8)
+        ax2.legend(loc="upper right", fontsize=8)
+
+    for ax_row in axes:
+        ax_row[0].set_xlabel("Session Time (min)")
+
+    _save(fig, out_dir / "resource_usage.png")
+
+
+# ── Multi-EV V2G vs no-V2G comparison ─────────────────────────────────────────
+
+def plot_multiev_comparison(
+    v2g_summaries: list[dict],
+    nov2g_summaries: list[dict],
+    out_dir: Path,
+) -> None:
+    """Side-by-side bars: V2G enabled vs charge-only (no V2G) per fleet size."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    # Align on common fleet sizes
+    v2g_by_n   = {s["n_evs"]: s for s in v2g_summaries}
+    nov2g_by_n = {s["n_evs"]: s for s in nov2g_summaries}
+    fleet_sizes = sorted(set(v2g_by_n) & set(nov2g_by_n))
+    if not fleet_sizes:
+        print("  No common fleet sizes between V2G and no-V2G summaries — skipping comparison plot")
+        return
+
+    labels = [str(n) for n in fleet_sizes]
+    x = np.arange(len(fleet_sizes))
+    w = 0.35
+
+    metrics = [
+        ("peak_trafo",   "Peak Trafo Loading (%)",     _TRAFO_EMERG,  "Emergency (80%)"),
+        ("min_voltage",  "Min Bus Voltage (pu)",        _VOLTAGE_MIN,  "Min threshold (0.95 pu)"),
+        ("stress_ticks", "Grid Stress Events (ticks)",  None,          None),
+        ("mean_final_soc","Mean Final SoC (%)",         None,          None),
+    ]
+
+    fig, axes = plt.subplots(2, 2, figsize=(13, 8))
+    axes = axes.flatten()
+
+    for ax, (key, ylabel, threshold, threshold_label) in zip(axes, metrics):
+        v2g_vals   = [v2g_by_n[n].get(key, 0) or 0   for n in fleet_sizes]
+        nov2g_vals = [nov2g_by_n[n].get(key, 0) or 0 for n in fleet_sizes]
+        ax.bar(x - w/2, v2g_vals,   w, label="V2G enabled",     color=_C[0], alpha=0.85)
+        ax.bar(x + w/2, nov2g_vals, w, label="Charge only",     color=_C[2], alpha=0.85)
+        if threshold is not None:
+            ax.axhline(threshold, color="red", linewidth=0.9, linestyle="--",
+                       label=threshold_label)
+        ax.set_xticks(x)
+        ax.set_xticklabels(labels)
+        ax.set_xlabel("Fleet Size (EVs)")
+        ax.set_ylabel(ylabel)
+        ax.set_title(ylabel)
+        ax.legend(fontsize=8)
+
+    fig.suptitle("V2G Enabled vs Charge-Only (No V2G) — Grid Impact Comparison", fontsize=12)
+    _save(fig, out_dir / "multiev_v2g_comparison.png")
+
+
 # ── CLI subcommand handlers ────────────────────────────────────────────────────
 
 def cmd_reliability(args) -> None:
@@ -559,6 +726,56 @@ def cmd_reliability(args) -> None:
     plot_reliability(labels, summaries, raw_data, out_dir)
 
 
+def cmd_degradation(args) -> None:
+    out_dir = Path(args.out_dir)
+    _setup_style(args.dpi)
+
+    # Each positional file is one scenario CSV; label defaults to stem
+    if not args.files:
+        print("ERROR: provide degradation_*.csv files", file=sys.stderr)
+        sys.exit(1)
+
+    datasets: list[tuple[str, list[dict]]] = []
+    for f in args.files:
+        p = Path(f)
+        if not p.exists():
+            print(f"WARNING: {p} not found — skipping", file=sys.stderr)
+            continue
+        label = p.stem.replace("degradation_", "").replace("_", " ").title()
+        recs  = _load_degradation_csv(p)
+        if recs:
+            datasets.append((label, recs))
+
+    if not datasets:
+        print("ERROR: no degradation data loaded", file=sys.stderr)
+        sys.exit(1)
+
+    print(f"Generating degradation plots ({len(datasets)} scenarios) → {out_dir}/")
+    plot_degradation(datasets, out_dir)
+
+
+def cmd_resource(args) -> None:
+    out_dir = Path(args.out_dir)
+    _setup_style(args.dpi)
+
+    paths = [Path(f) for f in args.files] if args.files else []
+    if not paths and getattr(args, "dir", None):
+        paths = sorted(Path(args.dir).glob("resource_*.csv"))
+    if not paths:
+        print("ERROR: provide resource CSV files or --dir", file=sys.stderr)
+        sys.exit(1)
+
+    for p in paths:
+        if not p.exists():
+            print(f"WARNING: {p} not found — skipping", file=sys.stderr)
+            continue
+        rows = _load_resource_csv(p)
+        print(f"Generating resource plot for {p.name} → {out_dir}/")
+        # suffix output name with the CSV stem to avoid collisions across sessions
+        sub = out_dir / p.stem
+        plot_resource(rows, sub)
+
+
 def cmd_multiev(args) -> None:
     out_dir = Path(args.out_dir)
     _setup_style(args.dpi)
@@ -598,6 +815,16 @@ def cmd_multiev(args) -> None:
         plot_multiev_power_overlay(tick_datasets, out_dir)
     if summaries:
         plot_multiev_scalability(summaries, out_dir)
+
+    # Optional: V2G vs no-V2G comparison
+    if getattr(args, "no_v2g_summary", None):
+        p = Path(args.no_v2g_summary)
+        if not p.exists():
+            print(f"WARNING: --no-v2g-summary {p} not found — skipping comparison", file=sys.stderr)
+        else:
+            nov2g = _load_multiev_summary(p)
+            print(f"Generating V2G comparison plot → {out_dir}/")
+            plot_multiev_comparison(summaries, nov2g, out_dir)
 
 
 def cmd_all(args) -> None:
@@ -647,8 +874,14 @@ def cmd_all(args) -> None:
         plot_reliability(labels, summaries, raw_data, out_dir)
 
     # ── Multi-EV ─────────────────────────────────────────────────────────────
-    multi_summaries = sorted(log_dir.glob("multi_ev_summary_*.csv"))
-    multi_csvs      = sorted(log_dir.glob("multi_ev_*ev_*.csv"))
+    # Only V2G-enabled summaries — exclude _nov2g variants
+    multi_summaries = sorted(
+        p for p in log_dir.glob("multi_ev_summary_*.csv") if "_nov2g_" not in p.name
+    )
+    # Only V2G-enabled per-tick CSVs
+    multi_csvs = sorted(
+        p for p in log_dir.glob("multi_ev_*ev_*.csv") if "_nov2g_" not in p.name
+    )
 
     tick_datasets: list[dict] = []
     ev_summaries:  list[dict] = []
@@ -677,6 +910,46 @@ def cmd_all(args) -> None:
             plot_multiev_scalability(ev_summaries, out_dir)
     else:
         print("[Multi-EV] No multi-EV CSVs found — skipping")
+
+    # ── V2G vs no-V2G comparison ─────────────────────────────────────────────
+    nov2g_summaries_paths = sorted(log_dir.glob("multi_ev_summary_nov2g_*.csv"))
+    if ev_summaries and nov2g_summaries_paths:
+        print(f"\n[V2G Comparison] Loading no-V2G summary: {nov2g_summaries_paths[-1].name}")
+        nov2g_ev = _load_multiev_summary(nov2g_summaries_paths[-1])
+        print(f"  Generating comparison plot → {out_dir}/")
+        plot_multiev_comparison(ev_summaries, nov2g_ev, out_dir)
+
+    # ── Battery degradation ───────────────────────────────────────────────────
+    deg_csvs = sorted(log_dir.glob("degradation_*.csv"))
+    if deg_csvs:
+        print(f"\n[Degradation] Found {len(deg_csvs)} scenario CSV(s)")
+        datasets: list[tuple[str, list[dict]]] = []
+        for p in deg_csvs:
+            label = p.stem.replace("degradation_", "").replace("_", " ").title()
+            # strip trailing session timestamp from label
+            parts = label.rsplit(" ", 2)
+            if len(parts) == 3 and parts[-1].isdigit() and parts[-2].isdigit():
+                label = parts[0]
+            recs = _load_degradation_csv(p)
+            if recs:
+                datasets.append((label, recs))
+        if datasets:
+            print(f"  Generating degradation plots → {out_dir}/")
+            plot_degradation(datasets, out_dir)
+    else:
+        print("[Degradation] No degradation_*.csv found — skipping")
+
+    # ── Resource monitor ─────────────────────────────────────────────────────
+    resource_csvs = sorted(log_dir.glob("resource_*.csv"))
+    if resource_csvs:
+        print(f"\n[Resource] Found {len(resource_csvs)} resource CSV(s)")
+        for p in resource_csvs:
+            rows = _load_resource_csv(p)
+            sub = out_dir / p.stem
+            print(f"  Generating resource plot for {p.name} → {sub}/")
+            plot_resource(rows, sub)
+    else:
+        print("[Resource] No resource_*.csv found — skipping")
 
 
 # ── CLI ────────────────────────────────────────────────────────────────────────
@@ -734,6 +1007,36 @@ def main() -> None:
         "--summary", metavar="PATH",
         help="Load scalability summary from multi_ev_summary_*.csv.",
     )
+    p_multi.add_argument(
+        "--no-v2g-summary", metavar="PATH", dest="no_v2g_summary",
+        help="Load charge-only (no-V2G) summary to generate a comparison figure.",
+    )
+
+    # ── degradation ───────────────────────────────────────────────────────────
+    p_deg = sub.add_parser(
+        "degradation",
+        parents=[_shared],
+        help="Plot battery SOH degradation from battery_degradation.py output CSVs.",
+    )
+    p_deg.add_argument(
+        "files", nargs="+", metavar="CSV",
+        help="Per-scenario degradation_*.csv files.",
+    )
+
+    # ── resource ──────────────────────────────────────────────────────────────
+    p_res = sub.add_parser(
+        "resource",
+        parents=[_shared],
+        help="Plot CPU/memory usage from resource_monitor.py output CSVs.",
+    )
+    p_res.add_argument(
+        "files", nargs="*", metavar="CSV",
+        help="resource_*.csv files.",
+    )
+    p_res.add_argument(
+        "--dir", metavar="DIR",
+        help="Auto-discover resource_*.csv in this directory.",
+    )
 
     # ── all ───────────────────────────────────────────────────────────────────
     p_all = sub.add_parser(
@@ -753,6 +1056,10 @@ def main() -> None:
         cmd_reliability(args)
     elif args.command == "multi-ev":
         cmd_multiev(args)
+    elif args.command == "degradation":
+        cmd_degradation(args)
+    elif args.command == "resource":
+        cmd_resource(args)
     elif args.command == "all":
         cmd_all(args)
 
