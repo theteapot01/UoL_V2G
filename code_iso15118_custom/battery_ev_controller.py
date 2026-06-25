@@ -57,6 +57,7 @@ from iso15118.shared.messages.iso15118_20.dc import (
 )
 
 from battery_profile import BatteryProfile, CsvProfile, load_battery_parameters
+from charger_state import EVCC_TEMP_FILE
 
 logger = logging.getLogger(__name__)
 
@@ -248,7 +249,11 @@ class BatterySimEVController(SimEVController):
             )
             return False
 
-        self.profile.advance()
+        new_state = self.profile.advance()
+        try:
+            EVCC_TEMP_FILE.write_text(f"{new_state.temperature_c:.2f}")
+        except OSError:
+            pass
         return True
 
     async def is_charging_complete(self) -> bool:

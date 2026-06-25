@@ -11,6 +11,13 @@ relay them to the EV through the charge-loop response limits.
 """
 
 from dataclasses import dataclass
+from pathlib import Path
+
+# File written by the EVCC process (SimulatedBattery) and read by the SECC
+# (TelemetryEVSEController) so IOA 14 reflects the actual pack temperature
+# from the single authoritative battery model. Mirrors the _PREFS_FILE
+# pattern in simulated_battery.py (where the direction is reversed: SECC→EVCC).
+EVCC_TEMP_FILE = Path("/tmp/v2g_pack_temperature")
 
 @dataclass(frozen=True)
 class Telemetry:

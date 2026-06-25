@@ -47,12 +47,14 @@ Dependencies:
 #                   Imports
 # --------------------------------------------------------------
 import asyncio
+import json
 import logging
 import ssl
 import time
 from datetime import datetime, timezone
 
 from code_grid.grid_state import grid_state
+from code_grid.perf_logger import perf_logger
 from config import Config
 
 try:
@@ -128,6 +130,7 @@ class ChargePoint( cp ):
         Receives MeterValues from the charge point and logs them.
         Negative Power.Active.Import = EV feeding energy back to grid (V2G).
         """
+        _t0        = time.time()
         _power_w   = 0.0
         _energy_wh = 0.0
         _soc_pct   = 0.0
@@ -197,6 +200,10 @@ class ChargePoint( cp ):
         grid_state.ocpp.soc_percent = _soc_pct
         grid_state.ocpp.timestamp   = now
 
+        perf_logger.log_ocpp_message(
+            "incoming", "MeterValues",
+            processing_ms=(time.time() - _t0) * 1000,
+        )
         return call_result.MeterValues()
 
     async def send_preferences(self, prefs) -> None:
@@ -229,6 +236,57 @@ def _extract_tls_info(websocket) -> None:
     grid_state.security.ocpp.connected = True
 
 
+class _MeasuringWebSocket:
+    """
+    Thin proxy around a websockets connection that logs each frame's
+    byte size to perf_logger before forwarding to the OCPP library.
+    All attribute access falls through to the underlying connection so
+    the OCPP library and TLS introspection code see the full interface.
+    """
+    __slots__ = ("_ws",)
+
+    def __init__(self, ws):
+        object.__setattr__(self, "_ws", ws)
+
+    def __getattr__(self, name):
+        return getattr(object.__getattribute__(self, "_ws"), name)
+
+    async def recv(self):
+        ws  = object.__getattribute__(self, "_ws")
+        msg = await ws.recv()
+        size = len(msg.encode("utf-8") if isinstance(msg, str) else msg)
+        action = "unknown"
+        try:
+            data = json.loads(msg)
+            if data[0] == 2 and len(data) > 2:   # CALL from charge point
+                action = data[2]
+            elif data[0] == 3:
+                action = "CallResult"
+            elif data[0] == 4:
+                action = "CallError"
+        except Exception:
+            pass
+        perf_logger.log_ocpp_message("incoming", action, size_bytes=size)
+        return msg
+
+    async def send(self, msg):
+        ws   = object.__getattribute__(self, "_ws")
+        size = len(msg.encode("utf-8") if isinstance(msg, str) else msg)
+        msg_type = "unknown"
+        try:
+            data = json.loads(msg)
+            if data[0] == 3:
+                msg_type = "CallResult"
+            elif data[0] == 4:
+                msg_type = "CallError"
+            elif data[0] == 2 and len(data) > 2:
+                msg_type = data[2]
+        except Exception:
+            pass
+        perf_logger.log_ocpp_message("outgoing", msg_type, size_bytes=size)
+        return await ws.send(msg)
+
+
 async def on_connect( websocket ):
     """For every new charge point that connects, create a ChargePoint
     instance and start listening for messages.
@@ -252,7 +310,7 @@ async def on_connect( websocket ):
     _extract_tls_info(websocket)
 
     charge_point_id = websocket.request.path.strip( "/" )
-    charge_point = ChargePoint( charge_point_id, websocket )
+    charge_point = ChargePoint( charge_point_id, _MeasuringWebSocket(websocket) )
 
     grid_state.connected_charge_point = charge_point
     try:

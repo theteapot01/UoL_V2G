@@ -8,6 +8,7 @@ import c104
 import pandapower as pp
 
 from code_grid.grid_state import grid_state
+from code_grid.perf_logger import perf_logger
 from config import Config
 
 
@@ -81,6 +82,7 @@ LINE_HYSTERESIS_PCT  =  5.0   # ± half-width of dead zone around target
 # This causes the power to ramp up until the binding constraint (trafo or line)
 # enters its dead zone, then hold there rather than oscillate.
 SOC_APPROACH_BAND_PCT = 5.0   # start pre-emptive ramp-down this many % below max_soc
+STEP_KW               = 5.0   # one regulating step; must match SharedState.step_kw on the charger
 
 # ── Voltage-stabilisation demo constants ──────────────────────────────────────
 # Background sine disturbance injected at bus 3 to stress the bus voltage.
@@ -356,13 +358,23 @@ async def run_iec104_client():
                           and not departure_priority
                           and soc >= prefs.max_soc_pct - SOC_APPROACH_BAND_PCT):
                         # Pre-emptive ramp-down: SoC is within the approach band
-                        # below max.  Starting HIGHER early prevents the 2-3 %
-                        # overshoot caused by the inertia of a large setpoint.
+                        # below max.  Starting HIGHER early prevents overshoot
+                        # caused by the inertia of a large setpoint.
                         # Suppressed during departure priority so the EV can still
                         # reach the user's target SoC before leaving.
-                        # Guard: once power reaches zero, hold — do not step into
-                        # discharge just to keep SoC at the ceiling.
-                        auto_cmd = "HIGHER" if point_meter.value > 1.0 else "HOLD"
+                        if point_meter.value > 1.0:
+                            auto_cmd = "HIGHER"
+                        elif soc < prefs.max_soc_pct:
+                            # Power ramped to zero but SoC hasn't reached the
+                            # ceiling yet — trickle-charge if grid has spare
+                            # capacity rather than holding below the user's max.
+                            auto_cmd = (
+                                "LOWER"
+                                if trafo_loading < _low and line_loading < _line_low
+                                else "HOLD"
+                            )
+                        else:
+                            auto_cmd = "HOLD"
                     elif departure_priority:
                         # Departure approaching and SoC below target: charge within
                         # the normal capacity band (grid is not stressed).
@@ -425,6 +437,11 @@ async def run_iec104_client():
                     vm_pu=grid_state.grid.bus2_voltage_pu,
                     voltage_stab=grid_state.voltage_stab_mode,
                 )
+                # Prevent burst overshoot across zero: when power is within one
+                # step of zero a multi-command burst can step into discharge before
+                # the measured value updates and the guard catches it.
+                if _pending_cmd == "HIGHER" and 0.0 < point_meter.value <= STEP_KW:
+                    n_bursts = 1
                 t_tx = time.time()
                 ok = 0
                 for _ in range(n_bursts):
@@ -451,11 +468,29 @@ async def run_iec104_client():
                 _soc_valid = True
             print( f"-> SOC {point_soc.value:.1f}%" )
 
-            grid_state.iec104.temp_c      = point_temp.value
-            grid_state.iec104.voltage_v   = point_voltage.value
+            grid_state.iec104.temp_c        = point_temp.value
+            grid_state.iec104.voltage_v     = point_voltage.value
             grid_state.iec104.iso_timestamp = time.time()
-            grid_state.iec104.current_a   = point_current.value
-            grid_state.iec104.iso_loop_ms = point_loop_ms.value
+            grid_state.iec104.current_a     = point_current.value
+            grid_state.iec104.iso_loop_ms   = point_loop_ms.value
+
+            # Performance logging — one row per 4-second transmit cycle.
+            perf_logger.log_iec104(
+                cmd=_pending_cmd,
+                bursts=n_bursts if _pending_cmd != "HOLD" else 0,
+                success=ok > 0 if _pending_cmd != "HOLD" else True,
+                transmit_ms=grid_state.transmit_ms,
+                read_ms=grid_state.iec104_read_ms,
+                pandapower_ms=grid_state.pandapower_ms,
+                cycle_ms=grid_state.cycle_ms,
+            )
+            perf_logger.log_iso15118(
+                loop_ms=point_loop_ms.value,
+                voltage_v=point_voltage.value,
+                current_a=point_current.value,
+                power_kw=point_meter.value,
+                soc_pct=point_soc.value,
+            )
 
         await asyncio.sleep( 0.1 )
 
