@@ -36,7 +36,9 @@ Usage
 
 import argparse
 import csv
+import shlex
 import signal
+import subprocess
 import sys
 import threading
 import time
@@ -55,6 +57,7 @@ except ImportError:
 
 _ROOT = Path(__file__).resolve().parent.parent
 _LOG_DIR = _ROOT / "Logs"
+_SESSION = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
 # ── Process discovery ─────────────────────────────────────────────────────────
@@ -91,6 +94,7 @@ def monitor(
     interval_s: float,
     duration_s: float | None,
     out_path: Path,
+    launched_pid: int | None = None,
 ) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -116,6 +120,12 @@ def monitor(
 
     # Discover tracked processes (refresh on each sample to handle restarts)
     tracked: dict[str, psutil.Process | None] = {n: None for n in process_names}
+    # Seed the launched process by PID directly to avoid a name-search race.
+    if launched_pid is not None and process_names:
+        try:
+            tracked[process_names[0]] = psutil.Process(launched_pid)
+        except psutil.NoSuchProcess:
+            pass
 
     print(f"Resource monitor started. Writing to: {out_path}")
     if process_names:
@@ -280,20 +290,48 @@ def main() -> None:
         "--plot-only", metavar="CSV",
         help="Skip monitoring; generate a plot from an existing CSV and exit.",
     )
+    parser.add_argument(
+        "--launch", "-l", default=None, metavar="CMD",
+        help=(
+            "Launch this command as a subprocess and track it automatically. "
+            "The monitor exits when the subprocess exits (or Ctrl+C kills both). "
+            "Example: --launch 'python grid.py'"
+        ),
+    )
     args = parser.parse_args()
 
     if args.plot_only:
         plot_resource_csv(Path(args.plot_only))
         return
 
+    launched_proc: subprocess.Popen | None = None
+    if args.launch:
+        cmd = shlex.split(args.launch)
+        launched_proc = subprocess.Popen(cmd)
+        # Auto-add to tracked names so it gets its own CSV columns.
+        launch_name = Path(cmd[-1]).name
+        if launch_name not in args.processes:
+            args.processes.insert(0, launch_name)
+        print(f"Launched: {args.launch}  (PID {launched_proc.pid})")
+
     out_path = Path(args.out) if args.out else _LOG_DIR / f"resource_{_SESSION}.csv"
 
-    monitor(
-        process_names=args.processes,
-        interval_s=args.interval,
-        duration_s=args.duration,
-        out_path=out_path,
-    )
+    try:
+        monitor(
+            process_names=args.processes,
+            interval_s=args.interval,
+            duration_s=args.duration,
+            out_path=out_path,
+            launched_pid=launched_proc.pid if launched_proc else None,
+        )
+    finally:
+        if launched_proc and launched_proc.poll() is None:
+            print("Stopping launched process ...")
+            launched_proc.send_signal(signal.SIGINT)
+            try:
+                launched_proc.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                launched_proc.kill()
 
     if args.plot:
         plot_resource_csv(out_path)
