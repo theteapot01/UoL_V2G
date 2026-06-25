@@ -55,6 +55,7 @@ except ImportError:
 
 _ROOT = Path(__file__).resolve().parent.parent
 _LOG_DIR = _ROOT / "Logs"
+_SESSION = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
 # ── Process discovery ─────────────────────────────────────────────────────────
