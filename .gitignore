@@ -34,3 +34,6 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
+
+# Generated pandapower HTML plots
+code_grid/Pandapower/*.html
