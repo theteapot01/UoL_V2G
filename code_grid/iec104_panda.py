@@ -81,16 +81,16 @@ LINE_HYSTERESIS_PCT  =  5.0   # ± half-width of dead zone around target
 # HIGHER is sent when EITHER trafo or line exceeds its upper threshold.
 # This causes the power to ramp up until the binding constraint (trafo or line)
 # enters its dead zone, then hold there rather than oscillate.
-SOC_APPROACH_BAND_PCT = 5.0   # start pre-emptive ramp-down this many % below max_soc
+SOC_APPROACH_BAND_PCT = 3.0   # start pre-emptive ramp-down this many % below max_soc
 STEP_KW               = 5.0   # one regulating step; must match SharedState.step_kw on the charger
 
 # ── Voltage-stabilisation demo constants ──────────────────────────────────────
 # Background sine disturbance injected at bus 3 to stress the bus voltage.
-SIM_BG_AMPLITUDE_MW = 0.040   # ±40 kW — within V2G capability so effect is visible
+SIM_BG_AMPLITUDE_MW = 0.080   # ±40 kW — within V2G capability so effect is visible
 SIM_BG_PERIOD_S     = 60.0    # one full oscillation per minute
 
 # Voltage-droop control band for the stabilisation mode.
-VDROOP_TARGET    = 0.975   # desired bus 2 voltage (pu)
+VDROOP_TARGET    = 0.980   # desired bus 2 voltage (pu)
 VDROOP_DEADBAND  = 0.003   # ±0.003 pu dead zone — avoids chattering at target
 
 
