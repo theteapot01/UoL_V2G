@@ -32,6 +32,7 @@ IOA map
 
 import datetime
 import os
+import time
 
 os.environ["PYTHONUNBUFFERED"] = "1"
 
@@ -125,8 +126,10 @@ def on_step_command(
             )
             return c104.ResponseState.SUCCESS
         state.grid_power_setpoint_kw -= state.step_kw
+        cmd_str = "HIGHER"
     elif point.value == c104.Step.LOWER:
         state.grid_power_setpoint_kw += state.step_kw
+        cmd_str = "LOWER"
     else:
         print(f"Unknown step value: {point.value}")
         return c104.ResponseState.FAILURE
@@ -136,6 +139,11 @@ def on_step_command(
         -state.max_discharge_kw,
         min(state.max_charge_kw, state.grid_power_setpoint_kw)
     )
+
+    # Stamp the command time so TelemetryEVSEController can measure
+    # how long it takes for the next DC_ChargeLoopRes to carry the new limits.
+    state.last_command_t = time.monotonic()
+    state.last_command_str = cmd_str
 
     direction = "DISCHARGE" if state.grid_power_setpoint_kw < 0 else "CHARGE"
     print(

@@ -165,9 +165,10 @@ class PerfLogger:
         self._lock = threading.Lock()
         _LOG_DIR.mkdir(parents=True, exist_ok=True)
 
-        self._iec104_path = _LOG_DIR / f"iec104_{_SESSION}.csv"
-        self._ocpp_path   = _LOG_DIR / f"ocpp_{_SESSION}.csv"
-        self._iso_path    = _LOG_DIR / f"iso15118_{_SESSION}.csv"
+        self._iec104_path    = _LOG_DIR / f"iec104_{_SESSION}.csv"
+        self._ocpp_path      = _LOG_DIR / f"ocpp_{_SESSION}.csv"
+        self._iso_path       = _LOG_DIR / f"iso15118_{_SESSION}.csv"
+        self._vstab_path     = _LOG_DIR / f"voltage_stab_{_SESSION}.csv"
 
         _init_csv(self._iec104_path, [
             "timestamp_unix", "timestamp_iso",
@@ -181,6 +182,11 @@ class PerfLogger:
         _init_csv(self._iso_path, [
             "timestamp_unix", "timestamp_iso",
             "loop_ms", "voltage_v", "current_a", "power_kw", "soc_pct",
+        ])
+        _init_csv(self._vstab_path, [
+            "timestamp_unix", "timestamp_iso",
+            "bus2_voltage_pu", "setpoint_pu", "error_pu",
+            "bg_load_kw", "cmd",
         ])
 
         # Running statistics
@@ -196,6 +202,11 @@ class PerfLogger:
         self.ocpp_processing_ms   = _Stats()
 
         self.iso_loop_ms          = _Stats()
+
+        # Voltage-stabilisation accuracy (active only during voltage_stab_mode)
+        self._vstab_count = 0
+        self._vstab_sse   = 0.0   # sum of squared voltage errors [pu²]
+        self._vstab_abs   = _Stats()  # |error_pu| for mean/min/max/p95
 
         # Throughput rate counters (60 s sliding window)
         self.iec104_rate          = _RateCounter()
@@ -284,6 +295,31 @@ class PerfLogger:
                 f"{current_a:.3f}", f"{power_kw:.3f}", f"{soc_pct:.1f}",
             ])
 
+    # ── Voltage stabilisation ────────────────────────────────────────────────
+
+    def log_voltage_stab(
+        self,
+        bus2_voltage_pu: float,
+        setpoint_pu: float,
+        bg_load_kw: float,
+        cmd: str,
+    ) -> None:
+        error = bus2_voltage_pu - setpoint_pu
+        now = time.time()
+        with self._lock:
+            self._vstab_count += 1
+            self._vstab_sse   += error ** 2
+            self._vstab_abs.record(abs(error))
+            _append(self._vstab_path, [
+                f"{now:.3f}",
+                time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime(now)),
+                f"{bus2_voltage_pu:.6f}",
+                f"{setpoint_pu:.6f}",
+                f"{error:.6f}",
+                f"{bg_load_kw:.3f}",
+                cmd,
+            ])
+
     # ── Summary / export ─────────────────────────────────────────────────────
 
     def get_summary(self) -> dict:
@@ -314,6 +350,12 @@ class PerfLogger:
                     "loop_ms":    self.iso_loop_ms.to_dict(),
                     "throughput": self.iso_rate.to_dict(),
                 },
+                "voltage_stab": {
+                    "count":    self._vstab_count,
+                    "rmse_pu":  round(math.sqrt(self._vstab_sse / self._vstab_count), 6)
+                                if self._vstab_count else None,
+                    "abs_error_pu": self._vstab_abs.to_dict(),
+                },
             }
 
     def get_live_stats(self) -> dict:
@@ -336,9 +378,10 @@ class PerfLogger:
 
     def csv_paths(self) -> dict:
         return {
-            "iec104":   str(self._iec104_path),
-            "ocpp":     str(self._ocpp_path),
-            "iso15118": str(self._iso_path),
+            "iec104":       str(self._iec104_path),
+            "ocpp":         str(self._ocpp_path),
+            "iso15118":     str(self._iso_path),
+            "voltage_stab": str(self._vstab_path),
         }
 
 

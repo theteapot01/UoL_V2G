@@ -410,6 +410,14 @@ async def run_iec104_client():
 
                 grid_state.cycle_ms = (time.time() - t_cycle) * 1000
 
+                if grid_state.voltage_stab_mode:
+                    perf_logger.log_voltage_stab(
+                        bus2_voltage_pu=vm_pu_b2,
+                        setpoint_pu=VDROOP_TARGET,
+                        bg_load_kw=round(bg_mw * 1000, 1),
+                        cmd=_pending_cmd,
+                    )
+
                 print(
                     f"Load: {point_meter.value:.2f} kW | "
                     f"Bus 2: {vm_pu_b2:.4f} pu | "

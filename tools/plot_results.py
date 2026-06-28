@@ -626,6 +626,86 @@ def plot_resource(rows: list[dict], out_dir: Path) -> None:
     _save(fig, out_dir / "resource_usage.png")
 
 
+# ── Voltage stabilisation — data loading & plotting ──────────────────────────
+
+def _load_voltage_stab_csv(path: Path) -> list[dict]:
+    rows = []
+    with open(path, newline="") as f:
+        for row in csv.DictReader(f):
+            rows.append({
+                "timestamp_unix":  float(row["timestamp_unix"]),
+                "bus2_voltage_pu": float(row["bus2_voltage_pu"]),
+                "setpoint_pu":     float(row["setpoint_pu"]),
+                "error_pu":        float(row["error_pu"]),
+                "bg_load_kw":      float(row["bg_load_kw"]),
+                "cmd":             row["cmd"].strip(),
+            })
+    return rows
+
+
+def plot_voltage_stab(rows: list[dict], out_dir: Path, label: str = "") -> None:
+    """Two-panel figure: voltage time series + error distribution."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    if not rows:
+        return
+
+    t0       = rows[0]["timestamp_unix"]
+    t_min    = [(r["timestamp_unix"] - t0) / 60.0 for r in rows]
+    volts    = [r["bus2_voltage_pu"] for r in rows]
+    errors   = [r["error_pu"]        for r in rows]
+    bg_load  = [r["bg_load_kw"]      for r in rows]
+    setpoint = rows[0]["setpoint_pu"]
+    deadband = max(abs(r["error_pu"]) for r in rows[:1]) if rows else 0.003
+
+    # Read deadband from actual data spread near setpoint
+    # Use a fixed value matching VDROOP_DEADBAND = 0.003 from iec104_panda.py
+    _DEADBAND = 0.003
+
+    sse  = sum(e ** 2 for e in errors)
+    rmse = (sse / len(errors)) ** 0.5 if errors else 0.0
+    mae  = sum(abs(e) for e in errors) / len(errors) if errors else 0.0
+    title_suffix = f" — {label}" if label else ""
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5))
+
+    # ── Left: voltage time series ─────────────────────────────────────────────
+    ax1.plot(t_min, volts, linewidth=1.0, color=_C[0], label="Bus 2 voltage")
+    ax1.axhline(setpoint, color="red", linewidth=1.2, linestyle="--",
+                label=f"Setpoint ({setpoint:.3f} pu)")
+    ax1.axhspan(setpoint - _DEADBAND, setpoint + _DEADBAND,
+                alpha=0.12, color="green", label=f"Deadband (±{_DEADBAND} pu)")
+
+    ax1b = ax1.twinx()
+    ax1b.plot(t_min, bg_load, linewidth=0.8, color=_C[3], alpha=0.5, linestyle=":")
+    ax1b.set_ylabel("Background Disturbance (kW)", color=_C[3], fontsize=8)
+    ax1b.tick_params(axis="y", labelcolor=_C[3], labelsize=8)
+
+    ax1.set_xlabel("Session Time (min)")
+    ax1.set_ylabel("Bus Voltage (pu)")
+    ax1.set_title(f"Bus 2 Voltage vs Setpoint{title_suffix}")
+    ax1.legend(fontsize=8, loc="lower left")
+    ax1.annotate(
+        f"RMSE={rmse*1000:.3f} mpu\nMAE={mae*1000:.3f} mpu",
+        xy=(0.02, 0.97), xycoords="axes fraction",
+        va="top", fontsize=8,
+        bbox=dict(boxstyle="round,pad=0.3", fc="white", alpha=0.7),
+    )
+
+    # ── Right: error distribution ─────────────────────────────────────────────
+    ax2.hist([e * 1000 for e in errors], bins=40, color=_C[0], alpha=0.75, edgecolor="white")
+    ax2.axvline(0, color="red", linewidth=1.2, linestyle="--", label="Zero error")
+    ax2.axvspan(-_DEADBAND * 1000, _DEADBAND * 1000,
+                alpha=0.12, color="green", label=f"Deadband (±{_DEADBAND*1000:.1f} mpu)")
+    ax2.set_xlabel("Voltage Error (mpu = 0.001 pu)")
+    ax2.set_ylabel("Sample Count")
+    ax2.set_title("Voltage Error Distribution")
+    ax2.legend(fontsize=8)
+
+    fig.suptitle(f"Voltage Stabilisation Accuracy{title_suffix}", fontsize=12)
+    stem = f"voltage_stab_{label}" if label else "voltage_stab"
+    _save(fig, out_dir / f"{stem}.png")
+
+
 # ── Multi-EV V2G vs no-V2G comparison ─────────────────────────────────────────
 
 def plot_multiev_comparison(
@@ -827,6 +907,33 @@ def cmd_multiev(args) -> None:
             plot_multiev_comparison(summaries, nov2g, out_dir)
 
 
+def cmd_voltage_stab(args) -> None:
+    out_dir = Path(args.out_dir)
+    _setup_style(args.dpi)
+
+    paths = [Path(f) for f in args.files] if getattr(args, "files", None) else []
+    if not paths and getattr(args, "dir", None):
+        paths = sorted(Path(args.dir).glob("voltage_stab_*.csv"))
+    if not paths:
+        print("ERROR: provide voltage_stab_*.csv file(s) or --dir", file=sys.stderr)
+        sys.exit(1)
+
+    for p in paths:
+        if not p.exists():
+            print(f"WARNING: {p} not found — skipping", file=sys.stderr)
+            continue
+        rows = _load_voltage_stab_csv(p)
+        if not rows:
+            print(f"WARNING: {p.name} has no data rows — skipping", file=sys.stderr)
+            continue
+        print(f"Generating voltage-stab plot for {p.name} ({len(rows)} samples) → {out_dir}/")
+        sse  = sum(r["error_pu"] ** 2 for r in rows)
+        rmse = (sse / len(rows)) ** 0.5
+        print(f"  RMSE={rmse*1000:.3f} mpu  samples={len(rows)}")
+        label = p.stem.replace("voltage_stab_", "")
+        plot_voltage_stab(rows, out_dir, label=label)
+
+
 def cmd_all(args) -> None:
     log_dir = Path(args.dir)
     out_dir = Path(args.out_dir)
@@ -951,6 +1058,23 @@ def cmd_all(args) -> None:
     else:
         print("[Resource] No resource_*.csv found — skipping")
 
+    # ── Voltage stabilisation ─────────────────────────────────────────────────
+    vstab_csvs = sorted(log_dir.glob("voltage_stab_*.csv"))
+    if vstab_csvs:
+        print(f"\n[VoltageStab] Found {len(vstab_csvs)} voltage_stab CSV(s)")
+        for p in vstab_csvs:
+            rows = _load_voltage_stab_csv(p)
+            if not rows:
+                print(f"  {p.name}: no data rows — skipping")
+                continue
+            sse  = sum(r["error_pu"] ** 2 for r in rows)
+            rmse = (sse / len(rows)) ** 0.5
+            print(f"  {p.name}: {len(rows)} samples, RMSE={rmse*1000:.3f} mpu")
+            label = p.stem.replace("voltage_stab_", "")
+            plot_voltage_stab(rows, out_dir, label=label)
+    else:
+        print("[VoltageStab] No voltage_stab_*.csv found — skipping")
+
 
 # ── CLI ────────────────────────────────────────────────────────────────────────
 
@@ -1038,6 +1162,21 @@ def main() -> None:
         help="Auto-discover resource_*.csv in this directory.",
     )
 
+    # ── voltage-stab ──────────────────────────────────────────────────────────
+    p_vstab = sub.add_parser(
+        "voltage-stab",
+        parents=[_shared],
+        help="Plot voltage-stabilisation accuracy from voltage_stab_*.csv.",
+    )
+    p_vstab.add_argument(
+        "files", nargs="*", metavar="CSV",
+        help="voltage_stab_*.csv files.",
+    )
+    p_vstab.add_argument(
+        "--dir", metavar="DIR",
+        help="Auto-discover voltage_stab_*.csv in this directory.",
+    )
+
     # ── all ───────────────────────────────────────────────────────────────────
     p_all = sub.add_parser(
         "all",
@@ -1060,6 +1199,8 @@ def main() -> None:
         cmd_degradation(args)
     elif args.command == "resource":
         cmd_resource(args)
+    elif args.command == "voltage-stab":
+        cmd_voltage_stab(args)
     elif args.command == "all":
         cmd_all(args)
 

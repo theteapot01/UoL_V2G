@@ -72,5 +72,11 @@ class SharedState:
         self.pref_target_soc_pct: float = 80.0  # desired SoC at departure
         self.pref_departure_time: str = ""       # "HH:MM" or "" = no window
 
+        # Control-latency measurement: set by on_step_command() when the
+        # setpoint changes; consumed and cleared by send_charging_command()
+        # after the new EVSE limits are applied in DC_ChargeLoopRes.
+        self.last_command_t: float = 0.0   # monotonic timestamp of last command
+        self.last_command_str: str = ""    # "HIGHER" or "LOWER"
+
 
 state = SharedState()
