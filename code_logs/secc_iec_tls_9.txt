@@ -1,0 +1,776 @@
+Starting SECC stack via: poetry run python /home/pi/UoL_V2G/code_iso15118_custom/run_secc.py
+  cwd        : /home/pi/UoL_V2G/code_charger/iso15118
+  PYTHONPATH : /home/pi/UoL_V2G/code_iso15118_custom
+DEBUG    2026-06-22 10:43:44,877 - asyncio (54): Using selector: EpollSelector
+INFO    2026-06-22 10:43:44,908 - telemetry_evse_controller (28): TelemetryEVSEController initialized
+INFO    2026-06-22 10:43:44,908 - __main__ (53): Using TelemetryEVSEController
+INFO    2026-06-22 10:43:56,353 - iso15118.shared.exi_codec (177): EXI Codec version: 1.55
+INFO    2026-06-22 10:43:56,355 - iso15118.secc (31): Starting 15118 version: 0.31.2
+INFO    2026-06-22 10:43:56,356 - iso15118.secc.comm_session_handler (235): Communication session handler started
+[c104.TransportSecurity] Created
+IEC104 TLS object created: <104.TransportSecurity at 0x55c30e3940>
+[c104.Server] Created
+[c104.Server] add_station] CA 47
+[c104.Server] start] Started
+IEC104 server started on port 19998 (TLS)
+Waiting for connection
+Connecting to: wss://10.42.0.1:9000/CP_1
+INFO    2026-06-22 10:43:56,810 - iso15118.secc.transport.udp_server (137): UDP server socket ready
+INFO    2026-06-22 10:43:56,812 - iso15118.secc.transport.udp_server (123): UDP server started at address FF02::1%usb0 and port 15118
+INFO    2026-06-22 10:43:56,815 - root (244): OCPP server not available yet, retrying in 3s...
+DEBUG    2026-06-22 10:43:56,824 - iso15118.secc.controller.simulator (266): New Status: ServiceStatus.READY
+Waiting for connection
+Waiting for connection
+TLS: Verify cert: depth 1
+TLS:    flags: 00000000
+TLS:   cert. version     : 3
+  serial number     : 6C:CE:13:F8:B0:2F:97:37:E6:0C:40:28:3A:0A:AF:1C:C3:AF:1D:19
+  issuer name       : CN=IEC104 CA
+  subject name      : CN=IEC104 CA
+  issued  on        : 2026-06-21 23:11:07
+  expires on        : 2036-06-18 23:11:07
+  signed using      : RSA with SHA-256
+  RSA key size      : 4096 bits
+  basic constraints : CA=true
+
+TLS: Verify cert: depth 0
+TLS:    flags: 00000000
+TLS:   cert. version     : 3
+  serial number     : 4F:4A:D5:9B:0C:36:A7:53:A4:5D:11:D2:CE:0A:FA:C5:29:83:4C:A4
+  issuer name       : CN=IEC104 CA
+  subject name      : CN=IEC104 Client
+  issued  on        : 2026-06-21 23:11:08
+  expires on        : 2036-06-18 23:11:08
+  signed using      : RSA with SHA-256
+  RSA key size      : 4096 bits
+
+[c104.TransportSecurity] Info: Session established with cipher suite TLS1-3-AES-128-GCM-SHA256 (t: 0, c: 16, version: TLS 1.3 remote-ip: 10.42.0.1:48414)
+[c104.Server] connection_event_handler] Connection OPENED by 10.42.0.1:48414 | TOTAL 149 µs
+[c104.Server] connection_event_handler] Connection ACTIVATED by 10.42.0.1:48414 | TOTAL 15 µs
+[c104.Server] send_activation_confirmation] to all MTUs
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 15 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 16 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: INTERROGATED_BY_STATION | TOTAL 3067 µs
+[c104.Server] interrogation_handler] | IP 10.42.0.1:48414 | OA 0 | CA 65535 | TOTAL 3435 µs
+[c104.Server] clock_sync_handler] TIME 2026-06-22T10:43:59.154000+0100
+[c104.Server] send_activation_confirmation] to all MTUs
+[c104.Server] asdu_handler] TYPE C_CS_NA_1 | IP 10.42.0.1:48414 | OA 0 | CA 65535 | TOTAL 697 µs
+Connecting to: wss://10.42.0.1:9000/CP_1
+DEBUG    2026-06-22 10:43:59,827 - websockets.client (178): = connection is CONNECTING
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f940010b0>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-22T10:43:56.395042+0100, processed_at=2026-06-22T10:43:56.395043+0100, readonly=False at 0x55c305e130>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:43:59.848431+0100, readonly=True at 0x7f940018a0>
+No EV connected — ignoring step command
+[c104.Server] send_activation_confirmation] to requesting MTU
+[c104.Server] asdu_handler] TYPE C_RC_TA_1 | IP 10.42.0.1:48414 | OA 0 | CA 47 | TOTAL 1094 µs
+DEBUG    2026-06-22 10:43:59,887 - websockets.client (294): > GET /CP_1 HTTP/1.1
+DEBUG    2026-06-22 10:43:59,888 - websockets.client (296): > Host: 10.42.0.1:9000
+DEBUG    2026-06-22 10:43:59,888 - websockets.client (296): > Upgrade: websocket
+DEBUG    2026-06-22 10:43:59,889 - websockets.client (296): > Connection: Upgrade
+DEBUG    2026-06-22 10:43:59,889 - websockets.client (296): > Sec-WebSocket-Key: A8VhpvytBrEXGUq/KyalaQ==
+DEBUG    2026-06-22 10:43:59,890 - websockets.client (296): > Sec-WebSocket-Version: 13
+DEBUG    2026-06-22 10:43:59,890 - websockets.client (296): > Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
+DEBUG    2026-06-22 10:43:59,890 - websockets.client (296): > Sec-WebSocket-Protocol: ocpp2.1
+DEBUG    2026-06-22 10:43:59,891 - websockets.client (296): > User-Agent: Python/3.11 websockets/16.0
+DEBUG    2026-06-22 10:43:59,904 - websockets.client (320): < HTTP/1.1 101 Switching Protocols
+DEBUG    2026-06-22 10:43:59,904 - websockets.client (322): < Date: Mon, 22 Jun 2026 09:43:59 GMT
+DEBUG    2026-06-22 10:43:59,905 - websockets.client (322): < Upgrade: websocket
+DEBUG    2026-06-22 10:43:59,905 - websockets.client (322): < Connection: Upgrade
+DEBUG    2026-06-22 10:43:59,905 - websockets.client (322): < Sec-WebSocket-Accept: BSzQ+1MUp8mBa/KVgJUpQM9LDWk=
+DEBUG    2026-06-22 10:43:59,906 - websockets.client (322): < Sec-WebSocket-Extensions: permessage-deflate; server_max_window_bits=12; client_max_window_bits=12
+DEBUG    2026-06-22 10:43:59,906 - websockets.client (322): < Sec-WebSocket-Protocol: ocpp2.1
+DEBUG    2026-06-22 10:43:59,906 - websockets.client (322): < Server: Python/3.13 websockets/16.0
+DEBUG    2026-06-22 10:43:59,908 - websockets.client (178): = connection is OPEN
+INFO    2026-06-22 10:43:59,950 - ocpp (471): CP_1: send [2,"42e5e772-9737-415a-a16a-e8a78c36d30e","BootNotification",{"chargingStation":{"model":"MSc Embedded","vendorName":"UoL"},"reason":"PowerUp"}]
+DEBUG    2026-06-22 10:43:59,950 - websockets.client (755): > TEXT '[2,"42e5e772-9737-415a-a16a-e8a78c36d30e","Boot..."},"reason":"PowerUp"}]' [144 bytes]
+DEBUG    2026-06-22 10:43:59,957 - websockets.client (609): < TEXT '[3,"42e5e772-9737-415a-a16a-e8a78c36d30e",{"cur...0,"status":"Accepted"}]' [127 bytes]
+INFO    2026-06-22 10:43:59,958 - ocpp (247): CP_1: receive message [3,"42e5e772-9737-415a-a16a-e8a78c36d30e",{"currentTime":"2026-06-22T09:43:59.903986+00:00","interval":10,"status":"Accepted"}]
+Connected to central system.
+INFO    2026-06-22 10:43:59,977 - ocpp (471): CP_1: send [2,"f425b390-65c6-40b9-9c1e-54193aeaba62","Heartbeat",{}]
+DEBUG    2026-06-22 10:43:59,984 - websockets.client (755): > TEXT '[2,"f425b390-65c6-40b9-9c1e-54193aeaba62","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-22 10:44:00,000 - websockets.client (609): < TEXT '[3,"f425b390-65c6-40b9-9c1e-54193aeaba62",{"cur...2026-06-22T09:43:59Z"}]' [81 bytes]
+INFO    2026-06-22 10:44:00,001 - ocpp (247): CP_1: receive message [3,"f425b390-65c6-40b9-9c1e-54193aeaba62",{"currentTime":"2026-06-22T09:43:59Z"}]
+INFO    2026-06-22 10:44:00,003 - ocpp (471): CP_1: send [2,"83441b13-6248-4821-b7bc-79fa352c5a75","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T09:43:59Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-22 10:44:00,004 - websockets.client (755): > TEXT '[2,"83441b13-6248-4821-b7bc-79fa352c5a75","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-22 10:44:00,010 - websockets.client (609): < TEXT '[3,"83441b13-6248-4821-b7bc-79fa352c5a75",{}]' [45 bytes]
+INFO    2026-06-22 10:44:00,011 - ocpp (247): CP_1: receive message [3,"83441b13-6248-4821-b7bc-79fa352c5a75",{}]
+INFO    2026-06-22 10:44:00,016 - root (190): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1613 µs
+[c104.Server] auto_transmit] TOTAL 1754 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 2730 µs
+[c104.Server] auto_transmit] TOTAL 2880 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1027 µs
+[c104.Server] auto_transmit] TOTAL 1211 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1029 µs
+[c104.Server] auto_transmit] TOTAL 1172 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1001 µs
+[c104.Server] auto_transmit] TOTAL 1172 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1618 µs
+[c104.Server] auto_transmit] TOTAL 1767 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 2231 µs
+[c104.Server] auto_transmit] TOTAL 2391 µs
+Keep alive until disconnected
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f940010b0>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:43:59.848431+0100, readonly=True at 0x7f940018a0>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:03.919895+0100, readonly=True at 0x55c305e130>
+No EV connected — ignoring step command
+[c104.Server] send_activation_confirmation] to requesting MTU
+[c104.Server] asdu_handler] TYPE C_RC_TA_1 | IP 10.42.0.1:48414 | OA 0 | CA 47 | TOTAL 1461 µs
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1015 µs
+[c104.Server] auto_transmit] TOTAL 1214 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1004 µs
+[c104.Server] auto_transmit] TOTAL 1224 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1689 µs
+[c104.Server] auto_transmit] TOTAL 1837 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1706 µs
+[c104.Server] auto_transmit] TOTAL 1857 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1023 µs
+[c104.Server] auto_transmit] TOTAL 1177 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1006 µs
+[c104.Server] auto_transmit] TOTAL 1145 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1012 µs
+[c104.Server] auto_transmit] TOTAL 1160 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1645 µs
+[c104.Server] auto_transmit] TOTAL 1786 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1589 µs
+[c104.Server] auto_transmit] TOTAL 1741 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1038 µs
+[c104.Server] auto_transmit] TOTAL 1182 µs
+Keep alive until disconnected
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f940010b0>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:03.919895+0100, readonly=True at 0x55c305e130>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:07.981490+0100, readonly=True at 0x7f940018a0>
+No EV connected — ignoring step command
+[c104.Server] send_activation_confirmation] to requesting MTU
+[c104.Server] asdu_handler] TYPE C_RC_TA_1 | IP 10.42.0.1:48414 | OA 0 | CA 47 | TOTAL 1435 µs
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1004 µs
+[c104.Server] auto_transmit] TOTAL 1206 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1064 µs
+[c104.Server] auto_transmit] TOTAL 1209 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1682 µs
+[c104.Server] auto_transmit] TOTAL 1825 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1646 µs
+[c104.Server] auto_transmit] TOTAL 1795 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1019 µs
+[c104.Server] auto_transmit] TOTAL 1192 µs
+Keep alive until disconnected
+INFO    2026-06-22 10:44:10,014 - ocpp (471): CP_1: send [2,"82033de8-42fe-4e83-a370-596bf1ad56da","Heartbeat",{}]
+DEBUG    2026-06-22 10:44:10,015 - websockets.client (755): > TEXT '[2,"82033de8-42fe-4e83-a370-596bf1ad56da","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-22 10:44:10,044 - websockets.client (609): < TEXT '[3,"82033de8-42fe-4e83-a370-596bf1ad56da",{"cur...2026-06-22T09:44:09Z"}]' [81 bytes]
+INFO    2026-06-22 10:44:10,049 - ocpp (247): CP_1: receive message [3,"82033de8-42fe-4e83-a370-596bf1ad56da",{"currentTime":"2026-06-22T09:44:09Z"}]
+INFO    2026-06-22 10:44:10,052 - ocpp (471): CP_1: send [2,"4fe50800-537d-43d5-ad45-6197a75e6167","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T09:44:10Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-22 10:44:10,053 - websockets.client (755): > TEXT '[2,"4fe50800-537d-43d5-ad45-6197a75e6167","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-22 10:44:10,063 - websockets.client (609): < TEXT '[3,"4fe50800-537d-43d5-ad45-6197a75e6167",{}]' [45 bytes]
+INFO    2026-06-22 10:44:10,064 - ocpp (247): CP_1: receive message [3,"4fe50800-537d-43d5-ad45-6197a75e6167",{}]
+INFO    2026-06-22 10:44:10,066 - root (190): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1036 µs
+[c104.Server] auto_transmit] TOTAL 1201 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1008 µs
+[c104.Server] auto_transmit] TOTAL 1144 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1665 µs
+[c104.Server] auto_transmit] TOTAL 1807 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1655 µs
+[c104.Server] auto_transmit] TOTAL 1797 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1034 µs
+[c104.Server] auto_transmit] TOTAL 1187 µs
+Keep alive until disconnected
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f940010b0>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:07.981490+0100, readonly=True at 0x7f940018a0>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:12.48691+0100, readonly=True at 0x55c305e130>
+No EV connected — ignoring step command
+[c104.Server] send_activation_confirmation] to requesting MTU
+[c104.Server] asdu_handler] TYPE C_RC_TA_1 | IP 10.42.0.1:48414 | OA 0 | CA 47 | TOTAL 1468 µs
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1119 µs
+[c104.Server] auto_transmit] TOTAL 1273 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1076 µs
+[c104.Server] auto_transmit] TOTAL 1243 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1618 µs
+[c104.Server] auto_transmit] TOTAL 1804 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1682 µs
+[c104.Server] auto_transmit] TOTAL 1832 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1025 µs
+[c104.Server] auto_transmit] TOTAL 1195 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1000 µs
+[c104.Server] auto_transmit] TOTAL 1165 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1000 µs
+[c104.Server] auto_transmit] TOTAL 1167 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1620 µs
+[c104.Server] auto_transmit] TOTAL 1763 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1627 µs
+[c104.Server] auto_transmit] TOTAL 1771 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1019 µs
+[c104.Server] auto_transmit] TOTAL 1178 µs
+Keep alive until disconnected
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f940010b0>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:12.48691+0100, readonly=True at 0x55c305e130>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:16.119379+0100, readonly=True at 0x7f940018a0>
+No EV connected — ignoring step command
+[c104.Server] send_activation_confirmation] to requesting MTU
+[c104.Server] asdu_handler] TYPE C_RC_TA_1 | IP 10.42.0.1:48414 | OA 0 | CA 47 | TOTAL 1529 µs
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1077 µs
+[c104.Server] auto_transmit] TOTAL 1247 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1055 µs
+[c104.Server] auto_transmit] TOTAL 1203 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1704 µs
+[c104.Server] auto_transmit] TOTAL 1863 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1609 µs
+[c104.Server] auto_transmit] TOTAL 1751 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1029 µs
+[c104.Server] auto_transmit] TOTAL 1180 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1014 µs
+[c104.Server] auto_transmit] TOTAL 1156 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1001 µs
+[c104.Server] auto_transmit] TOTAL 1150 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1633 µs
+[c104.Server] auto_transmit] TOTAL 1782 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1584 µs
+[c104.Server] auto_transmit] TOTAL 1730 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1018 µs
+[c104.Server] auto_transmit] TOTAL 1187 µs
+Keep alive until disconnected
+DEBUG    2026-06-22 10:44:19,902 - websockets.client (609): < PING 19 1b db 71 [binary, 4 bytes]
+DEBUG    2026-06-22 10:44:19,903 - websockets.client (755): > PONG 19 1b db 71 [binary, 4 bytes]
+DEBUG    2026-06-22 10:44:19,911 - websockets.client (755): > PING 'Ʊi\x07' [text, 4 bytes]
+DEBUG    2026-06-22 10:44:19,912 - websockets.client (829): % sent keepalive ping
+DEBUG    2026-06-22 10:44:19,915 - websockets.client (609): < PONG 'Ʊi\x07' [text, 4 bytes]
+DEBUG    2026-06-22 10:44:19,916 - websockets.client (840): % received keepalive pong
+INFO    2026-06-22 10:44:20,060 - ocpp (471): CP_1: send [2,"b7b50009-8c38-45ce-8353-471ea0a68b46","Heartbeat",{}]
+DEBUG    2026-06-22 10:44:20,061 - websockets.client (755): > TEXT '[2,"b7b50009-8c38-45ce-8353-471ea0a68b46","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-22 10:44:20,095 - websockets.client (609): < TEXT '[3,"b7b50009-8c38-45ce-8353-471ea0a68b46",{"cur...2026-06-22T09:44:20Z"}]' [81 bytes]
+INFO    2026-06-22 10:44:20,099 - ocpp (247): CP_1: receive message [3,"b7b50009-8c38-45ce-8353-471ea0a68b46",{"currentTime":"2026-06-22T09:44:20Z"}]
+INFO    2026-06-22 10:44:20,102 - ocpp (471): CP_1: send [2,"b3141c62-ff88-4fe4-881f-31587d3f454e","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T09:44:20Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-22 10:44:20,104 - websockets.client (755): > TEXT '[2,"b3141c62-ff88-4fe4-881f-31587d3f454e","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-22 10:44:20,117 - websockets.client (609): < TEXT '[3,"b3141c62-ff88-4fe4-881f-31587d3f454e",{}]' [45 bytes]
+INFO    2026-06-22 10:44:20,118 - ocpp (247): CP_1: receive message [3,"b3141c62-ff88-4fe4-881f-31587d3f454e",{}]
+INFO    2026-06-22 10:44:20,121 - root (190): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f940010b0>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:16.119379+0100, readonly=True at 0x7f940018a0>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:20.191985+0100, readonly=True at 0x55c305e130>
+No EV connected — ignoring step command
+[c104.Server] send_activation_confirmation] to requesting MTU
+[c104.Server] asdu_handler] TYPE C_RC_TA_1 | IP 10.42.0.1:48414 | OA 0 | CA 47 | TOTAL 1352 µs
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1070 µs
+[c104.Server] auto_transmit] TOTAL 1248 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1089 µs
+[c104.Server] auto_transmit] TOTAL 1238 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1639 µs
+[c104.Server] auto_transmit] TOTAL 1787 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1763 µs
+[c104.Server] auto_transmit] TOTAL 1919 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1031 µs
+[c104.Server] auto_transmit] TOTAL 1183 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1006 µs
+[c104.Server] auto_transmit] TOTAL 1149 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1006 µs
+[c104.Server] auto_transmit] TOTAL 1154 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1618 µs
+[c104.Server] auto_transmit] TOTAL 1763 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1630 µs
+[c104.Server] auto_transmit] TOTAL 1848 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1052 µs
+[c104.Server] auto_transmit] TOTAL 1208 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1053 µs
+[c104.Server] auto_transmit] TOTAL 1214 µs
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f940010b0>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:20.191985+0100, readonly=True at 0x55c305e130>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:24.262652+0100, readonly=True at 0x7f940018a0>
+No EV connected — ignoring step command
+[c104.Server] send_activation_confirmation] to requesting MTU
+[c104.Server] asdu_handler] TYPE C_RC_TA_1 | IP 10.42.0.1:48414 | OA 0 | CA 47 | TOTAL 1516 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1083 µs
+[c104.Server] auto_transmit] TOTAL 1250 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1643 µs
+[c104.Server] auto_transmit] TOTAL 1786 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1583 µs
+[c104.Server] auto_transmit] TOTAL 1727 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1087 µs
+[c104.Server] auto_transmit] TOTAL 1257 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1004 µs
+[c104.Server] auto_transmit] TOTAL 1141 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1009 µs
+[c104.Server] auto_transmit] TOTAL 1153 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1631 µs
+[c104.Server] auto_transmit] TOTAL 1847 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1727 µs
+[c104.Server] auto_transmit] TOTAL 1881 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1008 µs
+[c104.Server] auto_transmit] TOTAL 1169 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1057 µs
+[c104.Server] auto_transmit] TOTAL 1219 µs
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f940010b0>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:24.262652+0100, readonly=True at 0x7f940018a0>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:28.323838+0100, readonly=True at 0x55c305e130>
+No EV connected — ignoring step command
+[c104.Server] send_activation_confirmation] to requesting MTU
+[c104.Server] asdu_handler] TYPE C_RC_TA_1 | IP 10.42.0.1:48414 | OA 0 | CA 47 | TOTAL 1488 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1074 µs
+[c104.Server] auto_transmit] TOTAL 1237 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1612 µs
+[c104.Server] auto_transmit] TOTAL 1762 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1572 µs
+[c104.Server] auto_transmit] TOTAL 1743 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1041 µs
+[c104.Server] auto_transmit] TOTAL 1199 µs
+Keep alive until disconnected
+INFO    2026-06-22 10:44:30,111 - ocpp (471): CP_1: send [2,"65151cf4-ab4f-4095-bcdf-f1b4606c8dee","Heartbeat",{}]
+DEBUG    2026-06-22 10:44:30,112 - websockets.client (755): > TEXT '[2,"65151cf4-ab4f-4095-bcdf-f1b4606c8dee","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-22 10:44:30,123 - websockets.client (609): < TEXT '[3,"65151cf4-ab4f-4095-bcdf-f1b4606c8dee",{"cur...2026-06-22T09:44:30Z"}]' [81 bytes]
+INFO    2026-06-22 10:44:30,124 - ocpp (247): CP_1: receive message [3,"65151cf4-ab4f-4095-bcdf-f1b4606c8dee",{"currentTime":"2026-06-22T09:44:30Z"}]
+INFO    2026-06-22 10:44:30,155 - ocpp (471): CP_1: send [2,"84465127-5530-4f20-8c1a-e33bff5fff32","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T09:44:30Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-22 10:44:30,156 - websockets.client (755): > TEXT '[2,"84465127-5530-4f20-8c1a-e33bff5fff32","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-22 10:44:30,166 - websockets.client (609): < TEXT '[3,"84465127-5530-4f20-8c1a-e33bff5fff32",{}]' [45 bytes]
+INFO    2026-06-22 10:44:30,167 - ocpp (247): CP_1: receive message [3,"84465127-5530-4f20-8c1a-e33bff5fff32",{}]
+INFO    2026-06-22 10:44:30,169 - root (190): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 919 µs
+[c104.Server] auto_transmit] TOTAL 1061 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 941 µs
+[c104.Server] auto_transmit] TOTAL 1106 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1695 µs
+[c104.Server] auto_transmit] TOTAL 1847 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1672 µs
+[c104.Server] auto_transmit] TOTAL 1815 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1061 µs
+[c104.Server] auto_transmit] TOTAL 1221 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 999 µs
+[c104.Server] auto_transmit] TOTAL 1146 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1007 µs
+[c104.Server] auto_transmit] TOTAL 1154 µs
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f940010b0>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:28.323838+0100, readonly=True at 0x55c305e130>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:32.372786+0100, readonly=True at 0x7f940018a0>
+No EV connected — ignoring step command
+[c104.Server] send_activation_confirmation] to requesting MTU
+[c104.Server] asdu_handler] TYPE C_RC_TA_1 | IP 10.42.0.1:48414 | OA 0 | CA 47 | TOTAL 1413 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1671 µs
+[c104.Server] auto_transmit] TOTAL 1813 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1617 µs
+[c104.Server] auto_transmit] TOTAL 1773 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1039 µs
+[c104.Server] auto_transmit] TOTAL 1193 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1005 µs
+[c104.Server] auto_transmit] TOTAL 1149 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1011 µs
+[c104.Server] auto_transmit] TOTAL 1245 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1737 µs
+[c104.Server] auto_transmit] TOTAL 1879 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1657 µs
+[c104.Server] auto_transmit] TOTAL 1801 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1078 µs
+[c104.Server] auto_transmit] TOTAL 1220 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1001 µs
+[c104.Server] auto_transmit] TOTAL 1140 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1004 µs
+[c104.Server] auto_transmit] TOTAL 1161 µs
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f940010b0>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:32.372786+0100, readonly=True at 0x7f940018a0>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:36.427723+0100, readonly=True at 0x55c305e130>
+No EV connected — ignoring step command
+[c104.Server] send_activation_confirmation] to requesting MTU
+[c104.Server] asdu_handler] TYPE C_RC_TA_1 | IP 10.42.0.1:48414 | OA 0 | CA 47 | TOTAL 1469 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1619 µs
+[c104.Server] auto_transmit] TOTAL 1768 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1599 µs
+[c104.Server] auto_transmit] TOTAL 1749 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1026 µs
+[c104.Server] auto_transmit] TOTAL 1189 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 997 µs
+[c104.Server] auto_transmit] TOTAL 1196 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1044 µs
+[c104.Server] auto_transmit] TOTAL 1200 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1647 µs
+[c104.Server] auto_transmit] TOTAL 1789 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1614 µs
+[c104.Server] auto_transmit] TOTAL 1759 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1018 µs
+[c104.Server] auto_transmit] TOTAL 1161 µs
+Keep alive until disconnected
+DEBUG    2026-06-22 10:44:39,899 - websockets.client (609): < PING 02 23 e5 6a [binary, 4 bytes]
+DEBUG    2026-06-22 10:44:39,899 - websockets.client (755): > PONG 02 23 e5 6a [binary, 4 bytes]
+DEBUG    2026-06-22 10:44:39,913 - websockets.client (755): > PING bd 0e 4e f5 [binary, 4 bytes]
+DEBUG    2026-06-22 10:44:39,914 - websockets.client (829): % sent keepalive ping
+DEBUG    2026-06-22 10:44:39,917 - websockets.client (609): < PONG bd 0e 4e f5 [binary, 4 bytes]
+DEBUG    2026-06-22 10:44:39,918 - websockets.client (840): % received keepalive pong
+INFO    2026-06-22 10:44:40,152 - ocpp (471): CP_1: send [2,"24d4d14a-6410-488e-9b01-3db004eb32d3","Heartbeat",{}]
+DEBUG    2026-06-22 10:44:40,153 - websockets.client (755): > TEXT '[2,"24d4d14a-6410-488e-9b01-3db004eb32d3","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-22 10:44:40,165 - websockets.client (609): < TEXT '[3,"24d4d14a-6410-488e-9b01-3db004eb32d3",{"cur...2026-06-22T09:44:40Z"}]' [81 bytes]
+INFO    2026-06-22 10:44:40,166 - ocpp (247): CP_1: receive message [3,"24d4d14a-6410-488e-9b01-3db004eb32d3",{"currentTime":"2026-06-22T09:44:40Z"}]
+INFO    2026-06-22 10:44:40,200 - ocpp (471): CP_1: send [2,"75fad411-9c3f-4bbc-a1a8-58b3305e1df3","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T09:44:40Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-22 10:44:40,201 - websockets.client (755): > TEXT '[2,"75fad411-9c3f-4bbc-a1a8-58b3305e1df3","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-22 10:44:40,213 - websockets.client (609): < TEXT '[3,"75fad411-9c3f-4bbc-a1a8-58b3305e1df3",{}]' [45 bytes]
+INFO    2026-06-22 10:44:40,214 - ocpp (247): CP_1: receive message [3,"75fad411-9c3f-4bbc-a1a8-58b3305e1df3",{}]
+INFO    2026-06-22 10:44:40,217 - root (190): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 885 µs
+[c104.Server] auto_transmit] TOTAL 1038 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1022 µs
+[c104.Server] auto_transmit] TOTAL 1175 µs
+Keep alive until disconnected
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f940010b0>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:36.427723+0100, readonly=True at 0x55c305e130>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:40.492448+0100, readonly=True at 0x7f940018a0>
+No EV connected — ignoring step command
+[c104.Server] send_activation_confirmation] to requesting MTU
+[c104.Server] asdu_handler] TYPE C_RC_TA_1 | IP 10.42.0.1:48414 | OA 0 | CA 47 | TOTAL 1417 µs
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1706 µs
+[c104.Server] auto_transmit] TOTAL 1853 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1652 µs
+[c104.Server] auto_transmit] TOTAL 1804 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1026 µs
+[c104.Server] auto_transmit] TOTAL 1197 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1087 µs
+[c104.Server] auto_transmit] TOTAL 1226 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1076 µs
+[c104.Server] auto_transmit] TOTAL 1245 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1629 µs
+[c104.Server] auto_transmit] TOTAL 1771 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1656 µs
+[c104.Server] auto_transmit] TOTAL 1800 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1034 µs
+[c104.Server] auto_transmit] TOTAL 1183 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1018 µs
+[c104.Server] auto_transmit] TOTAL 1162 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1013 µs
+[c104.Server] auto_transmit] TOTAL 1178 µs
+Keep alive until disconnected
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f940010b0>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:40.492448+0100, readonly=True at 0x7f940018a0>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:44.558872+0100, readonly=True at 0x55c305e130>
+No EV connected — ignoring step command
+[c104.Server] send_activation_confirmation] to requesting MTU
+[c104.Server] asdu_handler] TYPE C_RC_TA_1 | IP 10.42.0.1:48414 | OA 0 | CA 47 | TOTAL 1524 µs
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1756 µs
+[c104.Server] auto_transmit] TOTAL 1899 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1715 µs
+[c104.Server] auto_transmit] TOTAL 1862 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1095 µs
+[c104.Server] auto_transmit] TOTAL 1316 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1047 µs
+[c104.Server] auto_transmit] TOTAL 1186 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1054 µs
+[c104.Server] auto_transmit] TOTAL 1201 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1642 µs
+[c104.Server] auto_transmit] TOTAL 1789 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1606 µs
+[c104.Server] auto_transmit] TOTAL 1755 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1021 µs
+[c104.Server] auto_transmit] TOTAL 1175 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1015 µs
+[c104.Server] auto_transmit] TOTAL 1152 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 997 µs
+[c104.Server] auto_transmit] TOTAL 1149 µs
+Keep alive until disconnected
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f940010b0>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:44.558872+0100, readonly=True at 0x55c305e130>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:48.633363+0100, readonly=True at 0x7f940018a0>
+No EV connected — ignoring step command
+[c104.Server] send_activation_confirmation] to requesting MTU
+[c104.Server] asdu_handler] TYPE C_RC_TA_1 | IP 10.42.0.1:48414 | OA 0 | CA 47 | TOTAL 1446 µs
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1786 µs
+[c104.Server] auto_transmit] TOTAL 1928 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1771 µs
+[c104.Server] auto_transmit] TOTAL 1922 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1042 µs
+[c104.Server] auto_transmit] TOTAL 1188 µs
+Keep alive until disconnected
+INFO    2026-06-22 10:44:50,174 - ocpp (471): CP_1: send [2,"6693942b-9772-461b-9c48-25645bc541fd","Heartbeat",{}]
+DEBUG    2026-06-22 10:44:50,174 - websockets.client (755): > TEXT '[2,"6693942b-9772-461b-9c48-25645bc541fd","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-22 10:44:50,186 - websockets.client (609): < TEXT '[3,"6693942b-9772-461b-9c48-25645bc541fd",{"cur...2026-06-22T09:44:50Z"}]' [81 bytes]
+INFO    2026-06-22 10:44:50,187 - ocpp (247): CP_1: receive message [3,"6693942b-9772-461b-9c48-25645bc541fd",{"currentTime":"2026-06-22T09:44:50Z"}]
+INFO    2026-06-22 10:44:50,247 - ocpp (471): CP_1: send [2,"d1d65d8d-dd8a-427d-b28b-e65aeeda243b","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T09:44:50Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-22 10:44:50,248 - websockets.client (755): > TEXT '[2,"d1d65d8d-dd8a-427d-b28b-e65aeeda243b","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-22 10:44:50,261 - websockets.client (609): < TEXT '[3,"d1d65d8d-dd8a-427d-b28b-e65aeeda243b",{}]' [45 bytes]
+INFO    2026-06-22 10:44:50,262 - ocpp (247): CP_1: receive message [3,"d1d65d8d-dd8a-427d-b28b-e65aeeda243b",{}]
+INFO    2026-06-22 10:44:50,265 - root (190): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 3697 µs
+[c104.Server] auto_transmit] TOTAL 3844 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 953 µs
+[c104.Server] auto_transmit] TOTAL 1110 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1066 µs
+[c104.Server] auto_transmit] TOTAL 1207 µs
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 2147 µs
+[c104.Server] auto_transmit] TOTAL 2298 µs
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1018 µs
+[c104.Server] auto_transmit] TOTAL 1171 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1011 µs
+[c104.Server] auto_transmit] TOTAL 1153 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1022 µs
+[c104.Server] auto_transmit] TOTAL 1178 µs
+Keep alive until disconnected
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f940010b0>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:48.633363+0100, readonly=True at 0x7f940018a0>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:52.694398+0100, readonly=True at 0x55c305e130>
+No EV connected — ignoring step command
+[c104.Server] send_activation_confirmation] to requesting MTU
+[c104.Server] asdu_handler] TYPE C_RC_TA_1 | IP 10.42.0.1:48414 | OA 0 | CA 47 | TOTAL 1434 µs
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1057 µs
+[c104.Server] auto_transmit] TOTAL 1208 µs
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1688 µs
+[c104.Server] auto_transmit] TOTAL 1840 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1816 µs
+[c104.Server] auto_transmit] TOTAL 1960 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1030 µs
+[c104.Server] auto_transmit] TOTAL 1180 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1000 µs
+[c104.Server] auto_transmit] TOTAL 1195 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1064 µs
+[c104.Server] auto_transmit] TOTAL 1231 µs
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1591 µs
+[c104.Server] auto_transmit] TOTAL 1735 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1648 µs
+[c104.Server] auto_transmit] TOTAL 1792 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1015 µs
+[c104.Server] auto_transmit] TOTAL 1176 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1016 µs
+[c104.Server] auto_transmit] TOTAL 1181 µs
+Keep alive until disconnected
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f940010b0>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:52.694398+0100, readonly=True at 0x55c305e130>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-22T10:43:58.786000+0100, processed_at=2026-06-22T10:44:56.756998+0100, readonly=True at 0x7f940018a0>
+No EV connected — ignoring step command
+[c104.Server] send_activation_confirmation] to requesting MTU
+[c104.Server] asdu_handler] TYPE C_RC_TA_1 | IP 10.42.0.1:48414 | OA 0 | CA 47 | TOTAL 1424 µs
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1056 µs
+[c104.Server] auto_transmit] TOTAL 1285 µs
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1692 µs
+[c104.Server] auto_transmit] TOTAL 1843 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1706 µs
+[c104.Server] auto_transmit] TOTAL 1853 µs
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1068 µs
+[c104.Server] auto_transmit] TOTAL 1200 µs
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+[c104.Server] send] Send Batch M_ME_NC_1 | COT: PERIODIC | TOTAL 1043 µs
+[c104.Server] auto_transmit] TOTAL 1208 µs
+Keep alive until disconnected
+TLS:  connection was closed gracefully
+[c104.Server] connection_event_handler] Connection CLOSED by 10.42.0.1:48414 | TOTAL 65 µs
+DEBUG    2026-06-22 10:44:59,388 - websockets.client (577): < EOF
+DEBUG    2026-06-22 10:44:59,389 - websockets.client (659): < EOF
+DEBUG    2026-06-22 10:44:59,389 - websockets.client (767): > EOF
+DEBUG    2026-06-22 10:44:59,390 - websockets.client (178): = connection is CLOSED
+DEBUG    2026-06-22 10:44:59,390 - websockets.client (989): x closing TCP connection
+[c104.Server] loop] Tasks dropped due to stop: 2
+[c104.Server] stop] Stopped
+[c104.Server] Removed
+[c104.TransportSecurity] Removed
+

@@ -1,0 +1,2 @@
+n_evs,sim_duration_min,evs_reached_target,mean_time_to_target_min,min_time_to_target_min,max_time_to_target_min,mean_final_soc_pct,peak_trafo_loading_pct,min_bus2_voltage_pu,total_higher_cmds,total_lower_cmds,grid_stress_ticks,out_csv
+1,119.9,0,,,,75.0,48.4,0.9677,1096,1093,0,/mnt/data/SynologyDrive/Leeds/MSc Project/Coding/UoL_V2G/Logs/multi_ev_1ev_20260624_164114.csv
