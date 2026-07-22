@@ -62,23 +62,23 @@ trafo_loadings = []
 # ── Control thresholds ────────────────────────────────────────────────────
 # Values are % of rated equipment capacity for the 0.4 MVA transformer and
 # NA2XS2Y line configured above.  Adjust here to retune the controller.
-TRAFO_STRESS_PCT     = 80.0   # trafo above this → grid stressed, immediate HIGHER
-LINE_STRESS_PCT      = 90.0   # line above this  → grid stressed, immediate HIGHER
-VOLTAGE_MIN_PU       = 0.95   # bus 2 below this → grid stressed, immediate HIGHER
+TRAFO_STRESS_PCT     = 80.0   # trafo above this → grid stressed, immediate LOWER
+LINE_STRESS_PCT      = 90.0   # line above this  → grid stressed, immediate LOWER
+VOLTAGE_MIN_PU       = 0.95   # bus 2 below this → grid stressed, immediate LOWER
 TRAFO_TARGET_PCT     = 70.0   # desired trafo operating point (centre of dead zone)
 TRAFO_HYSTERESIS_PCT =  3.0   # ± half-width of dead zone around target
 # Resulting trafo bands:
-#   trafo < TARGET − HYSTERESIS  (< 67 %)  → contributes to LOWER
-#   trafo > TARGET + HYSTERESIS  (> 73 %)  → contributes to HIGHER
+#   trafo < TARGET − HYSTERESIS  (< 67 %)  → contributes to HIGHER
+#   trafo > TARGET + HYSTERESIS  (> 73 %)  → contributes to LOWER
 #   67 – 73 %                               → contributes to HOLD
 LINE_TARGET_PCT      = 80.0   # desired line operating point (centre of dead zone)
 LINE_HYSTERESIS_PCT  =  5.0   # ± half-width of dead zone around target
 # Resulting line bands:
-#   line < LINE_TARGET − LINE_HYSTERESIS (< 75 %)  → contributes to LOWER
-#   line > LINE_TARGET + LINE_HYSTERESIS (> 85 %)  → contributes to HIGHER
+#   line < LINE_TARGET − LINE_HYSTERESIS (< 75 %)  → contributes to HIGHER
+#   line > LINE_TARGET + LINE_HYSTERESIS (> 85 %)  → contributes to LOWER
 #   75 – 85 %                                        → contributes to HOLD
-# LOWER is only sent when BOTH trafo and line are below their lower thresholds.
-# HIGHER is sent when EITHER trafo or line exceeds its upper threshold.
+# HIGHER is only sent when BOTH trafo and line are below their lower thresholds.
+# LOWER is sent when EITHER trafo or line exceeds its upper threshold.
 # This causes the power to ramp up until the binding constraint (trafo or line)
 # enters its dead zone, then hold there rather than oscillate.
 SOC_APPROACH_BAND_PCT = 3.0   # start pre-emptive ramp-down this many % below max_soc
@@ -86,7 +86,7 @@ STEP_KW               = 5.0   # one regulating step; must match SharedState.step
 
 # ── Voltage-stabilisation demo constants ──────────────────────────────────────
 # Background sine disturbance injected at bus 3 to stress the bus voltage.
-SIM_BG_AMPLITUDE_MW = 0.080   # ±40 kW — within V2G capability so effect is visible
+SIM_BG_AMPLITUDE_MW = 0.080   # ±80 kW — within V2G capability so effect is visible
 SIM_BG_PERIOD_S     = 60.0    # one full oscillation per minute
 
 # Voltage-droop control band for the stabilisation mode.
@@ -114,27 +114,27 @@ def _adaptive_bursts(
     single cycle, so the effective rate scales with urgency without touching
     the step size or the cycle period.
 
-    Normal HIGHER burst rules (shed load / ramp down charge):
+    Normal LOWER burst rules (shed load / ramp down charge):
       4 × — grid emergency  (trafo > STRESS or line > STRESS)
       3 × — SoC at or above ceiling (sustained overshoot prevention)
       2 × — grid approaching capacity OR SoC within approach band
       1 × — all other cases
 
-    Voltage-stabilisation HIGHER burst rules (voltage droop):
+    Voltage-stabilisation LOWER burst rules (voltage droop):
       4 × — voltage below emergency floor (< 0.95 pu)
       2 × — voltage more than 2× deadband below target
       1 × — inside droop band
 
-    LOWER burst rules: always 1 × — grid has spare capacity by definition.
+    HIGHER burst rules: always 1 × — grid has spare capacity by definition.
     """
-    if voltage_stab and cmd == "HIGHER":
+    if voltage_stab and cmd == "LOWER":
         if vm_pu < VOLTAGE_MIN_PU:
             return 4
         if vm_pu < VDROOP_TARGET - VDROOP_DEADBAND * 2:
             return 2
         return 1
 
-    if cmd == "HIGHER":
+    if cmd == "LOWER":
         if trafo_pct > TRAFO_STRESS_PCT or line_pct > LINE_STRESS_PCT:
             return 4
         if soc_valid and soc >= max_soc_pct:
@@ -292,16 +292,16 @@ async def run_iec104_client():
                     _prev_auto_cmd = _pending_cmd
                 elif grid_state.voltage_stab_mode:
                     # Voltage-droop control: track bus 2 voltage toward VDROOP_TARGET.
-                    # HIGHER = reduce charge / start V2G → raises bus voltage.
-                    # LOWER  = increase charge → lowers bus voltage.
+                    # LOWER  = reduce charge / start V2G → raises bus voltage.
+                    # HIGHER = increase charge → lowers bus voltage.
                     # SoC floor is still respected as a safety guard.
                     prefs = grid_state.prefs
                     if _soc_valid and soc < prefs.min_soc_pct:
                         auto_cmd = "HOLD"   # battery too low to support V2G
                     elif vm_pu_b2 < VDROOP_TARGET - VDROOP_DEADBAND:
-                        auto_cmd = "HIGHER"
-                    elif vm_pu_b2 > VDROOP_TARGET + VDROOP_DEADBAND:
                         auto_cmd = "LOWER"
+                    elif vm_pu_b2 > VDROOP_TARGET + VDROOP_DEADBAND:
+                        auto_cmd = "HIGHER"
                     else:
                         auto_cmd = "HOLD"
 
@@ -346,30 +346,30 @@ async def run_iec104_client():
 
                     if grid_stressed:
                         # Grid safety always beats user preference.
-                        auto_cmd = "HIGHER"
+                        auto_cmd = "LOWER"
                     elif _soc_valid and soc >= prefs.max_soc_pct:
                         # Battery at user max — ramp charge to idle; hold there.
                         # V2G is only triggered by the grid-stress emergency above,
                         # not automatically whenever the battery is full.
-                        auto_cmd = "HIGHER" if point_meter.value > 1.0 else "HOLD"
+                        auto_cmd = "LOWER" if point_meter.value > 1.0 else "HOLD"
                     elif _soc_valid and soc < prefs.min_soc_pct:
-                        auto_cmd = "LOWER"
+                        auto_cmd = "HIGHER"
                     elif (_soc_valid
                           and not departure_priority
                           and soc >= prefs.max_soc_pct - SOC_APPROACH_BAND_PCT):
                         # Pre-emptive ramp-down: SoC is within the approach band
-                        # below max.  Starting HIGHER early prevents overshoot
+                        # below max.  Starting LOWER early prevents overshoot
                         # caused by the inertia of a large setpoint.
                         # Suppressed during departure priority so the EV can still
                         # reach the user's target SoC before leaving.
                         if point_meter.value > 1.0:
-                            auto_cmd = "HIGHER"
+                            auto_cmd = "LOWER"
                         elif soc < prefs.max_soc_pct:
                             # Power ramped to zero but SoC hasn't reached the
                             # ceiling yet — trickle-charge if grid has spare
                             # capacity rather than holding below the user's max.
                             auto_cmd = (
-                                "LOWER"
+                                "HIGHER"
                                 if trafo_loading < _low and line_loading < _line_low
                                 else "HOLD"
                             )
@@ -378,13 +378,13 @@ async def run_iec104_client():
                     elif departure_priority:
                         # Departure approaching and SoC below target: charge within
                         # the normal capacity band (grid is not stressed).
-                        auto_cmd = "LOWER"
+                        auto_cmd = "HIGHER"
                     elif trafo_loading > _high or line_loading > _line_high:
                         # Either constraint approaching capacity — reduce power.
-                        auto_cmd = "HIGHER"
+                        auto_cmd = "LOWER"
                     elif trafo_loading < _low and line_loading < _line_low:
                         # Both constraints have spare capacity — increase power.
-                        auto_cmd = "LOWER"
+                        auto_cmd = "HIGHER"
                     else:
                         # At least one constraint is in its dead zone — hold.
                         auto_cmd = "HOLD"
@@ -448,7 +448,7 @@ async def run_iec104_client():
                 # Prevent burst overshoot across zero: when power is within one
                 # step of zero a multi-command burst can step into discharge before
                 # the measured value updates and the guard catches it.
-                if _pending_cmd == "HIGHER" and 0.0 < point_meter.value <= STEP_KW:
+                if _pending_cmd == "LOWER" and 0.0 < point_meter.value <= STEP_KW:
                     n_bursts = 1
                 t_tx = time.time()
                 ok = 0

@@ -188,14 +188,14 @@ class SimulatedBattery(BatteryProfile):
         Apply one IEC 104 regulating step to the commanded power.
 
         Mirrors the IOA 12 semantics documented in iecc104_server.py:
-          HIGHER -> increase discharge / reduce charge (setpoint more negative)
-          LOWER  -> increase charge   / reduce discharge (setpoint more positive)
+          HIGHER -> increase charge   / reduce discharge (setpoint more positive)
+          LOWER  -> increase discharge / reduce charge (setpoint more negative)
 
         Returns the new clamped setpoint [kW].
         """
         step = self.default_step_kw if step_kw is None else float(step_kw)
         with self._lock:
-            delta = -step if higher else step
+            delta = step if higher else -step
             self._power_setpoint_kw = self._clamp_setpoint(
                 self._power_setpoint_kw + delta
             )

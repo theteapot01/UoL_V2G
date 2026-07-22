@@ -231,6 +231,11 @@ def _extract_tls_info(websocket) -> None:
             cipher_info = ssl_obj.cipher()          # (name, protocol, bits) or None
             grid_state.security.ocpp.tls_version = ssl_obj.version() or "TLS"
             grid_state.security.ocpp.cipher      = cipher_info[0] if cipher_info else ""
+            logging.info(
+                "OCPP TLS session established: %s, cipher=%s",
+                grid_state.security.ocpp.tls_version,
+                grid_state.security.ocpp.cipher,
+            )
     except Exception:
         pass
     grid_state.security.ocpp.connected = True
