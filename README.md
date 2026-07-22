@@ -76,7 +76,6 @@ flowchart LR
 ├── ev.py                       # EV entry point — shells out to run_evcc.py via Poetry
 ├── config.py                   # Shared config: IPs, ports, IOAs (Config dataclass, frozen)
 ├── run_evaluation.py           # Runs all offline evaluation tools + plots in sequence
-├── protocol_spec.md            # Formal protocol specification (independent of the code)
 ├── code_battery_sim/           # Battery models and CSV discharge profiles
 │   ├── profiles/                # time_min, soc_percent, power_kw, phase CSVs
 │   └── evtype/                  # EV chemistry parameters (nominal voltage etc.)
