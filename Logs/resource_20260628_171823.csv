@@ -1,0 +1,2 @@
+timestamp_unix,timestamp_iso,system_cpu_pct,system_mem_used_mb,system_mem_available_mb,grid.py_pid,grid.py_cpu_pct,grid.py_rss_mb
+1782663508.738527,2026-06-28T16:18:28Z,0.6,341.7,3610.8,2414,0.0,15.1

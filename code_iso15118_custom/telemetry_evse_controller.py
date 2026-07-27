@@ -19,6 +19,7 @@ from typing import Optional
 
 from iso15118.secc.controller.simulator import SimEVSEController
 from charger_state import state, Telemetry, EVCC_TEMP_FILE
+import control_latency
 
 logger = logging.getLogger(__name__)
 
@@ -109,6 +110,15 @@ class TelemetryEVSEController(SimEVSEController):
         state.iso_evse_max_charge_w = max_charge_w
         state.iso_evse_max_discharge_w = max_discharge_w
         state.iso_loop_ms = (time.monotonic() - _t0) * 1000.0
+
+        # Measure control latency: time from on_step_command() stamping
+        # state.last_command_t to this point where the new EVSE limits are applied.
+        t_cmd = state.last_command_t
+        if t_cmd > 0.0:
+            latency_ms = (time.monotonic() - t_cmd) * 1000.0
+            state.last_command_t = 0.0
+            control_latency.log(state.last_command_str, state.grid_power_setpoint_kw, latency_ms)
+            logger.debug(f"Control latency: {latency_ms:.1f} ms (cmd={state.last_command_str})")
 
         logger.debug(
             f"EVSE limits updated: charge={max_charge_w} W, "

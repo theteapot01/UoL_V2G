@@ -1,0 +1,160 @@
+[2026-06-21 21:12:47] INFO     [c104] Python is running in buffered mode, messages will be printed with high delay! Set PYTHONUNBUFFERED=1 environment variable to enable unbuffered mode.
+INFO:c104:Python is running in buffered mode, messages will be printed with high delay! Set PYTHONUNBUFFERED=1 environment variable to enable unbuffered mode.
+INFO:pandapower.plotting.plotly.draw_layers:Failed to import plotly - interactive plotting will not be available
+Waiting for connection to 10.42.0.23:19998
+INFO:websockets.server:server listening on 0.0.0.0:9000
+INFO:root:CSMS listening on wss://0.0.0.0:9000 (Security Profile 3 — mTLS)
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+INFO:websockets.server:connection open
+INFO:root:Protocols Matched: ocpp2.1
+INFO:ocpp:CP_1: receive message [2,"e63f1c7b-3c78-4e0a-864c-841200074fca","BootNotification",{"chargingStation":{"model":"MSc Embedded","vendorName":"UoL"},"reason":"PowerUp"}]
+INFO:ocpp:CP_1: send [3,"e63f1c7b-3c78-4e0a-864c-841200074fca",{"currentTime":"2026-06-21T20:12:50.411334+00:00","interval":10,"status":"Accepted"}]
+INFO:ocpp:CP_1: receive message [2,"dbae487c-5e85-4757-b46d-72c86dc72e3c","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"dbae487c-5e85-4757-b46d-72c86dc72e3c",{"currentTime":"2026-06-21T20:12:50Z"}]
+INFO:ocpp:CP_1: receive message [2,"b3586569-4c91-447e-831f-2ac1d7f375fb","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T20:12:50Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-21T20:12:50Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-21T20:12:50Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-21T20:12:50Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 0.0 V at 2026-06-21T20:12:50Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 0.0 A at 2026-06-21T20:12:50Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-21T20:12:50Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-21T20:12:50Z
+INFO:ocpp:CP_1: send [3,"b3586569-4c91-447e-831f-2ac1d7f375fb",{}]
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+INFO:ocpp:CP_1: receive message [2,"cf543218-cca5-4c52-95f0-fd991a69bafa","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"cf543218-cca5-4c52-95f0-fd991a69bafa",{"currentTime":"2026-06-21T20:13:00Z"}]
+INFO:ocpp:CP_1: receive message [2,"1555f405-0356-4444-ba6a-3d16b84be34a","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T20:13:00Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-21T20:13:00Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-21T20:13:00Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-21T20:13:00Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 0.0 V at 2026-06-21T20:13:00Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 0.0 A at 2026-06-21T20:13:00Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-21T20:13:00Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-21T20:13:00Z
+INFO:ocpp:CP_1: send [3,"1555f405-0356-4444-ba6a-3d16b84be34a",{}]
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+INFO:ocpp:CP_1: receive message [2,"aff11b7b-742a-468d-90dd-7543bb037d14","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"aff11b7b-742a-468d-90dd-7543bb037d14",{"currentTime":"2026-06-21T20:13:10Z"}]
+INFO:ocpp:CP_1: receive message [2,"13e8968b-4bf3-4509-af45-7d281d5c19f5","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T20:13:10Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-21T20:13:10Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-21T20:13:10Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-21T20:13:10Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 0.0 V at 2026-06-21T20:13:10Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 0.0 A at 2026-06-21T20:13:10Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-21T20:13:10Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-21T20:13:10Z
+INFO:ocpp:CP_1: send [3,"13e8968b-4bf3-4509-af45-7d281d5c19f5",{}]
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+INFO:ocpp:CP_1: receive message [2,"0f0d4f85-4c21-458b-a4a6-05e205335b8e","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"0f0d4f85-4c21-458b-a4a6-05e205335b8e",{"currentTime":"2026-06-21T20:13:20Z"}]
+INFO:ocpp:CP_1: receive message [2,"b44ca7a2-beac-41a6-a542-8c51051c2c1e","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T20:13:20Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-21T20:13:20Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-21T20:13:20Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-21T20:13:20Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 0.0 V at 2026-06-21T20:13:20Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 0.0 A at 2026-06-21T20:13:20Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-21T20:13:20Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-21T20:13:20Z
+INFO:ocpp:CP_1: send [3,"b44ca7a2-beac-41a6-a542-8c51051c2c1e",{}]
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+INFO:ocpp:CP_1: receive message [2,"70208d62-5ab3-4275-8352-8b9472fbf089","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"70208d62-5ab3-4275-8352-8b9472fbf089",{"currentTime":"2026-06-21T20:13:30Z"}]
+INFO:ocpp:CP_1: receive message [2,"a0a3097b-f62e-436b-98d2-752501d7f83f","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T20:13:30Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-21T20:13:30Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-21T20:13:30Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-21T20:13:30Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 0.0 V at 2026-06-21T20:13:30Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 0.0 A at 2026-06-21T20:13:30Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-21T20:13:30Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-21T20:13:30Z
+INFO:ocpp:CP_1: send [3,"a0a3097b-f62e-436b-98d2-752501d7f83f",{}]
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x5d80
+Waiting for connection to 10.42.0.23:19998
+

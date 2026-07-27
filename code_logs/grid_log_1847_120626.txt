@@ -1,0 +1,304 @@
+Waiting for connection to 10.42.0.23:2404
+INFO:websockets.server:server listening on 0.0.0.0:9000
+INFO:root:Server Started listening to new connections...
+INFO:websockets.server:connection open
+INFO:root:Protocols Matched: ocpp2.1
+INFO:ocpp:CP_1: receive message [2,"b4fb450a-905a-4002-b119-e132f91e77d8","BootNotification",{"chargingStation":{"model":"MSc Embedded","vendorName":"UoL"},"reason":"PowerUp"}]
+INFO:ocpp:CP_1: send [3,"b4fb450a-905a-4002-b119-e132f91e77d8",{"currentTime":"2026-06-12T17:37:17.424621+00:00","interval":10,"status":"Accepted"}]
+INFO:ocpp:CP_1: receive message [2,"40cfb0d3-dd33-4543-a007-ae30b9917907","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"40cfb0d3-dd33-4543-a007-ae30b9917907",{"currentTime":"2026-06-12T17:37:17Z"}]
+INFO:ocpp:CP_1: receive message [2,"02aa7f30-fc9f-4392-9723-a476f6328c90","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-12T17:37:17Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-12T17:37:17Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-12T17:37:17Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-12T17:37:17Z
+INFO:ocpp:CP_1: send [3,"02aa7f30-fc9f-4392-9723-a476f6328c90",{}]
+-> AFTER INIT 0.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+INFO:ocpp:CP_1: receive message [2,"c8732515-c3c4-4337-b5b8-2b07c7f95b01","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"c8732515-c3c4-4337-b5b8-2b07c7f95b01",{"currentTime":"2026-06-12T17:37:27Z"}]
+INFO:ocpp:CP_1: receive message [2,"294bc6f6-99e9-4518-9961-4ed1a093a5fd","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-12T17:37:27Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-12T17:37:27Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-12T17:37:27Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-12T17:37:27Z
+INFO:ocpp:CP_1: send [3,"294bc6f6-99e9-4518-9961-4ed1a093a5fd",{}]
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+INFO:ocpp:CP_1: receive message [2,"9a732123-e4f5-4ff6-a3a0-8aefd17509a0","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"9a732123-e4f5-4ff6-a3a0-8aefd17509a0",{"currentTime":"2026-06-12T17:37:37Z"}]
+INFO:ocpp:CP_1: receive message [2,"5390a6f0-d5a6-485f-942c-10f949898b1a","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-12T17:37:37Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-12T17:37:37Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-12T17:37:37Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-12T17:37:37Z
+INFO:ocpp:CP_1: send [3,"5390a6f0-d5a6-485f-942c-10f949898b1a",{}]
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+INFO:ocpp:CP_1: receive message [2,"88fbe63d-91c8-4091-bda7-be8f2fe9a191","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"88fbe63d-91c8-4091-bda7-be8f2fe9a191",{"currentTime":"2026-06-12T17:37:48Z"}]
+INFO:ocpp:CP_1: receive message [2,"e45c949a-5a32-4df2-ad18-5656afc6e527","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-12T17:37:48Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-12T17:37:48Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-12T17:37:48Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-12T17:37:48Z
+INFO:ocpp:CP_1: send [3,"e45c949a-5a32-4df2-ad18-5656afc6e527",{}]
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+INFO:ocpp:CP_1: receive message [2,"1dd965a9-28a0-4ff1-adc9-f186c23e5e97","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"1dd965a9-28a0-4ff1-adc9-f186c23e5e97",{"currentTime":"2026-06-12T17:37:58Z"}]
+INFO:ocpp:CP_1: receive message [2,"1666f489-1188-4c9b-a14d-a020f87cec83","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-12T17:37:58Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-12T17:37:58Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-12T17:37:58Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-12T17:37:58Z
+INFO:ocpp:CP_1: send [3,"1666f489-1188-4c9b-a14d-a020f87cec83",{}]
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+INFO:ocpp:CP_1: receive message [2,"76633c0d-18b5-4820-b6aa-ff175e90804c","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"76633c0d-18b5-4820-b6aa-ff175e90804c",{"currentTime":"2026-06-12T17:38:08Z"}]
+INFO:ocpp:CP_1: receive message [2,"70cebe05-af59-4faa-8528-91b35350090f","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-12T17:38:08Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-12T17:38:08Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-12T17:38:08Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-12T17:38:08Z
+INFO:ocpp:CP_1: send [3,"70cebe05-af59-4faa-8528-91b35350090f",{}]
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+INFO:ocpp:CP_1: receive message [2,"027f9fe6-ef74-448a-a1e0-353fcbdc2ef7","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"027f9fe6-ef74-448a-a1e0-353fcbdc2ef7",{"currentTime":"2026-06-12T17:38:18Z"}]
+INFO:ocpp:CP_1: receive message [2,"3a1ef6ba-a410-43ca-849f-6b0bf0734c76","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-12T17:38:18Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-12T17:38:18Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-12T17:38:18Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-12T17:38:18Z
+INFO:ocpp:CP_1: send [3,"3a1ef6ba-a410-43ca-849f-6b0bf0734c76",{}]
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+INFO:ocpp:CP_1: receive message [2,"993356e2-4094-4a90-9cba-cfd218b568c3","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"993356e2-4094-4a90-9cba-cfd218b568c3",{"currentTime":"2026-06-12T17:38:28Z"}]
+INFO:ocpp:CP_1: receive message [2,"973d5dd0-7510-422a-905d-7f397d2b6a11","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-12T17:38:28Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-12T17:38:28Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-12T17:38:28Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-12T17:38:28Z
+INFO:ocpp:CP_1: send [3,"973d5dd0-7510-422a-905d-7f397d2b6a11",{}]
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+INFO:ocpp:CP_1: receive message [2,"b974be56-4560-4de5-9a45-56725144eb4e","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"b974be56-4560-4de5-9a45-56725144eb4e",{"currentTime":"2026-06-12T17:38:39Z"}]
+INFO:ocpp:CP_1: receive message [2,"ab64da96-de98-4dc3-bf72-9053b459457f","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-12T17:38:39Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-12T17:38:39Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-12T17:38:39Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-12T17:38:39Z
+INFO:ocpp:CP_1: send [3,"ab64da96-de98-4dc3-bf72-9053b459457f",{}]
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+INFO:ocpp:CP_1: receive message [2,"875e5e03-7e87-4a2d-8fca-14fdc2a782b3","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"875e5e03-7e87-4a2d-8fca-14fdc2a782b3",{"currentTime":"2026-06-12T17:38:49Z"}]
+INFO:ocpp:CP_1: receive message [2,"8de7ea95-a5ff-4952-a79d-db9cfb8fd225","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-12T17:38:49Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-12T17:38:49Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-12T17:38:49Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-12T17:38:49Z
+INFO:ocpp:CP_1: send [3,"8de7ea95-a5ff-4952-a79d-db9cfb8fd225",{}]
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+INFO:ocpp:CP_1: receive message [2,"4135d1da-147f-4c4e-8c7d-9deac4860d3a","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"4135d1da-147f-4c4e-8c7d-9deac4860d3a",{"currentTime":"2026-06-12T17:38:59Z"}]
+INFO:ocpp:CP_1: receive message [2,"b8ea3774-1657-42f3-92f7-30610d0b0efc","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-12T17:38:59Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-12T17:38:59Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-12T17:38:59Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-12T17:38:59Z
+INFO:ocpp:CP_1: send [3,"b8ea3774-1657-42f3-92f7-30610d0b0efc",{}]
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+INFO:ocpp:CP_1: receive message [2,"36657a33-4b5f-4a7d-bda7-5ec47e47d0b3","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"36657a33-4b5f-4a7d-bda7-5ec47e47d0b3",{"currentTime":"2026-06-12T17:39:09Z"}]
+INFO:ocpp:CP_1: receive message [2,"9d54352b-389f-4f75-83da-b864a10e6dfd","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-12T17:39:09Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-12T17:39:09Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-12T17:39:09Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-12T17:39:09Z
+INFO:ocpp:CP_1: send [3,"9d54352b-389f-4f75-83da-b864a10e6dfd",{}]
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+Load: 0.00 kW | Bus 2 Voltage: 1.0152 pu | Trafo Loading: 12.5% | Line 20.2%
+-> SUCCESSFUL TRANSMIT
+-> SUCCESSFUL SOC READING 0.0
+-> SUCCESSFUL TEMP READING 25.0
+

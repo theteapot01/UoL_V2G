@@ -1,0 +1,329 @@
+Starting SECC stack via: poetry run python /home/pi/UoL_V2G/code_iso15118_custom/run_secc.py
+  cwd        : /home/pi/UoL_V2G/code_charger/iso15118
+  PYTHONPATH : /home/pi/UoL_V2G/code_iso15118_custom
+DEBUG    2026-06-21 18:55:23,334 - asyncio (54): Using selector: EpollSelector
+INFO    2026-06-21 18:55:23,365 - telemetry_evse_controller (28): TelemetryEVSEController initialized
+INFO    2026-06-21 18:55:23,366 - __main__ (53): Using TelemetryEVSEController
+INFO    2026-06-21 18:55:32,354 - iso15118.shared.exi_codec (177): EXI Codec version: 1.55
+INFO    2026-06-21 18:55:32,355 - iso15118.secc (31): Starting 15118 version: 0.31.2
+INFO    2026-06-21 18:55:32,356 - iso15118.secc.comm_session_handler (235): Communication session handler started
+Waiting for connection
+Connecting to: wss://10.42.0.1:9000/CP_1
+INFO    2026-06-21 18:55:32,666 - iso15118.secc.transport.udp_server (137): UDP server socket ready
+INFO    2026-06-21 18:55:32,667 - iso15118.secc.transport.udp_server (123): UDP server started at address FF02::1%usb0 and port 15118
+INFO    2026-06-21 18:55:32,673 - root (219): OCPP server not available yet, retrying in 3s...
+DEBUG    2026-06-21 18:55:32,678 - iso15118.secc.controller.simulator (266): New Status: ServiceStatus.READY
+Waiting for connection
+Waiting for connection
+Waiting for connection
+Connecting to: wss://10.42.0.1:9000/CP_1
+INFO    2026-06-21 18:55:35,685 - root (219): OCPP server not available yet, retrying in 3s...
+Waiting for connection
+Waiting for connection
+Waiting for connection
+Connecting to: wss://10.42.0.1:9000/CP_1
+INFO    2026-06-21 18:55:38,696 - root (219): OCPP server not available yet, retrying in 3s...
+Waiting for connection
+Waiting for connection
+Waiting for connection
+Connecting to: wss://10.42.0.1:9000/CP_1
+INFO    2026-06-21 18:55:41,710 - root (219): OCPP server not available yet, retrying in 3s...
+Waiting for connection
+Waiting for connection
+Waiting for connection
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 15 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 16 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 17 VALUE: 0.0
+Connecting to: wss://10.42.0.1:9000/CP_1
+DEBUG    2026-06-21 18:55:44,720 - websockets.client (178): = connection is CONNECTING
+DEBUG    2026-06-21 18:55:44,784 - websockets.client (294): > GET /CP_1 HTTP/1.1
+DEBUG    2026-06-21 18:55:44,784 - websockets.client (296): > Host: 10.42.0.1:9000
+DEBUG    2026-06-21 18:55:44,785 - websockets.client (296): > Upgrade: websocket
+DEBUG    2026-06-21 18:55:44,785 - websockets.client (296): > Connection: Upgrade
+DEBUG    2026-06-21 18:55:44,786 - websockets.client (296): > Sec-WebSocket-Key: ACynLc55lxwNzXPZaDO9lw==
+DEBUG    2026-06-21 18:55:44,786 - websockets.client (296): > Sec-WebSocket-Version: 13
+DEBUG    2026-06-21 18:55:44,787 - websockets.client (296): > Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
+DEBUG    2026-06-21 18:55:44,787 - websockets.client (296): > Sec-WebSocket-Protocol: ocpp2.1
+DEBUG    2026-06-21 18:55:44,788 - websockets.client (296): > User-Agent: Python/3.11 websockets/16.0
+DEBUG    2026-06-21 18:55:44,796 - websockets.client (320): < HTTP/1.1 101 Switching Protocols
+DEBUG    2026-06-21 18:55:44,797 - websockets.client (322): < Date: Sun, 21 Jun 2026 17:55:44 GMT
+DEBUG    2026-06-21 18:55:44,797 - websockets.client (322): < Upgrade: websocket
+DEBUG    2026-06-21 18:55:44,798 - websockets.client (322): < Connection: Upgrade
+DEBUG    2026-06-21 18:55:44,798 - websockets.client (322): < Sec-WebSocket-Accept: MT+M0Fb92bzSZpGEo1FmXvWjrgI=
+DEBUG    2026-06-21 18:55:44,799 - websockets.client (322): < Sec-WebSocket-Extensions: permessage-deflate; server_max_window_bits=12; client_max_window_bits=12
+DEBUG    2026-06-21 18:55:44,799 - websockets.client (322): < Sec-WebSocket-Protocol: ocpp2.1
+DEBUG    2026-06-21 18:55:44,800 - websockets.client (322): < Server: Python/3.13 websockets/16.0
+DEBUG    2026-06-21 18:55:44,802 - websockets.client (178): = connection is OPEN
+INFO    2026-06-21 18:55:44,825 - ocpp (471): CP_1: send [2,"708470d5-a42a-465f-9edb-73820683cfd1","BootNotification",{"chargingStation":{"model":"MSc Embedded","vendorName":"UoL"},"reason":"PowerUp"}]
+DEBUG    2026-06-21 18:55:44,825 - websockets.client (755): > TEXT '[2,"708470d5-a42a-465f-9edb-73820683cfd1","Boot..."},"reason":"PowerUp"}]' [144 bytes]
+DEBUG    2026-06-21 18:55:44,835 - websockets.client (609): < TEXT '[3,"708470d5-a42a-465f-9edb-73820683cfd1",{"cur...0,"status":"Accepted"}]' [127 bytes]
+INFO    2026-06-21 18:55:44,836 - ocpp (247): CP_1: receive message [3,"708470d5-a42a-465f-9edb-73820683cfd1",{"currentTime":"2026-06-21T17:55:44.830642+00:00","interval":10,"status":"Accepted"}]
+Connected to central system.
+INFO    2026-06-21 18:55:44,877 - ocpp (471): CP_1: send [2,"66396f7a-f15b-4c29-870a-e1c6d825bfb9","Heartbeat",{}]
+DEBUG    2026-06-21 18:55:44,878 - websockets.client (755): > TEXT '[2,"66396f7a-f15b-4c29-870a-e1c6d825bfb9","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-21 18:55:44,886 - websockets.client (609): < TEXT '[3,"66396f7a-f15b-4c29-870a-e1c6d825bfb9",{"cur...2026-06-21T17:55:44Z"}]' [81 bytes]
+INFO    2026-06-21 18:55:44,887 - ocpp (247): CP_1: receive message [3,"66396f7a-f15b-4c29-870a-e1c6d825bfb9",{"currentTime":"2026-06-21T17:55:44Z"}]
+INFO    2026-06-21 18:55:44,889 - ocpp (471): CP_1: send [2,"22c1c030-43a9-48b7-854b-70b438ee2c28","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T17:55:44Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-21 18:55:44,890 - websockets.client (755): > TEXT '[2,"22c1c030-43a9-48b7-854b-70b438ee2c28","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-21 18:55:44,896 - websockets.client (609): < TEXT '[3,"22c1c030-43a9-48b7-854b-70b438ee2c28",{}]' [45 bytes]
+INFO    2026-06-21 18:55:44,897 - ocpp (247): CP_1: receive message [3,"22c1c030-43a9-48b7-854b-70b438ee2c28",{}]
+INFO    2026-06-21 18:55:44,902 - root (165): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f94000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-21T18:55:32.363627+0100, processed_at=2026-06-21T18:55:32.363629+0100, readonly=False at 0x55770f8c10>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-21T18:55:48.521000+0100, processed_at=2026-06-21T18:55:48.528740+0100, readonly=True at 0x7f94001560>
+Grid setpoint now: +5.0 kW (CHARGE)
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 15 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 16 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 17 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f94000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-21T18:55:48.521000+0100, processed_at=2026-06-21T18:55:48.528740+0100, readonly=True at 0x7f94001560>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-21T18:55:49.718000+0100, processed_at=2026-06-21T18:55:49.719419+0100, readonly=True at 0x55770f8c10>
+Grid setpoint now: +10.0 kW (CHARGE)
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 15 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 16 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 17 VALUE: 0.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f94000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-21T18:55:49.718000+0100, processed_at=2026-06-21T18:55:49.719419+0100, readonly=True at 0x55770f8c10>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-21T18:55:52.869000+0100, processed_at=2026-06-21T18:55:53.778126+0100, readonly=True at 0x7f94001560>
+Grid setpoint now: +15.0 kW (CHARGE)
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 15 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 16 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 17 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-21 18:55:54,901 - ocpp (471): CP_1: send [2,"fc10330e-a0f4-4175-b0a6-7d73531f2b6f","Heartbeat",{}]
+DEBUG    2026-06-21 18:55:54,901 - websockets.client (755): > TEXT '[2,"fc10330e-a0f4-4175-b0a6-7d73531f2b6f","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-21 18:55:54,926 - websockets.client (609): < TEXT '[3,"fc10330e-a0f4-4175-b0a6-7d73531f2b6f",{"cur...2026-06-21T17:55:54Z"}]' [81 bytes]
+INFO    2026-06-21 18:55:54,932 - ocpp (247): CP_1: receive message [3,"fc10330e-a0f4-4175-b0a6-7d73531f2b6f",{"currentTime":"2026-06-21T17:55:54Z"}]
+INFO    2026-06-21 18:55:54,938 - ocpp (471): CP_1: send [2,"496aaf04-a31f-4cf3-91e9-deec9a1c2f16","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T17:55:54Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-21 18:55:54,940 - websockets.client (755): > TEXT '[2,"496aaf04-a31f-4cf3-91e9-deec9a1c2f16","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-21 18:55:54,949 - websockets.client (609): < TEXT '[3,"496aaf04-a31f-4cf3-91e9-deec9a1c2f16",{}]' [45 bytes]
+INFO    2026-06-21 18:55:54,950 - ocpp (247): CP_1: receive message [3,"496aaf04-a31f-4cf3-91e9-deec9a1c2f16",{}]
+INFO    2026-06-21 18:55:54,953 - root (165): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f94000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-21T18:55:52.869000+0100, processed_at=2026-06-21T18:55:53.778126+0100, readonly=True at 0x7f94001560>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-21T18:55:57.113000+0100, processed_at=2026-06-21T18:55:57.817900+0100, readonly=True at 0x55770f8c10>
+Grid setpoint now: +20.0 kW (CHARGE)
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 15 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 16 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 17 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+Keep alive until disconnected
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f94000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-21T18:55:57.113000+0100, processed_at=2026-06-21T18:55:57.817900+0100, readonly=True at 0x55770f8c10>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-21T18:56:01.365000+0100, processed_at=2026-06-21T18:56:01.874641+0100, readonly=True at 0x7f94001560>
+Grid setpoint now: +25.0 kW (CHARGE)
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 15 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 16 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 17 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+DEBUG    2026-06-21 18:56:04,803 - websockets.client (609): < PING 1b 91 af 47 [binary, 4 bytes]
+DEBUG    2026-06-21 18:56:04,804 - websockets.client (755): > PONG 1b 91 af 47 [binary, 4 bytes]
+DEBUG    2026-06-21 18:56:04,806 - websockets.client (755): > PING 0a 68 b1 c9 [binary, 4 bytes]
+DEBUG    2026-06-21 18:56:04,808 - websockets.client (829): % sent keepalive ping
+DEBUG    2026-06-21 18:56:04,810 - websockets.client (609): < PONG 0a 68 b1 c9 [binary, 4 bytes]
+DEBUG    2026-06-21 18:56:04,812 - websockets.client (840): % received keepalive pong
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+INFO    2026-06-21 18:56:04,947 - ocpp (471): CP_1: send [2,"4143cecf-e231-442f-8ccf-1e5cf87e23f0","Heartbeat",{}]
+DEBUG    2026-06-21 18:56:04,948 - websockets.client (755): > TEXT '[2,"4143cecf-e231-442f-8ccf-1e5cf87e23f0","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-21 18:56:04,981 - websockets.client (609): < TEXT '[3,"4143cecf-e231-442f-8ccf-1e5cf87e23f0",{"cur...2026-06-21T17:56:04Z"}]' [81 bytes]
+INFO    2026-06-21 18:56:04,985 - ocpp (247): CP_1: receive message [3,"4143cecf-e231-442f-8ccf-1e5cf87e23f0",{"currentTime":"2026-06-21T17:56:04Z"}]
+INFO    2026-06-21 18:56:04,988 - ocpp (471): CP_1: send [2,"0894a2c2-bc92-4406-a52b-b82c9d8a759b","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T17:56:04Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-21 18:56:04,990 - websockets.client (755): > TEXT '[2,"0894a2c2-bc92-4406-a52b-b82c9d8a759b","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-21 18:56:04,997 - websockets.client (609): < TEXT '[3,"0894a2c2-bc92-4406-a52b-b82c9d8a759b",{}]' [45 bytes]
+INFO    2026-06-21 18:56:04,998 - ocpp (247): CP_1: receive message [3,"0894a2c2-bc92-4406-a52b-b82c9d8a759b",{}]
+INFO    2026-06-21 18:56:05,002 - root (165): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f94000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-21T18:56:01.365000+0100, processed_at=2026-06-21T18:56:01.874641+0100, readonly=True at 0x7f94001560>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-21T18:56:05.614000+0100, processed_at=2026-06-21T18:56:05.916807+0100, readonly=True at 0x55770f8c10>
+Grid setpoint now: +30.0 kW (CHARGE)
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 15 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 16 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 17 VALUE: 0.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f94000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-21T18:56:05.614000+0100, processed_at=2026-06-21T18:56:05.916807+0100, readonly=True at 0x55770f8c10>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-21T18:56:09.866000+0100, processed_at=2026-06-21T18:56:09.972835+0100, readonly=True at 0x7f94001560>
+Grid setpoint now: +35.0 kW (CHARGE)
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 15 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 16 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 17 VALUE: 0.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f94000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-21T18:56:09.866000+0100, processed_at=2026-06-21T18:56:09.972835+0100, readonly=True at 0x7f94001560>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-21T18:56:14.120000+0100, processed_at=2026-06-21T18:56:14.124128+0100, readonly=True at 0x55770f8c10>
+Grid setpoint now: +40.0 kW (CHARGE)
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 15 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 16 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 17 VALUE: 0.0
+Keep alive until disconnected
+INFO    2026-06-21 18:56:14,997 - ocpp (471): CP_1: send [2,"43688e93-9e44-48d9-9c33-841f1d586d37","Heartbeat",{}]
+DEBUG    2026-06-21 18:56:14,998 - websockets.client (755): > TEXT '[2,"43688e93-9e44-48d9-9c33-841f1d586d37","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-21 18:56:15,030 - websockets.client (609): < TEXT '[3,"43688e93-9e44-48d9-9c33-841f1d586d37",{"cur...2026-06-21T17:56:15Z"}]' [81 bytes]
+INFO    2026-06-21 18:56:15,034 - ocpp (247): CP_1: receive message [3,"43688e93-9e44-48d9-9c33-841f1d586d37",{"currentTime":"2026-06-21T17:56:15Z"}]
+INFO    2026-06-21 18:56:15,036 - ocpp (471): CP_1: send [2,"c13e3bf0-66e8-47f4-ad62-3f3746c67312","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T17:56:15Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-21 18:56:15,038 - websockets.client (755): > TEXT '[2,"c13e3bf0-66e8-47f4-ad62-3f3746c67312","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-21 18:56:15,045 - websockets.client (609): < TEXT '[3,"c13e3bf0-66e8-47f4-ad62-3f3746c67312",{}]' [45 bytes]
+INFO    2026-06-21 18:56:15,046 - ocpp (247): CP_1: receive message [3,"c13e3bf0-66e8-47f4-ad62-3f3746c67312",{}]
+INFO    2026-06-21 18:56:15,049 - root (165): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 15 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 16 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 17 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f94000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-21T18:56:14.120000+0100, processed_at=2026-06-21T18:56:14.124128+0100, readonly=True at 0x55770f8c10>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-21T18:56:17.233000+0100, processed_at=2026-06-21T18:56:18.142972+0100, readonly=True at 0x7f94001560>
+Grid setpoint now: +45.0 kW (CHARGE)
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 15 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 16 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 17 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+Keep alive until disconnected
+^CDEBUG    2026-06-21 18:56:19,664 - websockets.client (755): > CLOSE 1000 (OK) [2 bytes]
+DEBUG    2026-06-21 18:56:19,666 - websockets.client (178): = connection is CLOSING
+DEBUG    2026-06-21 18:56:19,670 - websockets.client (609): < CLOSE 1000 (OK) [2 bytes]
+DEBUG    2026-06-21 18:56:19,671 - websockets.client (659): < EOF
+DEBUG    2026-06-21 18:56:19,672 - websockets.client (767): > EOF
+DEBUG    2026-06-21 18:56:19,673 - websockets.client (178): = connection is CLOSED
+DEBUG    2026-06-21 18:56:19,673 - websockets.client (989): x closing TCP connection
+

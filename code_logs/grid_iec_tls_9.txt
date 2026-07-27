@@ -1,0 +1,234 @@
+[2026-06-22 10:43:56] INFO     [c104] Python is running in buffered mode, messages will be printed with high delay! Set PYTHONUNBUFFERED=1 environment variable to enable unbuffered mode.
+INFO:c104:Python is running in buffered mode, messages will be printed with high delay! Set PYTHONUNBUFFERED=1 environment variable to enable unbuffered mode.
+INFO:pandapower.plotting.plotly.draw_layers:Failed to import plotly - interactive plotting will not be available
+Waiting for connection to 10.42.0.23:19998
+INFO:websockets.server:server listening on 0.0.0.0:9000
+INFO:root:CSMS listening on wss://0.0.0.0:9000 (Security Profile 3 — mTLS)
+-> AFTER INIT 0.0
+-> IEC104 READ FAILURE
+-> TRANSMIT OK  cmd=LOWER src=auto tx=9 ms
+-> SOC READ FAILURE
+-> TEMP READ FAILURE
+-> VOLTAGE READ FAILURE
+-> CURRENT READ FAILURE
+-> ISO LOOP MS READ FAILURE
+INFO:websockets.server:connection open
+INFO:root:Protocols Matched: ocpp2.1
+INFO:ocpp:CP_1: receive message [2,"42e5e772-9737-415a-a16a-e8a78c36d30e","BootNotification",{"chargingStation":{"model":"MSc Embedded","vendorName":"UoL"},"reason":"PowerUp"}]
+INFO:ocpp:CP_1: send [3,"42e5e772-9737-415a-a16a-e8a78c36d30e",{"currentTime":"2026-06-22T09:43:59.903986+00:00","interval":10,"status":"Accepted"}]
+INFO:ocpp:CP_1: receive message [2,"f425b390-65c6-40b9-9c1e-54193aeaba62","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"f425b390-65c6-40b9-9c1e-54193aeaba62",{"currentTime":"2026-06-22T09:43:59Z"}]
+INFO:ocpp:CP_1: receive message [2,"83441b13-6248-4821-b7bc-79fa352c5a75","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T09:43:59Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-22T09:43:59Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-22T09:43:59Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-22T09:43:59Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 0.0 V at 2026-06-22T09:43:59Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 0.0 A at 2026-06-22T09:43:59Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-22T09:43:59Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-22T09:43:59Z
+INFO:ocpp:CP_1: send [3,"83441b13-6248-4821-b7bc-79fa352c5a75",{}]
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> TRANSMIT OK  cmd=LOWER src=auto tx=5 ms
+-> SOC READ FAILURE
+-> TEMP READ FAILURE
+-> VOLTAGE READ FAILURE
+-> CURRENT READ FAILURE
+-> ISO LOOP MS READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> TRANSMIT OK  cmd=LOWER src=auto tx=3 ms
+-> SOC READ FAILURE
+-> TEMP READ FAILURE
+-> VOLTAGE READ FAILURE
+-> CURRENT READ FAILURE
+-> ISO LOOP MS READ FAILURE
+-> IEC104 READ FAILURE
+INFO:ocpp:CP_1: receive message [2,"82033de8-42fe-4e83-a370-596bf1ad56da","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"82033de8-42fe-4e83-a370-596bf1ad56da",{"currentTime":"2026-06-22T09:44:09Z"}]
+-> IEC104 READ FAILURE
+INFO:ocpp:CP_1: receive message [2,"4fe50800-537d-43d5-ad45-6197a75e6167","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T09:44:10Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-22T09:44:10Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-22T09:44:10Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-22T09:44:10Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 0.0 V at 2026-06-22T09:44:10Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 0.0 A at 2026-06-22T09:44:10Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-22T09:44:10Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-22T09:44:10Z
+INFO:ocpp:CP_1: send [3,"4fe50800-537d-43d5-ad45-6197a75e6167",{}]
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> TRANSMIT OK  cmd=LOWER src=auto tx=4 ms
+-> SOC READ FAILURE
+-> TEMP READ FAILURE
+-> VOLTAGE READ FAILURE
+-> CURRENT READ FAILURE
+-> ISO LOOP MS READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> TRANSMIT OK  cmd=LOWER src=auto tx=6 ms
+-> SOC READ FAILURE
+-> TEMP READ FAILURE
+-> VOLTAGE READ FAILURE
+-> CURRENT READ FAILURE
+-> ISO LOOP MS READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+INFO:ocpp:CP_1: receive message [2,"b7b50009-8c38-45ce-8353-471ea0a68b46","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"b7b50009-8c38-45ce-8353-471ea0a68b46",{"currentTime":"2026-06-22T09:44:20Z"}]
+INFO:ocpp:CP_1: receive message [2,"b3141c62-ff88-4fe4-881f-31587d3f454e","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T09:44:20Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-22T09:44:20Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-22T09:44:20Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-22T09:44:20Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 0.0 V at 2026-06-22T09:44:20Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 0.0 A at 2026-06-22T09:44:20Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-22T09:44:20Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-22T09:44:20Z
+INFO:ocpp:CP_1: send [3,"b3141c62-ff88-4fe4-881f-31587d3f454e",{}]
+-> IEC104 READ FAILURE
+-> TRANSMIT OK  cmd=LOWER src=auto tx=6 ms
+-> SOC READ FAILURE
+-> TEMP READ FAILURE
+-> VOLTAGE READ FAILURE
+-> CURRENT READ FAILURE
+-> ISO LOOP MS READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> TRANSMIT OK  cmd=LOWER src=auto tx=5 ms
+-> SOC READ FAILURE
+-> TEMP READ FAILURE
+-> VOLTAGE READ FAILURE
+-> CURRENT READ FAILURE
+-> ISO LOOP MS READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> TRANSMIT OK  cmd=LOWER src=auto tx=4 ms
+-> SOC READ FAILURE
+-> TEMP READ FAILURE
+-> VOLTAGE READ FAILURE
+-> CURRENT READ FAILURE
+-> ISO LOOP MS READ FAILURE
+-> IEC104 READ FAILURE
+INFO:ocpp:CP_1: receive message [2,"65151cf4-ab4f-4095-bcdf-f1b4606c8dee","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"65151cf4-ab4f-4095-bcdf-f1b4606c8dee",{"currentTime":"2026-06-22T09:44:30Z"}]
+INFO:ocpp:CP_1: receive message [2,"84465127-5530-4f20-8c1a-e33bff5fff32","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T09:44:30Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-22T09:44:30Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-22T09:44:30Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-22T09:44:30Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 0.0 V at 2026-06-22T09:44:30Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 0.0 A at 2026-06-22T09:44:30Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-22T09:44:30Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-22T09:44:30Z
+INFO:ocpp:CP_1: send [3,"84465127-5530-4f20-8c1a-e33bff5fff32",{}]
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> TRANSMIT OK  cmd=LOWER src=auto tx=5 ms
+-> SOC READ FAILURE
+-> TEMP READ FAILURE
+-> VOLTAGE READ FAILURE
+-> CURRENT READ FAILURE
+-> ISO LOOP MS READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> TRANSMIT OK  cmd=LOWER src=auto tx=7 ms
+-> SOC READ FAILURE
+-> TEMP READ FAILURE
+-> VOLTAGE READ FAILURE
+-> CURRENT READ FAILURE
+-> ISO LOOP MS READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+INFO:ocpp:CP_1: receive message [2,"24d4d14a-6410-488e-9b01-3db004eb32d3","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"24d4d14a-6410-488e-9b01-3db004eb32d3",{"currentTime":"2026-06-22T09:44:40Z"}]
+INFO:ocpp:CP_1: receive message [2,"75fad411-9c3f-4bbc-a1a8-58b3305e1df3","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T09:44:40Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-22T09:44:40Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-22T09:44:40Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-22T09:44:40Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 0.0 V at 2026-06-22T09:44:40Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 0.0 A at 2026-06-22T09:44:40Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-22T09:44:40Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-22T09:44:40Z
+INFO:ocpp:CP_1: send [3,"75fad411-9c3f-4bbc-a1a8-58b3305e1df3",{}]
+-> IEC104 READ FAILURE
+-> TRANSMIT OK  cmd=LOWER src=auto tx=4 ms
+-> SOC READ FAILURE
+-> TEMP READ FAILURE
+-> VOLTAGE READ FAILURE
+-> CURRENT READ FAILURE
+-> ISO LOOP MS READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> TRANSMIT OK  cmd=LOWER src=auto tx=4 ms
+-> SOC READ FAILURE
+-> TEMP READ FAILURE
+-> VOLTAGE READ FAILURE
+-> CURRENT READ FAILURE
+-> ISO LOOP MS READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> TRANSMIT OK  cmd=LOWER src=auto tx=5 ms
+-> SOC READ FAILURE
+-> TEMP READ FAILURE
+-> VOLTAGE READ FAILURE
+-> CURRENT READ FAILURE
+-> ISO LOOP MS READ FAILURE
+-> IEC104 READ FAILURE
+INFO:ocpp:CP_1: receive message [2,"6693942b-9772-461b-9c48-25645bc541fd","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"6693942b-9772-461b-9c48-25645bc541fd",{"currentTime":"2026-06-22T09:44:50Z"}]
+INFO:ocpp:CP_1: receive message [2,"d1d65d8d-dd8a-427d-b28b-e65aeeda243b","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T09:44:50Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-22T09:44:50Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-22T09:44:50Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-22T09:44:50Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 0.0 V at 2026-06-22T09:44:50Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 0.0 A at 2026-06-22T09:44:50Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-22T09:44:50Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-22T09:44:50Z
+INFO:ocpp:CP_1: send [3,"d1d65d8d-dd8a-427d-b28b-e65aeeda243b",{}]
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> TRANSMIT OK  cmd=LOWER src=auto tx=4 ms
+-> SOC READ FAILURE
+-> TEMP READ FAILURE
+-> VOLTAGE READ FAILURE
+-> CURRENT READ FAILURE
+-> ISO LOOP MS READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+-> TRANSMIT OK  cmd=LOWER src=auto tx=3 ms
+-> SOC READ FAILURE
+-> TEMP READ FAILURE
+-> VOLTAGE READ FAILURE
+-> CURRENT READ FAILURE
+-> ISO LOOP MS READ FAILURE
+-> IEC104 READ FAILURE
+-> IEC104 READ FAILURE
+^CClosing connections...
+

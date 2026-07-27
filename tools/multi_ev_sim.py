@@ -144,28 +144,28 @@ def _auto_decision(
 
     # 1. Grid emergency — always trumps everything
     if trafo_pct > TRAFO_STRESS_PCT or line_pct > LINE_STRESS_PCT or vm_pu_b2 < VOLTAGE_MIN_PU:
-        return "HIGHER"
+        return "LOWER"
 
     # 2. Most-charged EV at ceiling → ramp down to avoid overcharge
     if max_soc >= MAX_SOC_PCT:
-        return "HIGHER" if total_power_kw > 1.0 else "HOLD"
+        return "LOWER" if total_power_kw > 1.0 else "HOLD"
 
     # 3. Most-depleted EV below floor → charge unconditionally
     if min_soc < MIN_SOC_PCT:
-        return "LOWER"
+        return "HIGHER"
 
     # 4. Trafo / line capacity bands
     if trafo_pct > _trafo_high or line_pct > _line_high:
-        return "HIGHER"
-    if trafo_pct < _trafo_low and line_pct < _line_low:
         return "LOWER"
+    if trafo_pct < _trafo_low and line_pct < _line_low:
+        return "HIGHER"
 
     return "HOLD"
 
 
 def _adaptive_bursts(cmd: str, trafo_pct: float, line_pct: float, mean_soc: float) -> int:
     """Number of step commands to send in one cycle (mirrors iec104_panda.py)."""
-    if cmd != "HIGHER":
+    if cmd != "LOWER":
         return 1
     if trafo_pct > TRAFO_STRESS_PCT or line_pct > LINE_STRESS_PCT:
         return 4
@@ -313,19 +313,19 @@ def run_scenario(n_evs: int, n_ticks: int, dt_s: float, no_v2g: bool = False) ->
             # within one step of zero, a multi-burst HIGHER would push every
             # EV into V2G discharge.  Cap to 1 burst (mirrors the guard in
             # iec104_panda.py).
-            if cmd == "HIGHER" and 0.0 < total_power <= STEP_KW:
+            if cmd == "LOWER" and 0.0 < total_power <= STEP_KW:
                 bursts = 1
 
         # Distribute step to all EVs proportionally
-        if cmd == "HIGHER":
+        if cmd == "LOWER":
             for _ in range(bursts):
                 for bat in fleet:
-                    bat.apply_step(higher=True, step_kw=step_per_ev)
-            higher_count += bursts
-        elif cmd == "LOWER":
+                    bat.apply_step(higher=False, step_kw=step_per_ev)
+            lower_count += bursts
+        elif cmd == "HIGHER":
             for bat in fleet:
-                bat.apply_step(higher=False, step_kw=step_per_ev)
-            lower_count += 1
+                bat.apply_step(higher=True, step_kw=step_per_ev)
+            higher_count += 1
 
         # Write row
         row = [

@@ -495,8 +495,8 @@ _HTML = """<!DOCTYPE html>
     <div class="card-label">Grid Demand Control</div>
     <div class="ctrl-desc">
       Override the automatic PandaPower-based control.
-      <strong>Force V2G</strong> sends a continuous HIGHER step command — the charger reduces charge or starts discharging back to the grid.
-      <strong>Force Charge</strong> sends LOWER — the charger increases charge power.
+      <strong>Force V2G</strong> sends a continuous LOWER step command — the charger reduces charge or starts discharging back to the grid.
+      <strong>Force Charge</strong> sends HIGHER — the charger increases charge power.
       Return to <strong>Auto</strong> to restore load-flow–driven control.
     </div>
     <div class="ctrl-buttons">
@@ -852,8 +852,8 @@ function syncControlButtons(ctrl) {
   const isVStab  = ctrl.voltage_stab;
 
   document.getElementById('btn-auto').className   = 'ctrl-btn' + (isAuto && !isVStab               ? ' active-auto'   : '');
-  document.getElementById('btn-v2g').className    = 'ctrl-btn' + (!isAuto && override === 'HIGHER'  ? ' active-v2g'    : '');
-  document.getElementById('btn-charge').className = 'ctrl-btn' + (!isAuto && override === 'LOWER'   ? ' active-charge' : '');
+  document.getElementById('btn-v2g').className    = 'ctrl-btn' + (!isAuto && override === 'LOWER'   ? ' active-v2g'    : '');
+  document.getElementById('btn-charge').className = 'ctrl-btn' + (!isAuto && override === 'HIGHER'  ? ' active-charge' : '');
   document.getElementById('btn-vstab').className  = 'ctrl-btn' + (isVStab                           ? ' active-vstab'  : '');
 
   document.getElementById('vstab-rows').style.display = isVStab ? '' : 'none';
@@ -865,11 +865,11 @@ function syncControlButtons(ctrl) {
   } else if (isAuto) {
     s.textContent  = 'Mode: Auto — grid-controlled via PandaPower load-flow';
     s.className    = 'ctrl-status mode-auto';
-  } else if (override === 'HIGHER') {
-    s.textContent  = 'Mode: Manual V2G Demand — sending HIGHER commands (reduce charge / increase discharge)';
+  } else if (override === 'LOWER') {
+    s.textContent  = 'Mode: Manual V2G Demand — sending LOWER commands (reduce charge / increase discharge)';
     s.className    = 'ctrl-status mode-v2g';
   } else {
-    s.textContent  = 'Mode: Manual Charge — sending LOWER commands (increase charge power)';
+    s.textContent  = 'Mode: Manual Charge — sending HIGHER commands (increase charge power)';
     s.className    = 'ctrl-status mode-charge';
   }
 }
@@ -1058,11 +1058,11 @@ async def control(request: Request):
     body = await request.json()
     action = body.get("action", "")
     if action == "v2g":
-        grid_state.manual_override   = "HIGHER"
+        grid_state.manual_override   = "LOWER"
         grid_state.auto_control      = False
         grid_state.voltage_stab_mode = False
     elif action == "charge":
-        grid_state.manual_override   = "LOWER"
+        grid_state.manual_override   = "HIGHER"
         grid_state.auto_control      = False
         grid_state.voltage_stab_mode = False
     elif action == "auto":

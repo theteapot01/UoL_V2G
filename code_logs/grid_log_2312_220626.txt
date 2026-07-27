@@ -1,0 +1,501 @@
+[2026-06-22 23:08:39] INFO     [c104] Python is running in buffered mode, messages will be printed with high delay! Set PYTHONUNBUFFERED=1 environment variable to enable unbuffered mode.
+INFO:c104:Python is running in buffered mode, messages will be printed with high delay! Set PYTHONUNBUFFERED=1 environment variable to enable unbuffered mode.
+INFO:pandapower.plotting.plotly.draw_layers:Failed to import plotly - interactive plotting will not be available
+Waiting for connection to 10.42.0.23:19998
+INFO:websockets.server:server listening on 0.0.0.0:9000
+INFO:root:CSMS listening on wss://0.0.0.0:9000 (Security Profile 3 — mTLS)
+Waiting for connection to 10.42.0.23:19998
+Waiting for connection to 10.42.0.23:19998
+Waiting for connection to 10.42.0.23:19998
+Waiting for connection to 10.42.0.23:19998
+Waiting for connection to 10.42.0.23:19998
+Waiting for connection to 10.42.0.23:19998
+Waiting for connection to 10.42.0.23:19998
+Waiting for connection to 10.42.0.23:19998
+Waiting for connection to 10.42.0.23:19998
+Waiting for connection to 10.42.0.23:19998
+Waiting for connection to 10.42.0.23:19998
+Waiting for connection to 10.42.0.23:19998
+Waiting for connection to 10.42.0.23:19998
+Waiting for connection to 10.42.0.23:19998
+Waiting for connection to 10.42.0.23:19998
+Waiting for connection to 10.42.0.23:19998
+Waiting for connection to 10.42.0.23:19998
+INFO:websockets.server:connection open
+INFO:root:Protocols Matched: ocpp2.1
+INFO:ocpp:CP_1: receive message [2,"5918517e-d4f4-4aa7-a096-c8acaaee83c3","BootNotification",{"chargingStation":{"model":"MSc Embedded","vendorName":"UoL"},"reason":"PowerUp"}]
+INFO:ocpp:CP_1: send [3,"5918517e-d4f4-4aa7-a096-c8acaaee83c3",{"currentTime":"2026-06-22T22:08:59.017673+00:00","interval":10,"status":"Accepted"}]
+INFO:ocpp:CP_1: receive message [2,"c94a8ac5-5a0d-4786-98d8-3ceab6909803","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"c94a8ac5-5a0d-4786-98d8-3ceab6909803",{"currentTime":"2026-06-22T22:08:59Z"}]
+INFO:ocpp:CP_1: receive message [2,"37e402d9-8f35-4887-b5fb-3fa76a1d114e","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T22:08:59Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-22T22:08:59Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-22T22:08:59Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-22T22:08:59Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 0.0 V at 2026-06-22T22:08:59Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 0.0 A at 2026-06-22T22:08:59Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-22T22:08:59Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-22T22:08:59Z
+INFO:ocpp:CP_1: send [3,"37e402d9-8f35-4887-b5fb-3fa76a1d114e",{}]
+-> AFTER INIT 0.0
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 2789 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=10 ms
+-> SOC 0.0%
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 29 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 38 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=10 ms
+-> SOC 0.0%
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 28 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 28 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 28 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 28 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=4 ms
+-> SOC 0.0%
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 28 ms
+INFO:ocpp:CP_1: receive message [2,"aad38aec-9877-432f-a83d-36a13e7561e7","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"aad38aec-9877-432f-a83d-36a13e7561e7",{"currentTime":"2026-06-22T22:09:09Z"}]
+INFO:ocpp:CP_1: receive message [2,"c5aaab1b-a939-4922-a36f-590c6f9339e7","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T22:09:09Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-22T22:09:09Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-22T22:09:09Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-22T22:09:09Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 0.0 V at 2026-06-22T22:09:09Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 0.0 A at 2026-06-22T22:09:09Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-22T22:09:09Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-22T22:09:09Z
+INFO:ocpp:CP_1: send [3,"c5aaab1b-a939-4922-a36f-590c6f9339e7",{}]
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 44 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 42 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=10 ms
+-> SOC 0.0%
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 44 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 42 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 44 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 41 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=9 ms
+-> SOC 0.0%
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 44 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 44 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 44 ms
+INFO:ocpp:CP_1: receive message [2,"f43b336c-2c9f-4638-801c-dc42789ad9b2","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"f43b336c-2c9f-4638-801c-dc42789ad9b2",{"currentTime":"2026-06-22T22:09:19Z"}]
+INFO:ocpp:CP_1: receive message [2,"0f642502-967e-4229-abe8-7e25a67c1da5","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T22:09:19Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-22T22:09:19Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-22T22:09:19Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-22T22:09:19Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 0.0 V at 2026-06-22T22:09:19Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 0.0 A at 2026-06-22T22:09:19Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-22T22:09:19Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-22T22:09:19Z
+INFO:ocpp:CP_1: send [3,"0f642502-967e-4229-abe8-7e25a67c1da5",{}]
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 44 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=8 ms
+-> SOC 0.0%
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 44 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 42 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 44 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 42 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=10 ms
+-> SOC 0.0%
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 44 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 42 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 44 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=11 ms
+-> SOC 0.0%
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 44 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 44 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 44 ms
+INFO:ocpp:CP_1: receive message [2,"b8c14d06-f1dd-4a28-933d-cf11cd65abdb","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"b8c14d06-f1dd-4a28-933d-cf11cd65abdb",{"currentTime":"2026-06-22T22:09:31Z"}]
+INFO:ocpp:CP_1: receive message [2,"8da8331a-8c40-47cf-898e-668f354d4137","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T22:09:31Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-22T22:09:31Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-22T22:09:31Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-22T22:09:31Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 0.0 V at 2026-06-22T22:09:31Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 0.0 A at 2026-06-22T22:09:31Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-22T22:09:31Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-22T22:09:31Z
+INFO:ocpp:CP_1: send [3,"8da8331a-8c40-47cf-898e-668f354d4137",{}]
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=10 ms
+-> SOC 0.0%
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 42 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 41 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=10 ms
+-> SOC 0.0%
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=11 ms
+-> SOC 0.0%
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 43 ms
+INFO:ocpp:CP_1: receive message [2,"7aefd35c-b426-4802-a609-6c23ad6c8d92","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"7aefd35c-b426-4802-a609-6c23ad6c8d92",{"currentTime":"2026-06-22T22:09:42Z"}]
+INFO:ocpp:CP_1: receive message [2,"21cd2a22-3249-49f4-ab85-02e98c786508","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T22:09:41Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 0.0 W at 2026-06-22T22:09:41Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 0.0 Wh at 2026-06-22T22:09:41Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 0.0 Percent at 2026-06-22T22:09:41Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 0.0 V at 2026-06-22T22:09:41Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 0.0 A at 2026-06-22T22:09:41Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-22T22:09:41Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-22T22:09:41Z
+INFO:ocpp:CP_1: send [3,"21cd2a22-3249-49f4-ab85-02e98c786508",{}]
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 41 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=9 ms
+-> SOC 0.0%
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 41 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 0.0%? | Cmd: LOWER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=9 ms
+-> SOC 0.0%
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 50.0%? | Cmd: LOWER (auto) | Cycle: 40 ms
+Load: 0.00 kW | Bus 2: 0.9750 pu | Trafo: 13.1% | Line: 21.1% | SoC: 50.0%? | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 10.00 kW | Bus 2: 0.9747 pu | Trafo: 13.5% | Line: 21.6% | SoC: 50.0%? | Cmd: LOWER (auto) | Cycle: 41 ms
+INFO:ocpp:CP_1: receive message [2,"a5808ea7-3f33-43cb-8768-ca53909341ac","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"a5808ea7-3f33-43cb-8768-ca53909341ac",{"currentTime":"2026-06-22T22:09:52Z"}]
+INFO:ocpp:CP_1: receive message [2,"68829730-4d47-4e72-8167-05936701ab90","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T22:09:52Z","sampledValue":[{"value":10000.768,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":27.78,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":50.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":550.4,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":18.17,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":10000.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 10000.8 W at 2026-06-22T22:09:52Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 27.78 Wh at 2026-06-22T22:09:52Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 50.0 Percent at 2026-06-22T22:09:52Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 550.4 V at 2026-06-22T22:09:52Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 18.17 A at 2026-06-22T22:09:52Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 10000.0 W at 2026-06-22T22:09:52Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-22T22:09:52Z
+INFO:ocpp:CP_1: send [3,"68829730-4d47-4e72-8167-05936701ab90",{}]
+-> TRANSMIT OK  cmd=LOWER src=auto tx=9 ms
+-> SOC 50.0%
+Load: 10.00 kW | Bus 2: 0.9747 pu | Trafo: 13.5% | Line: 21.6% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 10.00 kW | Bus 2: 0.9747 pu | Trafo: 13.5% | Line: 21.6% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 41 ms
+Load: 10.00 kW | Bus 2: 0.9747 pu | Trafo: 13.5% | Line: 21.6% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 15.00 kW | Bus 2: 0.9745 pu | Trafo: 13.8% | Line: 22.2% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=11 ms
+-> SOC 50.0%
+Load: 15.00 kW | Bus 2: 0.9745 pu | Trafo: 13.8% | Line: 22.2% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 15.00 kW | Bus 2: 0.9745 pu | Trafo: 13.8% | Line: 22.2% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 42 ms
+Load: 15.00 kW | Bus 2: 0.9745 pu | Trafo: 13.8% | Line: 22.2% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 20.00 kW | Bus 2: 0.9743 pu | Trafo: 14.3% | Line: 23.0% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=12 ms
+-> SOC 50.0%
+Load: 20.00 kW | Bus 2: 0.9743 pu | Trafo: 14.3% | Line: 23.0% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+INFO:ocpp:CP_1: receive message [2,"0b7dfc03-c6f9-4d26-b947-4bf1cd5dd24b","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"0b7dfc03-c6f9-4d26-b947-4bf1cd5dd24b",{"currentTime":"2026-06-22T22:10:02Z"}]
+INFO:ocpp:CP_1: receive message [2,"354355ad-0b9d-46a3-920c-1d8d16440aca","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T22:10:02Z","sampledValue":[{"value":24999.168,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":97.222,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":50.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":550.4,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":45.42,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":25000.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 24999.2 W at 2026-06-22T22:10:02Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 97.222 Wh at 2026-06-22T22:10:02Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 50.0 Percent at 2026-06-22T22:10:02Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 550.4 V at 2026-06-22T22:10:02Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 45.42 A at 2026-06-22T22:10:02Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 25000.0 W at 2026-06-22T22:10:02Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-22T22:10:02Z
+INFO:ocpp:CP_1: send [3,"354355ad-0b9d-46a3-920c-1d8d16440aca",{}]
+Load: 20.00 kW | Bus 2: 0.9743 pu | Trafo: 14.3% | Line: 23.0% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 20.00 kW | Bus 2: 0.9743 pu | Trafo: 14.3% | Line: 23.0% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 25.00 kW | Bus 2: 0.9741 pu | Trafo: 14.9% | Line: 23.9% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=9 ms
+-> SOC 50.0%
+Load: 25.00 kW | Bus 2: 0.9741 pu | Trafo: 14.9% | Line: 23.9% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 25.00 kW | Bus 2: 0.9741 pu | Trafo: 14.9% | Line: 23.9% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 25.00 kW | Bus 2: 0.9741 pu | Trafo: 14.9% | Line: 23.9% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 30.00 kW | Bus 2: 0.9739 pu | Trafo: 15.6% | Line: 25.0% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=6 ms
+-> SOC 50.0%
+Load: 30.00 kW | Bus 2: 0.9739 pu | Trafo: 15.6% | Line: 25.0% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 30.00 kW | Bus 2: 0.9739 pu | Trafo: 15.6% | Line: 25.0% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 35.00 kW | Bus 2: 0.9737 pu | Trafo: 16.4% | Line: 26.3% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 41 ms
+INFO:ocpp:CP_1: receive message [2,"d2d2b19b-9489-4cca-8dae-398a20a3957f","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"d2d2b19b-9489-4cca-8dae-398a20a3957f",{"currentTime":"2026-06-22T22:10:12Z"}]
+INFO:ocpp:CP_1: receive message [2,"d20fe47b-dc1c-4e47-b1f2-5718cbc25a01","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T22:10:12Z","sampledValue":[{"value":34999.936,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":194.444,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":50.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":550.4,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":63.59,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":35000.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 34999.9 W at 2026-06-22T22:10:12Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 194.444 Wh at 2026-06-22T22:10:12Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 50.0 Percent at 2026-06-22T22:10:12Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 550.4 V at 2026-06-22T22:10:12Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 63.59 A at 2026-06-22T22:10:12Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 35000.0 W at 2026-06-22T22:10:12Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-22T22:10:12Z
+INFO:ocpp:CP_1: send [3,"d20fe47b-dc1c-4e47-b1f2-5718cbc25a01",{}]
+Load: 35.00 kW | Bus 2: 0.9737 pu | Trafo: 16.4% | Line: 26.3% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=11 ms
+-> SOC 50.0%
+Load: 35.00 kW | Bus 2: 0.9737 pu | Trafo: 16.4% | Line: 26.3% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 40 ms
+Load: 35.00 kW | Bus 2: 0.9737 pu | Trafo: 16.4% | Line: 26.3% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 40.00 kW | Bus 2: 0.9735 pu | Trafo: 17.3% | Line: 27.7% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 40.00 kW | Bus 2: 0.9735 pu | Trafo: 17.3% | Line: 27.7% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=9 ms
+-> SOC 50.0%
+Load: 40.00 kW | Bus 2: 0.9735 pu | Trafo: 17.3% | Line: 27.7% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 41 ms
+Load: 40.00 kW | Bus 2: 0.9735 pu | Trafo: 17.3% | Line: 27.7% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 45.00 kW | Bus 2: 0.9733 pu | Trafo: 18.2% | Line: 29.1% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 42 ms
+Load: 45.00 kW | Bus 2: 0.9733 pu | Trafo: 18.2% | Line: 29.1% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=10 ms
+-> SOC 50.0%
+INFO:ocpp:CP_1: receive message [2,"55f0851c-bb86-459d-b93b-a7813d0c6094","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"55f0851c-bb86-459d-b93b-a7813d0c6094",{"currentTime":"2026-06-22T22:10:22Z"}]
+INFO:ocpp:CP_1: receive message [2,"74d3dc08-87b3-48b4-80c6-4edca681147e","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T22:10:22Z","sampledValue":[{"value":45000.704,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":319.446,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":50.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":550.4,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":81.76,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":50000.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 45000.7 W at 2026-06-22T22:10:22Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 319.446 Wh at 2026-06-22T22:10:22Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 50.0 Percent at 2026-06-22T22:10:22Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 550.4 V at 2026-06-22T22:10:22Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 81.76 A at 2026-06-22T22:10:22Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 50000.0 W at 2026-06-22T22:10:22Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-22T22:10:22Z
+INFO:ocpp:CP_1: send [3,"74d3dc08-87b3-48b4-80c6-4edca681147e",{}]
+Load: 45.00 kW | Bus 2: 0.9733 pu | Trafo: 18.2% | Line: 29.1% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+Load: 45.00 kW | Bus 2: 0.9733 pu | Trafo: 18.2% | Line: 29.1% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 44 ms
+Load: 50.00 kW | Bus 2: 0.9731 pu | Trafo: 19.2% | Line: 30.7% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 44 ms
+Load: 50.00 kW | Bus 2: 0.9731 pu | Trafo: 19.2% | Line: 30.7% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 45 ms
+-> TRANSMIT OK  cmd=LOWER src=auto tx=12 ms
+-> SOC 50.0%
+Load: 50.00 kW | Bus 2: 0.9731 pu | Trafo: 19.2% | Line: 30.7% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 43 ms
+INFO:ocpp:CP_1: send [2,"6c626958-56a1-4fae-aff1-b7581d500e8e","SetVariables",{"setVariableData":[{"attributeValue":"20.0","component":{"name":"UserPreferences"},"variable":{"name":"MinSoC"}},{"attributeValue":"55.0","component":{"name":"UserPreferences"},"variable":{"name":"MaxSoC"}},{"attributeValue":"80.0","component":{"name":"UserPreferences"},"variable":{"name":"TargetSoC"}},{"attributeValue":"","component":{"name":"UserPreferences"},"variable":{"name":"DepartureTime"}}]}]
+INFO:ocpp:CP_1: receive message [3,"6c626958-56a1-4fae-aff1-b7581d500e8e",{"setVariableResult":[{"attributeStatus":"Accepted","component":{"name":"UserPreferences"},"variable":{"name":"MinSoC"}},{"attributeStatus":"Accepted","component":{"name":"UserPreferences"},"variable":{"name":"MaxSoC"}},{"attributeStatus":"Accepted","component":{"name":"UserPreferences"},"variable":{"name":"TargetSoC"}},{"attributeStatus":"Accepted","component":{"name":"UserPreferences"},"variable":{"name":"DepartureTime"}}]}]
+Load: 50.00 kW | Bus 2: 0.9731 pu | Trafo: 19.2% | Line: 30.7% | SoC: 50.0%✓ | Cmd: LOWER (auto) | Cycle: 45 ms
+Load: 55.00 kW | Bus 2: 0.9729 pu | Trafo: 20.3% | Line: 32.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 44 ms
+Load: 55.00 kW | Bus 2: 0.9729 pu | Trafo: 20.3% | Line: 32.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 44 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=10 ms
+-> SOC 50.0%
+Load: 55.00 kW | Bus 2: 0.9729 pu | Trafo: 20.3% | Line: 32.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 45 ms
+Load: 55.00 kW | Bus 2: 0.9729 pu | Trafo: 20.3% | Line: 32.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 44 ms
+INFO:ocpp:CP_1: receive message [2,"7c2abfd4-a42f-4b76-a72b-2662fd92aafe","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"7c2abfd4-a42f-4b76-a72b-2662fd92aafe",{"currentTime":"2026-06-22T22:10:32Z"}]
+INFO:ocpp:CP_1: receive message [2,"b554ab03-32ac-4fac-83b3-11fa7f9921a0","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T22:10:32Z","sampledValue":[{"value":45000.704,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":444.448,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":50.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":550.4,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":81.76,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":45000.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 45000.7 W at 2026-06-22T22:10:32Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 444.448 Wh at 2026-06-22T22:10:32Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 50.0 Percent at 2026-06-22T22:10:32Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 550.4 V at 2026-06-22T22:10:32Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 81.76 A at 2026-06-22T22:10:32Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 45000.0 W at 2026-06-22T22:10:32Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-22T22:10:32Z
+INFO:ocpp:CP_1: send [3,"b554ab03-32ac-4fac-83b3-11fa7f9921a0",{}]
+Load: 45.00 kW | Bus 2: 0.9733 pu | Trafo: 18.2% | Line: 29.1% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=12 ms
+-> SOC 50.0%
+Load: 45.00 kW | Bus 2: 0.9733 pu | Trafo: 18.2% | Line: 29.1% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: 45.00 kW | Bus 2: 0.9733 pu | Trafo: 18.2% | Line: 29.1% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 41 ms
+Load: 35.00 kW | Bus 2: 0.9737 pu | Trafo: 16.4% | Line: 26.3% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: 35.00 kW | Bus 2: 0.9737 pu | Trafo: 16.4% | Line: 26.3% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=9 ms
+-> SOC 51.0%
+Load: 35.00 kW | Bus 2: 0.9737 pu | Trafo: 16.4% | Line: 26.3% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: 35.00 kW | Bus 2: 0.9737 pu | Trafo: 16.4% | Line: 26.3% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: 25.00 kW | Bus 2: 0.9741 pu | Trafo: 14.9% | Line: 23.9% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: 25.00 kW | Bus 2: 0.9741 pu | Trafo: 14.9% | Line: 23.9% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=20 ms
+-> SOC 51.0%
+Load: 25.00 kW | Bus 2: 0.9741 pu | Trafo: 14.9% | Line: 23.9% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+INFO:ocpp:CP_1: receive message [2,"727f0843-512f-41ab-b0ee-4f7f42d606ac","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"727f0843-512f-41ab-b0ee-4f7f42d606ac",{"currentTime":"2026-06-22T22:10:42Z"}]
+INFO:ocpp:CP_1: receive message [2,"f0cfc1e0-f438-4df2-8c01-9a8ffc303f88","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T22:10:42Z","sampledValue":[{"value":24999.168,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":513.89,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":51.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":550.4,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":45.42,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":15000.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:CHARGING      | EVSE 1 | 24999.2 W at 2026-06-22T22:10:42Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 513.89 Wh at 2026-06-22T22:10:42Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 51.0 Percent at 2026-06-22T22:10:42Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 550.4 V at 2026-06-22T22:10:42Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: 45.42 A at 2026-06-22T22:10:42Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 15000.0 W at 2026-06-22T22:10:42Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 0.0 W at 2026-06-22T22:10:42Z
+INFO:ocpp:CP_1: send [3,"f0cfc1e0-f438-4df2-8c01-9a8ffc303f88",{}]
+Load: 25.00 kW | Bus 2: 0.9741 pu | Trafo: 14.9% | Line: 23.9% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: 15.00 kW | Bus 2: 0.9745 pu | Trafo: 13.8% | Line: 22.2% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 42 ms
+Load: 15.00 kW | Bus 2: 0.9745 pu | Trafo: 13.8% | Line: 22.2% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=22 ms
+-> SOC 51.0%
+Load: 15.00 kW | Bus 2: 0.9745 pu | Trafo: 13.8% | Line: 22.2% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: 15.00 kW | Bus 2: 0.9745 pu | Trafo: 13.8% | Line: 22.2% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 42 ms
+Load: 5.00 kW | Bus 2: 0.9748 pu | Trafo: 13.2% | Line: 21.2% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: 5.00 kW | Bus 2: 0.9748 pu | Trafo: 13.2% | Line: 21.2% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=10 ms
+-> SOC 51.0%
+Load: 5.00 kW | Bus 2: 0.9748 pu | Trafo: 13.2% | Line: 21.2% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: 5.00 kW | Bus 2: 0.9748 pu | Trafo: 13.2% | Line: 21.2% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+INFO:ocpp:CP_1: receive message [2,"7027869c-c656-4cdd-a076-dbf4a32bd89b","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"7027869c-c656-4cdd-a076-dbf4a32bd89b",{"currentTime":"2026-06-22T22:10:52Z"}]
+INFO:ocpp:CP_1: receive message [2,"40409898-ad78-417e-8e5c-a5cadd186355","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T22:10:52Z","sampledValue":[{"value":-4999.8336,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":513.89,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":51.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":550.4,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":-9.08,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":5000.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:V2G DISCHARGE | EVSE 1 | -4999.8 W at 2026-06-22T22:10:52Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 513.89 Wh at 2026-06-22T22:10:52Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 51.0 Percent at 2026-06-22T22:10:52Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 550.4 V at 2026-06-22T22:10:52Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: -9.08 A at 2026-06-22T22:10:52Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-22T22:10:52Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 5000.0 W at 2026-06-22T22:10:52Z
+INFO:ocpp:CP_1: send [3,"40409898-ad78-417e-8e5c-a5cadd186355",{}]
+Load: -5.00 kW | Bus 2: 0.9752 pu | Trafo: 13.1% | Line: 21.1% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -5.00 kW | Bus 2: 0.9752 pu | Trafo: 13.1% | Line: 21.1% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=13 ms
+-> SOC 51.0%
+Load: -5.00 kW | Bus 2: 0.9752 pu | Trafo: 13.1% | Line: 21.1% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -15.00 kW | Bus 2: 0.9755 pu | Trafo: 13.5% | Line: 21.8% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -15.00 kW | Bus 2: 0.9755 pu | Trafo: 13.5% | Line: 21.8% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -15.00 kW | Bus 2: 0.9755 pu | Trafo: 13.5% | Line: 21.8% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=13 ms
+-> SOC 51.0%
+Load: -15.00 kW | Bus 2: 0.9755 pu | Trafo: 13.5% | Line: 21.8% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 44 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=6 ms
+-> SOC 51.0%
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+INFO:ocpp:CP_1: receive message [2,"5f3c95dc-9071-414e-89dd-4f87e3e818f8","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"5f3c95dc-9071-414e-89dd-4f87e3e818f8",{"currentTime":"2026-06-22T22:11:02Z"}]
+INFO:ocpp:CP_1: receive message [2,"0a78f1fa-be65-4ebe-a76f-7d22ff3b3ee9","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T22:11:02Z","sampledValue":[{"value":-20001.536,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":513.89,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":51.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":550.4,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":-36.34,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":20000.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:V2G DISCHARGE | EVSE 1 | -20001.5 W at 2026-06-22T22:11:02Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 513.89 Wh at 2026-06-22T22:11:02Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 51.0 Percent at 2026-06-22T22:11:02Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 550.4 V at 2026-06-22T22:11:02Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: -36.34 A at 2026-06-22T22:11:02Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-22T22:11:02Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 20000.0 W at 2026-06-22T22:11:02Z
+INFO:ocpp:CP_1: send [3,"0a78f1fa-be65-4ebe-a76f-7d22ff3b3ee9",{}]
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 41 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=18 ms
+-> SOC 51.0%
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 41 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=10 ms
+-> SOC 51.0%
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 51.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 41 ms
+INFO:ocpp:CP_1: receive message [2,"da472167-4734-4d97-a46d-58f52ff54809","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"da472167-4734-4d97-a46d-58f52ff54809",{"currentTime":"2026-06-22T22:11:12Z"}]
+INFO:ocpp:CP_1: receive message [2,"9400e03b-c4e3-49c1-8828-bdd0a7365fae","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T22:11:12Z","sampledValue":[{"value":-20001.536,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":513.89,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":50.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":550.4,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":-36.34,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":20000.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:V2G DISCHARGE | EVSE 1 | -20001.5 W at 2026-06-22T22:11:12Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 513.89 Wh at 2026-06-22T22:11:12Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 50.0 Percent at 2026-06-22T22:11:12Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 550.4 V at 2026-06-22T22:11:12Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: -36.34 A at 2026-06-22T22:11:12Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-22T22:11:12Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 20000.0 W at 2026-06-22T22:11:12Z
+INFO:ocpp:CP_1: send [3,"9400e03b-c4e3-49c1-8828-bdd0a7365fae",{}]
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 44 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 41 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=12 ms
+-> SOC 50.0%
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 41 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 42 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=20 ms
+-> SOC 50.0%
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 42 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=21 ms
+-> SOC 50.0%
+INFO:ocpp:CP_1: receive message [2,"99b39dc4-231e-4134-af0e-d5df831b745b","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"99b39dc4-231e-4134-af0e-d5df831b745b",{"currentTime":"2026-06-22T22:11:22Z"}]
+INFO:ocpp:CP_1: receive message [2,"ba40f878-3ea4-4e8c-a786-c403bd0bf936","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T22:11:22Z","sampledValue":[{"value":-20001.536,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":513.89,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":50.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":550.4,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":-36.34,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":20000.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:V2G DISCHARGE | EVSE 1 | -20001.5 W at 2026-06-22T22:11:22Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 513.89 Wh at 2026-06-22T22:11:22Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 50.0 Percent at 2026-06-22T22:11:22Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 550.4 V at 2026-06-22T22:11:22Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: -36.34 A at 2026-06-22T22:11:22Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-22T22:11:22Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 20000.0 W at 2026-06-22T22:11:22Z
+INFO:ocpp:CP_1: send [3,"ba40f878-3ea4-4e8c-a786-c403bd0bf936",{}]
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=11 ms
+-> SOC 50.0%
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 41 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 44 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=22 ms
+-> SOC 50.0%
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+INFO:ocpp:CP_1: receive message [2,"df698889-4b06-4b1f-943d-544ab782b4df","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"df698889-4b06-4b1f-943d-544ab782b4df",{"currentTime":"2026-06-22T22:11:32Z"}]
+INFO:ocpp:CP_1: receive message [2,"9b779da4-9d80-44c6-aae3-790e96b94b56","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T22:11:32Z","sampledValue":[{"value":-20001.536,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":513.89,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":50.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":550.4,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":-36.34,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":20000.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:V2G DISCHARGE | EVSE 1 | -20001.5 W at 2026-06-22T22:11:32Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 513.89 Wh at 2026-06-22T22:11:32Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 50.0 Percent at 2026-06-22T22:11:32Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 550.4 V at 2026-06-22T22:11:32Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: -36.34 A at 2026-06-22T22:11:32Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-22T22:11:32Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 20000.0 W at 2026-06-22T22:11:32Z
+INFO:ocpp:CP_1: send [3,"9b779da4-9d80-44c6-aae3-790e96b94b56",{}]
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=19 ms
+-> SOC 50.0%
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 41 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 41 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=18 ms
+-> SOC 50.0%
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 41 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 41 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=18 ms
+-> SOC 50.0%
+INFO:ocpp:CP_1: receive message [2,"7d9d794f-efce-4198-84de-96e08cd4c2dd","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"7d9d794f-efce-4198-84de-96e08cd4c2dd",{"currentTime":"2026-06-22T22:11:42Z"}]
+INFO:ocpp:CP_1: receive message [2,"c4c70c61-ebba-45df-9802-4c6505992c83","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T22:11:42Z","sampledValue":[{"value":-20001.536,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":513.89,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":50.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":550.4,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":-36.34,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":20000.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:V2G DISCHARGE | EVSE 1 | -20001.5 W at 2026-06-22T22:11:42Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 513.89 Wh at 2026-06-22T22:11:42Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 50.0 Percent at 2026-06-22T22:11:42Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 550.4 V at 2026-06-22T22:11:42Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: -36.34 A at 2026-06-22T22:11:42Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-22T22:11:42Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 20000.0 W at 2026-06-22T22:11:42Z
+INFO:ocpp:CP_1: send [3,"c4c70c61-ebba-45df-9802-4c6505992c83",{}]
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 40 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 41 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 44 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=9 ms
+-> SOC 50.0%
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 41 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=17 ms
+-> SOC 50.0%
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 41 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+INFO:ocpp:CP_1: receive message [2,"c83e26c2-a002-4a78-bba1-1a8eec9349bf","Heartbeat",{}]
+Got a Heartbeat!
+INFO:ocpp:CP_1: send [3,"c83e26c2-a002-4a78-bba1-1a8eec9349bf",{"currentTime":"2026-06-22T22:11:52Z"}]
+INFO:ocpp:CP_1: receive message [2,"3bd33fd3-0fab-439f-9d40-1b1c41dd1fe8","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-22T22:11:52Z","sampledValue":[{"value":-20001.536,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":513.89,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":50.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":550.4,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":-36.34,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":20000.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+INFO:root:V2G DISCHARGE | EVSE 1 | -20001.5 W at 2026-06-22T22:11:52Z
+INFO:root:METER VALUE   | EVSE 1 | Energy.Active.Import.Register: 513.89 Wh at 2026-06-22T22:11:52Z
+INFO:root:METER VALUE   | EVSE 1 | SoC: 50.0 Percent at 2026-06-22T22:11:52Z
+INFO:root:METER VALUE   | EVSE 1 | Voltage: 550.4 V at 2026-06-22T22:11:52Z
+INFO:root:METER VALUE   | EVSE 1 | Current.Import: -36.34 A at 2026-06-22T22:11:52Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Import.Offered: 0.0 W at 2026-06-22T22:11:52Z
+INFO:root:METER VALUE   | EVSE 1 | Power.Export.Offered: 20000.0 W at 2026-06-22T22:11:52Z
+INFO:ocpp:CP_1: send [3,"3bd33fd3-0fab-439f-9d40-1b1c41dd1fe8",{}]
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+Load: -20.00 kW | Bus 2: 0.9757 pu | Trafo: 13.9% | Line: 22.4% | SoC: 50.0%✓ | Cmd: HIGHER (auto) | Cycle: 43 ms
+-> TRANSMIT OK  cmd=HIGHER ×2 src=auto tx=10 ms
+-> SOC 50.0%
+

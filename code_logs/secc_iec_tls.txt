@@ -1,0 +1,283 @@
+Starting SECC stack via: poetry run python /home/pi/UoL_V2G/code_iso15118_custom/run_secc.py
+  cwd        : /home/pi/UoL_V2G/code_charger/iso15118
+  PYTHONPATH : /home/pi/UoL_V2G/code_iso15118_custom
+DEBUG    2026-06-21 21:12:31,537 - asyncio (54): Using selector: EpollSelector
+INFO    2026-06-21 21:12:31,568 - telemetry_evse_controller (28): TelemetryEVSEController initialized
+INFO    2026-06-21 21:12:31,569 - __main__ (53): Using TelemetryEVSEController
+INFO    2026-06-21 21:12:40,967 - iso15118.shared.exi_codec (177): EXI Codec version: 1.55
+INFO    2026-06-21 21:12:40,969 - iso15118.secc (31): Starting 15118 version: 0.31.2
+INFO    2026-06-21 21:12:40,970 - iso15118.secc.comm_session_handler (235): Communication session handler started
+Waiting for connection
+Connecting to: wss://10.42.0.1:9000/CP_1
+INFO    2026-06-21 21:12:41,301 - iso15118.secc.transport.udp_server (137): UDP server socket ready
+INFO    2026-06-21 21:12:41,302 - iso15118.secc.transport.udp_server (123): UDP server started at address FF02::1%usb0 and port 15118
+INFO    2026-06-21 21:12:41,308 - root (244): OCPP server not available yet, retrying in 3s...
+DEBUG    2026-06-21 21:12:41,312 - iso15118.secc.controller.simulator (266): New Status: ServiceStatus.READY
+Waiting for connection
+Waiting for connection
+Waiting for connection
+Connecting to: wss://10.42.0.1:9000/CP_1
+INFO    2026-06-21 21:12:44,319 - root (244): OCPP server not available yet, retrying in 3s...
+Waiting for connection
+Waiting for connection
+Waiting for connection
+Connecting to: wss://10.42.0.1:9000/CP_1
+INFO    2026-06-21 21:12:47,331 - root (244): OCPP server not available yet, retrying in 3s...
+Waiting for connection
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+Connecting to: wss://10.42.0.1:9000/CP_1
+DEBUG    2026-06-21 21:12:50,341 - websockets.client (178): = connection is CONNECTING
+DEBUG    2026-06-21 21:12:50,383 - websockets.client (294): > GET /CP_1 HTTP/1.1
+DEBUG    2026-06-21 21:12:50,384 - websockets.client (296): > Host: 10.42.0.1:9000
+DEBUG    2026-06-21 21:12:50,384 - websockets.client (296): > Upgrade: websocket
+DEBUG    2026-06-21 21:12:50,384 - websockets.client (296): > Connection: Upgrade
+DEBUG    2026-06-21 21:12:50,385 - websockets.client (296): > Sec-WebSocket-Key: iP2JJIef5gaXjGnmEU3xhg==
+DEBUG    2026-06-21 21:12:50,385 - websockets.client (296): > Sec-WebSocket-Version: 13
+DEBUG    2026-06-21 21:12:50,385 - websockets.client (296): > Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
+DEBUG    2026-06-21 21:12:50,386 - websockets.client (296): > Sec-WebSocket-Protocol: ocpp2.1
+DEBUG    2026-06-21 21:12:50,386 - websockets.client (296): > User-Agent: Python/3.11 websockets/16.0
+DEBUG    2026-06-21 21:12:50,396 - websockets.client (320): < HTTP/1.1 101 Switching Protocols
+DEBUG    2026-06-21 21:12:50,396 - websockets.client (322): < Date: Sun, 21 Jun 2026 20:12:50 GMT
+DEBUG    2026-06-21 21:12:50,397 - websockets.client (322): < Upgrade: websocket
+DEBUG    2026-06-21 21:12:50,397 - websockets.client (322): < Connection: Upgrade
+DEBUG    2026-06-21 21:12:50,397 - websockets.client (322): < Sec-WebSocket-Accept: 0jUnGO/7MzW9wiluPK2kgEjbbC8=
+DEBUG    2026-06-21 21:12:50,398 - websockets.client (322): < Sec-WebSocket-Extensions: permessage-deflate; server_max_window_bits=12; client_max_window_bits=12
+DEBUG    2026-06-21 21:12:50,398 - websockets.client (322): < Sec-WebSocket-Protocol: ocpp2.1
+DEBUG    2026-06-21 21:12:50,398 - websockets.client (322): < Server: Python/3.13 websockets/16.0
+DEBUG    2026-06-21 21:12:50,400 - websockets.client (178): = connection is OPEN
+INFO    2026-06-21 21:12:50,419 - ocpp (471): CP_1: send [2,"e63f1c7b-3c78-4e0a-864c-841200074fca","BootNotification",{"chargingStation":{"model":"MSc Embedded","vendorName":"UoL"},"reason":"PowerUp"}]
+DEBUG    2026-06-21 21:12:50,419 - websockets.client (755): > TEXT '[2,"e63f1c7b-3c78-4e0a-864c-841200074fca","Boot..."},"reason":"PowerUp"}]' [144 bytes]
+DEBUG    2026-06-21 21:12:50,426 - websockets.client (609): < TEXT '[3,"e63f1c7b-3c78-4e0a-864c-841200074fca",{"cur...0,"status":"Accepted"}]' [127 bytes]
+INFO    2026-06-21 21:12:50,427 - ocpp (247): CP_1: receive message [3,"e63f1c7b-3c78-4e0a-864c-841200074fca",{"currentTime":"2026-06-21T20:12:50.411334+00:00","interval":10,"status":"Accepted"}]
+Connected to central system.
+INFO    2026-06-21 21:12:50,461 - ocpp (471): CP_1: send [2,"dbae487c-5e85-4757-b46d-72c86dc72e3c","Heartbeat",{}]
+DEBUG    2026-06-21 21:12:50,461 - websockets.client (755): > TEXT '[2,"dbae487c-5e85-4757-b46d-72c86dc72e3c","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-21 21:12:50,466 - websockets.client (609): < TEXT '[3,"dbae487c-5e85-4757-b46d-72c86dc72e3c",{"cur...2026-06-21T20:12:50Z"}]' [81 bytes]
+INFO    2026-06-21 21:12:50,466 - ocpp (247): CP_1: receive message [3,"dbae487c-5e85-4757-b46d-72c86dc72e3c",{"currentTime":"2026-06-21T20:12:50Z"}]
+INFO    2026-06-21 21:12:50,468 - ocpp (471): CP_1: send [2,"b3586569-4c91-447e-831f-2ac1d7f375fb","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T20:12:50Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-21 21:12:50,469 - websockets.client (755): > TEXT '[2,"b3586569-4c91-447e-831f-2ac1d7f375fb","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-21 21:12:50,476 - websockets.client (609): < TEXT '[3,"b3586569-4c91-447e-831f-2ac1d7f375fb",{}]' [45 bytes]
+INFO    2026-06-21 21:12:50,477 - ocpp (247): CP_1: receive message [3,"b3586569-4c91-447e-831f-2ac1d7f375fb",{}]
+INFO    2026-06-21 21:12:50,481 - root (190): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+INFO    2026-06-21 21:13:00,478 - ocpp (471): CP_1: send [2,"cf543218-cca5-4c52-95f0-fd991a69bafa","Heartbeat",{}]
+DEBUG    2026-06-21 21:13:00,478 - websockets.client (755): > TEXT '[2,"cf543218-cca5-4c52-95f0-fd991a69bafa","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-21 21:13:00,501 - websockets.client (609): < TEXT '[3,"cf543218-cca5-4c52-95f0-fd991a69bafa",{"cur...2026-06-21T20:13:00Z"}]' [81 bytes]
+INFO    2026-06-21 21:13:00,502 - ocpp (247): CP_1: receive message [3,"cf543218-cca5-4c52-95f0-fd991a69bafa",{"currentTime":"2026-06-21T20:13:00Z"}]
+INFO    2026-06-21 21:13:00,504 - ocpp (471): CP_1: send [2,"1555f405-0356-4444-ba6a-3d16b84be34a","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T20:13:00Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-21 21:13:00,505 - websockets.client (755): > TEXT '[2,"1555f405-0356-4444-ba6a-3d16b84be34a","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-21 21:13:00,514 - websockets.client (609): < TEXT '[3,"1555f405-0356-4444-ba6a-3d16b84be34a",{}]' [45 bytes]
+INFO    2026-06-21 21:13:00,515 - ocpp (247): CP_1: receive message [3,"1555f405-0356-4444-ba6a-3d16b84be34a",{}]
+INFO    2026-06-21 21:13:00,517 - root (190): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+DEBUG    2026-06-21 21:13:10,400 - websockets.client (609): < PING 4c 67 43 aa [binary, 4 bytes]
+DEBUG    2026-06-21 21:13:10,400 - websockets.client (755): > PONG 4c 67 43 aa [binary, 4 bytes]
+DEBUG    2026-06-21 21:13:10,402 - websockets.client (755): > PING 2c 1b b2 dd [binary, 4 bytes]
+DEBUG    2026-06-21 21:13:10,403 - websockets.client (829): % sent keepalive ping
+DEBUG    2026-06-21 21:13:10,407 - websockets.client (609): < PONG 2c 1b b2 dd [binary, 4 bytes]
+DEBUG    2026-06-21 21:13:10,408 - websockets.client (840): % received keepalive pong
+INFO    2026-06-21 21:13:10,511 - ocpp (471): CP_1: send [2,"aff11b7b-742a-468d-90dd-7543bb037d14","Heartbeat",{}]
+DEBUG    2026-06-21 21:13:10,511 - websockets.client (755): > TEXT '[2,"aff11b7b-742a-468d-90dd-7543bb037d14","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-21 21:13:10,536 - websockets.client (609): < TEXT '[3,"aff11b7b-742a-468d-90dd-7543bb037d14",{"cur...2026-06-21T20:13:10Z"}]' [81 bytes]
+INFO    2026-06-21 21:13:10,537 - ocpp (247): CP_1: receive message [3,"aff11b7b-742a-468d-90dd-7543bb037d14",{"currentTime":"2026-06-21T20:13:10Z"}]
+INFO    2026-06-21 21:13:10,538 - ocpp (471): CP_1: send [2,"13e8968b-4bf3-4509-af45-7d281d5c19f5","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T20:13:10Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-21 21:13:10,540 - websockets.client (755): > TEXT '[2,"13e8968b-4bf3-4509-af45-7d281d5c19f5","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-21 21:13:10,546 - websockets.client (609): < TEXT '[3,"13e8968b-4bf3-4509-af45-7d281d5c19f5",{}]' [45 bytes]
+INFO    2026-06-21 21:13:10,547 - ocpp (247): CP_1: receive message [3,"13e8968b-4bf3-4509-af45-7d281d5c19f5",{}]
+INFO    2026-06-21 21:13:10,549 - root (190): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+INFO    2026-06-21 21:13:20,545 - ocpp (471): CP_1: send [2,"0f0d4f85-4c21-458b-a4a6-05e205335b8e","Heartbeat",{}]
+DEBUG    2026-06-21 21:13:20,546 - websockets.client (755): > TEXT '[2,"0f0d4f85-4c21-458b-a4a6-05e205335b8e","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-21 21:13:20,568 - websockets.client (609): < TEXT '[3,"0f0d4f85-4c21-458b-a4a6-05e205335b8e",{"cur...2026-06-21T20:13:20Z"}]' [81 bytes]
+INFO    2026-06-21 21:13:20,569 - ocpp (247): CP_1: receive message [3,"0f0d4f85-4c21-458b-a4a6-05e205335b8e",{"currentTime":"2026-06-21T20:13:20Z"}]
+INFO    2026-06-21 21:13:20,571 - ocpp (471): CP_1: send [2,"b44ca7a2-beac-41a6-a542-8c51051c2c1e","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T20:13:20Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-21 21:13:20,572 - websockets.client (755): > TEXT '[2,"b44ca7a2-beac-41a6-a542-8c51051c2c1e","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-21 21:13:20,579 - websockets.client (609): < TEXT '[3,"b44ca7a2-beac-41a6-a542-8c51051c2c1e",{}]' [45 bytes]
+INFO    2026-06-21 21:13:20,579 - ocpp (247): CP_1: receive message [3,"b44ca7a2-beac-41a6-a542-8c51051c2c1e",{}]
+INFO    2026-06-21 21:13:20,581 - root (190): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+DEBUG    2026-06-21 21:13:30,401 - websockets.client (609): < PING 7c 15 09 a0 [binary, 4 bytes]
+DEBUG    2026-06-21 21:13:30,402 - websockets.client (755): > PONG 7c 15 09 a0 [binary, 4 bytes]
+DEBUG    2026-06-21 21:13:30,403 - websockets.client (755): > PING 80 d9 3f f9 [binary, 4 bytes]
+DEBUG    2026-06-21 21:13:30,404 - websockets.client (829): % sent keepalive ping
+DEBUG    2026-06-21 21:13:30,408 - websockets.client (609): < PONG 80 d9 3f f9 [binary, 4 bytes]
+DEBUG    2026-06-21 21:13:30,409 - websockets.client (840): % received keepalive pong
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+INFO    2026-06-21 21:13:30,578 - ocpp (471): CP_1: send [2,"70208d62-5ab3-4275-8352-8b9472fbf089","Heartbeat",{}]
+DEBUG    2026-06-21 21:13:30,578 - websockets.client (755): > TEXT '[2,"70208d62-5ab3-4275-8352-8b9472fbf089","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-21 21:13:30,600 - websockets.client (609): < TEXT '[3,"70208d62-5ab3-4275-8352-8b9472fbf089",{"cur...2026-06-21T20:13:30Z"}]' [81 bytes]
+INFO    2026-06-21 21:13:30,601 - ocpp (247): CP_1: receive message [3,"70208d62-5ab3-4275-8352-8b9472fbf089",{"currentTime":"2026-06-21T20:13:30Z"}]
+INFO    2026-06-21 21:13:30,603 - ocpp (471): CP_1: send [2,"a0a3097b-f62e-436b-98d2-752501d7f83f","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T20:13:30Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-21 21:13:30,604 - websockets.client (755): > TEXT '[2,"a0a3097b-f62e-436b-98d2-752501d7f83f","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-21 21:13:30,611 - websockets.client (609): < TEXT '[3,"a0a3097b-f62e-436b-98d2-752501d7f83f",{}]' [45 bytes]
+INFO    2026-06-21 21:13:30,612 - ocpp (247): CP_1: receive message [3,"a0a3097b-f62e-436b-98d2-752501d7f83f",{}]
+INFO    2026-06-21 21:13:30,614 - root (190): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+Waiting for connection
+^CDEBUG    2026-06-21 21:13:34,683 - websockets.client (755): > CLOSE 1000 (OK) [2 bytes]
+DEBUG    2026-06-21 21:13:34,684 - websockets.client (178): = connection is CLOSING
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+ERROR    2026-06-21 21:13:34,745 - __main__ (72): SECC program terminated with error: Event loop stopped before Future completed.
+Traceback (most recent call last):
+  File "/home/pi/UoL_V2G/code_cpms/ocpp_charge_point_2.py", line 240, in run_ocpp_client
+    await asyncio.gather(
+  File "/home/pi/.cache/pypoetry/virtualenvs/iso15118-syZwZL3b-py3.11/lib/python3.11/site-packages/ocpp/charge_point.py", line 246, in start
+    message = await self._connection.recv()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/pi/.cache/pypoetry/virtualenvs/iso15118-syZwZL3b-py3.11/lib/python3.11/site-packages/websockets/asyncio/connection.py", line 305, in recv
+    return await self.recv_messages.get(decode)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/pi/.cache/pypoetry/virtualenvs/iso15118-syZwZL3b-py3.11/lib/python3.11/site-packages/websockets/asyncio/messages.py", line 158, in get
+    frame = await self.frames.get(not self.closed)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/pi/.cache/pypoetry/virtualenvs/iso15118-syZwZL3b-py3.11/lib/python3.11/site-packages/websockets/asyncio/messages.py", line 51, in get
+    await self.get_waiter
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/asyncio/base_events.py", line 641, in run_until_complete
+    self.run_forever()
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/asyncio/base_events.py", line 608, in run_forever
+    self._run_once()
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/asyncio/base_events.py", line 1936, in _run_once
+    handle._run()
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/asyncio/events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/pi/UoL_V2G/code_cpms/ocpp_charge_point_2.py", line 234, in run_ocpp_client
+    async with websockets.connect(
+  File "/home/pi/.cache/pypoetry/virtualenvs/iso15118-syZwZL3b-py3.11/lib/python3.11/site-packages/websockets/asyncio/client.py", line 598, in __aexit__
+    await self.connection.close()
+  File "/home/pi/.cache/pypoetry/virtualenvs/iso15118-syZwZL3b-py3.11/lib/python3.11/site-packages/websockets/asyncio/connection.py", line 648, in close
+    self.protocol.send_close(code, reason)
+  File "/home/pi/.cache/pypoetry/virtualenvs/iso15118-syZwZL3b-py3.11/lib/python3.11/site-packages/websockets/protocol.py", line 398, in send_close
+    self.state = CLOSING
+    ^^^^^^^^^^
+  File "/home/pi/.cache/pypoetry/virtualenvs/iso15118-syZwZL3b-py3.11/lib/python3.11/site-packages/websockets/protocol.py", line 178, in state
+    self.logger.debug("= connection is %s", state.name)
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/logging/__init__.py", line 1843, in debug
+    self.log(DEBUG, msg, *args, **kwargs)
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/logging/__init__.py", line 1887, in log
+    self.logger.log(level, msg, *args, **kwargs)
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/logging/__init__.py", line 1559, in log
+    self._log(level, msg, args, **kwargs)
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/logging/__init__.py", line 1634, in _log
+    self.handle(record)
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/logging/__init__.py", line 1644, in handle
+    self.callHandlers(record)
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/logging/__init__.py", line 1706, in callHandlers
+    hdlr.handle(record)
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/logging/__init__.py", line 978, in handle
+    self.emit(record)
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/logging/__init__.py", line 1113, in emit
+    stream.write(msg + self.terminator)
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/asyncio/runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/pi/UoL_V2G/code_iso15118_custom/run_secc.py", line 68, in run
+    asyncio.run( main() )
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/asyncio/runners.py", line 189, in run
+    with Runner(debug=debug) as runner:
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/asyncio/runners.py", line 63, in __exit__
+    self.close()
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/asyncio/runners.py", line 71, in close
+    _cancel_all_tasks(loop)
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/asyncio/runners.py", line 201, in _cancel_all_tasks
+    loop.run_until_complete(tasks.gather(*to_cancel, return_exceptions=True))
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/asyncio/base_events.py", line 652, in run_until_complete
+    raise RuntimeError('Event loop stopped before Future completed.')
+RuntimeError: Event loop stopped before Future completed.
+Closing connections...
+

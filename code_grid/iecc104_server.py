@@ -32,6 +32,7 @@ IOA map
 
 import datetime
 import os
+import time
 
 os.environ["PYTHONUNBUFFERED"] = "1"
 
@@ -92,8 +93,8 @@ def on_step_command(
     """
     Handle an incoming regulating step command from the grid.
 
-    HIGHER → decrease setpoint (more discharge / less charge)
-    LOWER  → increase setpoint (more charge / less discharge)
+    HIGHER → increase setpoint (more charge / less discharge)
+    LOWER  → decrease setpoint (more discharge / less charge)
 
     The setpoint is stored in shared state; the TelemetryEVSEController reads
     it and relays it to the EV as EVSE power limits in the next
@@ -111,9 +112,12 @@ def on_step_command(
     state.command_received = True
 
     if point.value == c104.Step.HIGHER:
+        state.grid_power_setpoint_kw += state.step_kw
+        cmd_str = "HIGHER"
+    elif point.value == c104.Step.LOWER:
         if state.latest.soc_percent <= state.pref_min_soc_pct:
             print(
-                f"SoC floor ({state.pref_min_soc_pct:.0f}%) — ignoring HIGHER "
+                f"SoC floor ({state.pref_min_soc_pct:.0f}%) — ignoring LOWER "
                 f"(SoC={state.latest.soc_percent:.1f}%)"
             )
             return c104.ResponseState.SUCCESS
@@ -121,12 +125,11 @@ def on_step_command(
             print(
                 f"Departure window ({state.pref_departure_time}) < 60 min, "
                 f"SoC {state.latest.soc_percent:.1f}% < target "
-                f"{state.pref_target_soc_pct:.0f}% — ignoring HIGHER"
+                f"{state.pref_target_soc_pct:.0f}% — ignoring LOWER"
             )
             return c104.ResponseState.SUCCESS
         state.grid_power_setpoint_kw -= state.step_kw
-    elif point.value == c104.Step.LOWER:
-        state.grid_power_setpoint_kw += state.step_kw
+        cmd_str = "LOWER"
     else:
         print(f"Unknown step value: {point.value}")
         return c104.ResponseState.FAILURE
@@ -136,6 +139,11 @@ def on_step_command(
         -state.max_discharge_kw,
         min(state.max_charge_kw, state.grid_power_setpoint_kw)
     )
+
+    # Stamp the command time so TelemetryEVSEController can measure
+    # how long it takes for the next DC_ChargeLoopRes to carry the new limits.
+    state.last_command_t = time.monotonic()
+    state.last_command_str = cmd_str
 
     direction = "DISCHARGE" if state.grid_power_setpoint_kw < 0 else "CHARGE"
     print(

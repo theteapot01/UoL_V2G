@@ -1,0 +1,99 @@
+Starting SECC stack via: poetry run python /home/pi/UoL_V2G/code_iso15118_custom/run_secc.py
+  cwd        : /home/pi/UoL_V2G/code_charger/iso15118
+  PYTHONPATH : /home/pi/UoL_V2G/code_iso15118_custom
+DEBUG    2026-06-21 22:13:33,699 - asyncio (54): Using selector: EpollSelector
+INFO    2026-06-21 22:13:33,731 - telemetry_evse_controller (28): TelemetryEVSEController initialized
+INFO    2026-06-21 22:13:33,731 - __main__ (53): Using TelemetryEVSEController
+INFO    2026-06-21 22:13:42,411 - iso15118.shared.exi_codec (177): EXI Codec version: 1.55
+INFO    2026-06-21 22:13:42,413 - iso15118.secc (31): Starting 15118 version: 0.31.2
+INFO    2026-06-21 22:13:42,414 - iso15118.secc.comm_session_handler (235): Communication session handler started
+[c104.TransportSecurity] Created
+IEC104 TLS object created: <104.TransportSecurity at 0x559fa1d720>
+[c104.Server] Created
+[c104.Server] add_station] CA 47
+[c104.Server] start] Started
+IEC104 server.start() returned: None  (port 19998)
+ERROR: IEC104 server failed to start — check TLS cert paths and port availability
+[c104.Server] loop] Tasks dropped due to stop: 2
+[c104.Server] stop] Stopped
+[c104.Server] Removed
+[c104.TransportSecurity] Removed
+Connecting to: wss://10.42.0.1:9000/CP_1
+INFO    2026-06-21 22:13:42,693 - iso15118.secc.transport.udp_server (137): UDP server socket ready
+INFO    2026-06-21 22:13:42,694 - iso15118.secc.transport.udp_server (123): UDP server started at address FF02::1%usb0 and port 15118
+DEBUG    2026-06-21 22:13:42,701 - websockets.client (178): = connection is CONNECTING
+DEBUG    2026-06-21 22:13:42,707 - iso15118.secc.controller.simulator (266): New Status: ServiceStatus.READY
+DEBUG    2026-06-21 22:13:42,749 - websockets.client (294): > GET /CP_1 HTTP/1.1
+DEBUG    2026-06-21 22:13:42,749 - websockets.client (296): > Host: 10.42.0.1:9000
+DEBUG    2026-06-21 22:13:42,750 - websockets.client (296): > Upgrade: websocket
+DEBUG    2026-06-21 22:13:42,750 - websockets.client (296): > Connection: Upgrade
+DEBUG    2026-06-21 22:13:42,750 - websockets.client (296): > Sec-WebSocket-Key: MhYfHsLxrlcGDpTL8Nt02w==
+DEBUG    2026-06-21 22:13:42,751 - websockets.client (296): > Sec-WebSocket-Version: 13
+DEBUG    2026-06-21 22:13:42,751 - websockets.client (296): > Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
+DEBUG    2026-06-21 22:13:42,752 - websockets.client (296): > Sec-WebSocket-Protocol: ocpp2.1
+DEBUG    2026-06-21 22:13:42,752 - websockets.client (296): > User-Agent: Python/3.11 websockets/16.0
+DEBUG    2026-06-21 22:13:42,760 - websockets.client (320): < HTTP/1.1 101 Switching Protocols
+DEBUG    2026-06-21 22:13:42,761 - websockets.client (322): < Date: Sun, 21 Jun 2026 21:13:42 GMT
+DEBUG    2026-06-21 22:13:42,761 - websockets.client (322): < Upgrade: websocket
+DEBUG    2026-06-21 22:13:42,761 - websockets.client (322): < Connection: Upgrade
+DEBUG    2026-06-21 22:13:42,762 - websockets.client (322): < Sec-WebSocket-Accept: aVvPeKmBnChG2kUnB5aBu3mr5nM=
+DEBUG    2026-06-21 22:13:42,762 - websockets.client (322): < Sec-WebSocket-Extensions: permessage-deflate; server_max_window_bits=12; client_max_window_bits=12
+DEBUG    2026-06-21 22:13:42,762 - websockets.client (322): < Sec-WebSocket-Protocol: ocpp2.1
+DEBUG    2026-06-21 22:13:42,763 - websockets.client (322): < Server: Python/3.13 websockets/16.0
+DEBUG    2026-06-21 22:13:42,764 - websockets.client (178): = connection is OPEN
+INFO    2026-06-21 22:13:42,781 - ocpp (471): CP_1: send [2,"9a4af589-9dd2-40d7-ae83-0ed4397b3187","BootNotification",{"chargingStation":{"model":"MSc Embedded","vendorName":"UoL"},"reason":"PowerUp"}]
+DEBUG    2026-06-21 22:13:42,782 - websockets.client (755): > TEXT '[2,"9a4af589-9dd2-40d7-ae83-0ed4397b3187","Boot..."},"reason":"PowerUp"}]' [144 bytes]
+DEBUG    2026-06-21 22:13:42,790 - websockets.client (609): < TEXT '[3,"9a4af589-9dd2-40d7-ae83-0ed4397b3187",{"cur...0,"status":"Accepted"}]' [127 bytes]
+INFO    2026-06-21 22:13:42,791 - ocpp (247): CP_1: receive message [3,"9a4af589-9dd2-40d7-ae83-0ed4397b3187",{"currentTime":"2026-06-21T21:13:42.776286+00:00","interval":10,"status":"Accepted"}]
+Connected to central system.
+INFO    2026-06-21 22:13:42,823 - ocpp (471): CP_1: send [2,"942ad697-f39f-4371-9719-6df6f47b8af5","Heartbeat",{}]
+DEBUG    2026-06-21 22:13:42,824 - websockets.client (755): > TEXT '[2,"942ad697-f39f-4371-9719-6df6f47b8af5","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-21 22:13:42,829 - websockets.client (609): < TEXT '[3,"942ad697-f39f-4371-9719-6df6f47b8af5",{"cur...2026-06-21T21:13:42Z"}]' [81 bytes]
+INFO    2026-06-21 22:13:42,830 - ocpp (247): CP_1: receive message [3,"942ad697-f39f-4371-9719-6df6f47b8af5",{"currentTime":"2026-06-21T21:13:42Z"}]
+INFO    2026-06-21 22:13:42,832 - ocpp (471): CP_1: send [2,"00b38685-1c31-4541-846d-87042550a156","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T21:13:42Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-21 22:13:42,833 - websockets.client (755): > TEXT '[2,"00b38685-1c31-4541-846d-87042550a156","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-21 22:13:42,840 - websockets.client (609): < TEXT '[3,"00b38685-1c31-4541-846d-87042550a156",{}]' [45 bytes]
+INFO    2026-06-21 22:13:42,841 - ocpp (247): CP_1: receive message [3,"00b38685-1c31-4541-846d-87042550a156",{}]
+INFO    2026-06-21 22:13:42,846 - root (190): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+INFO    2026-06-21 22:13:52,843 - ocpp (471): CP_1: send [2,"a270fb5f-fd6d-494c-85b2-5a3d780a6ed9","Heartbeat",{}]
+DEBUG    2026-06-21 22:13:52,844 - websockets.client (755): > TEXT '[2,"a270fb5f-fd6d-494c-85b2-5a3d780a6ed9","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-21 22:13:52,875 - websockets.client (609): < TEXT '[3,"a270fb5f-fd6d-494c-85b2-5a3d780a6ed9",{"cur...2026-06-21T21:13:52Z"}]' [81 bytes]
+INFO    2026-06-21 22:13:52,879 - ocpp (247): CP_1: receive message [3,"a270fb5f-fd6d-494c-85b2-5a3d780a6ed9",{"currentTime":"2026-06-21T21:13:52Z"}]
+INFO    2026-06-21 22:13:52,882 - ocpp (471): CP_1: send [2,"01a35864-25c2-469c-8837-1b8549f0443c","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T21:13:52Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-21 22:13:52,884 - websockets.client (755): > TEXT '[2,"01a35864-25c2-469c-8837-1b8549f0443c","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-21 22:13:52,891 - websockets.client (609): < TEXT '[3,"01a35864-25c2-469c-8837-1b8549f0443c",{}]' [45 bytes]
+INFO    2026-06-21 22:13:52,892 - ocpp (247): CP_1: receive message [3,"01a35864-25c2-469c-8837-1b8549f0443c",{}]
+INFO    2026-06-21 22:13:52,895 - root (190): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+DEBUG    2026-06-21 22:14:02,765 - websockets.client (609): < PING 3d 22 47 ba [binary, 4 bytes]
+DEBUG    2026-06-21 22:14:02,766 - websockets.client (755): > PONG 3d 22 47 ba [binary, 4 bytes]
+DEBUG    2026-06-21 22:14:02,768 - websockets.client (755): > PING 7d ac df 30 [binary, 4 bytes]
+DEBUG    2026-06-21 22:14:02,770 - websockets.client (829): % sent keepalive ping
+DEBUG    2026-06-21 22:14:02,773 - websockets.client (609): < PONG 7d ac df 30 [binary, 4 bytes]
+DEBUG    2026-06-21 22:14:02,774 - websockets.client (840): % received keepalive pong
+INFO    2026-06-21 22:14:02,890 - ocpp (471): CP_1: send [2,"5b8dc8de-b925-484c-9c75-2a5892bdcace","Heartbeat",{}]
+DEBUG    2026-06-21 22:14:02,891 - websockets.client (755): > TEXT '[2,"5b8dc8de-b925-484c-9c75-2a5892bdcace","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-21 22:14:02,923 - websockets.client (609): < TEXT '[3,"5b8dc8de-b925-484c-9c75-2a5892bdcace",{"cur...2026-06-21T21:14:02Z"}]' [81 bytes]
+INFO    2026-06-21 22:14:02,927 - ocpp (247): CP_1: receive message [3,"5b8dc8de-b925-484c-9c75-2a5892bdcace",{"currentTime":"2026-06-21T21:14:02Z"}]
+INFO    2026-06-21 22:14:02,930 - ocpp (471): CP_1: send [2,"ab177d93-bdbb-4dfa-bc26-2af1c9a08ef8","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T21:14:02Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-21 22:14:02,932 - websockets.client (755): > TEXT '[2,"ab177d93-bdbb-4dfa-bc26-2af1c9a08ef8","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-21 22:14:02,939 - websockets.client (609): < TEXT '[3,"ab177d93-bdbb-4dfa-bc26-2af1c9a08ef8",{}]' [45 bytes]
+INFO    2026-06-21 22:14:02,940 - ocpp (247): CP_1: receive message [3,"ab177d93-bdbb-4dfa-bc26-2af1c9a08ef8",{}]
+INFO    2026-06-21 22:14:02,944 - root (190): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+INFO    2026-06-21 22:14:12,964 - ocpp (471): CP_1: send [2,"0510e2e9-a2fe-4141-a659-3801146745ef","Heartbeat",{}]
+DEBUG    2026-06-21 22:14:12,975 - websockets.client (755): > TEXT '[2,"0510e2e9-a2fe-4141-a659-3801146745ef","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-21 22:14:12,983 - websockets.client (609): < TEXT '[3,"0510e2e9-a2fe-4141-a659-3801146745ef",{"cur...2026-06-21T21:14:12Z"}]' [81 bytes]
+INFO    2026-06-21 22:14:12,985 - ocpp (247): CP_1: receive message [3,"0510e2e9-a2fe-4141-a659-3801146745ef",{"currentTime":"2026-06-21T21:14:12Z"}]
+INFO    2026-06-21 22:14:12,987 - ocpp (471): CP_1: send [2,"273a9027-2b8b-4886-bf7c-d530a61b4ed1","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T21:14:12Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-21 22:14:12,989 - websockets.client (755): > TEXT '[2,"273a9027-2b8b-4886-bf7c-d530a61b4ed1","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-21 22:14:12,996 - websockets.client (609): < TEXT '[3,"273a9027-2b8b-4886-bf7c-d530a61b4ed1",{}]' [45 bytes]
+INFO    2026-06-21 22:14:12,997 - ocpp (247): CP_1: receive message [3,"273a9027-2b8b-4886-bf7c-d530a61b4ed1",{}]
+INFO    2026-06-21 22:14:13,000 - root (190): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+^CDEBUG    2026-06-21 22:14:15,548 - websockets.client (755): > CLOSE 1000 (OK) [2 bytes]
+DEBUG    2026-06-21 22:14:15,550 - websockets.client (178): = connection is CLOSING
+DEBUG    2026-06-21 22:14:15,554 - websockets.client (609): < CLOSE 1000 (OK) [2 bytes]
+DEBUG    2026-06-21 22:14:15,555 - websockets.client (659): < EOF
+DEBUG    2026-06-21 22:14:15,556 - websockets.client (767): > EOF
+DEBUG    2026-06-21 22:14:15,556 - websockets.client (178): = connection is CLOSED
+DEBUG    2026-06-21 22:14:15,557 - websockets.client (989): x closing TCP connection
+INFO    2026-06-21 22:14:15,565 - __main__ (70): Closing connections...
+

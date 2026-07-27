@@ -1,0 +1,187 @@
+Starting SECC stack via: poetry run python /home/pi/UoL_V2G/code_iso15118_custom/run_secc.py
+  cwd        : /home/pi/UoL_V2G/code_charger/iso15118
+  PYTHONPATH : /home/pi/UoL_V2G/code_iso15118_custom
+DEBUG    2026-06-21 22:41:04,657 - asyncio (54): Using selector: EpollSelector
+INFO    2026-06-21 22:41:04,689 - telemetry_evse_controller (28): TelemetryEVSEController initialized
+INFO    2026-06-21 22:41:04,689 - __main__ (53): Using TelemetryEVSEController
+INFO    2026-06-21 22:41:13,730 - iso15118.shared.exi_codec (177): EXI Codec version: 1.55
+INFO    2026-06-21 22:41:13,731 - iso15118.secc (31): Starting 15118 version: 0.31.2
+INFO    2026-06-21 22:41:13,732 - iso15118.secc.comm_session_handler (235): Communication session handler started
+[c104.TransportSecurity] Created
+IEC104 TLS object created: <104.TransportSecurity at 0x558c109050>
+[c104.Server] Created
+[c104.Server] add_station] CA 47
+[c104.Server] start] Started
+IEC104 server started on port 19998 (TLS)
+Waiting for connection
+Connecting to: wss://10.42.0.1:9000/CP_1
+INFO    2026-06-21 22:41:13,998 - iso15118.secc.transport.udp_server (137): UDP server socket ready
+INFO    2026-06-21 22:41:13,999 - iso15118.secc.transport.udp_server (123): UDP server started at address FF02::1%usb0 and port 15118
+INFO    2026-06-21 22:41:14,005 - root (244): OCPP server not available yet, retrying in 3s...
+DEBUG    2026-06-21 22:41:14,010 - iso15118.secc.controller.simulator (266): New Status: ServiceStatus.READY
+Waiting for connection
+Waiting for connection
+Waiting for connection
+Connecting to: wss://10.42.0.1:9000/CP_1
+INFO    2026-06-21 22:41:17,017 - root (244): OCPP server not available yet, retrying in 3s...
+Waiting for connection
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:38460)
+Waiting for connection
+Connecting to: wss://10.42.0.1:9000/CP_1
+DEBUG    2026-06-21 22:41:20,028 - websockets.client (178): = connection is CONNECTING
+DEBUG    2026-06-21 22:41:20,086 - websockets.client (294): > GET /CP_1 HTTP/1.1
+DEBUG    2026-06-21 22:41:20,086 - websockets.client (296): > Host: 10.42.0.1:9000
+DEBUG    2026-06-21 22:41:20,087 - websockets.client (296): > Upgrade: websocket
+DEBUG    2026-06-21 22:41:20,087 - websockets.client (296): > Connection: Upgrade
+DEBUG    2026-06-21 22:41:20,087 - websockets.client (296): > Sec-WebSocket-Key: GPZojWiJ9MqnXovUCIbb/A==
+DEBUG    2026-06-21 22:41:20,088 - websockets.client (296): > Sec-WebSocket-Version: 13
+DEBUG    2026-06-21 22:41:20,088 - websockets.client (296): > Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
+DEBUG    2026-06-21 22:41:20,088 - websockets.client (296): > Sec-WebSocket-Protocol: ocpp2.1
+DEBUG    2026-06-21 22:41:20,089 - websockets.client (296): > User-Agent: Python/3.11 websockets/16.0
+DEBUG    2026-06-21 22:41:20,098 - websockets.client (320): < HTTP/1.1 101 Switching Protocols
+DEBUG    2026-06-21 22:41:20,098 - websockets.client (322): < Date: Sun, 21 Jun 2026 21:41:20 GMT
+DEBUG    2026-06-21 22:41:20,099 - websockets.client (322): < Upgrade: websocket
+DEBUG    2026-06-21 22:41:20,099 - websockets.client (322): < Connection: Upgrade
+DEBUG    2026-06-21 22:41:20,099 - websockets.client (322): < Sec-WebSocket-Accept: jnPAslkec8oFPAx+gr8FXsvs93o=
+DEBUG    2026-06-21 22:41:20,100 - websockets.client (322): < Sec-WebSocket-Extensions: permessage-deflate; server_max_window_bits=12; client_max_window_bits=12
+DEBUG    2026-06-21 22:41:20,100 - websockets.client (322): < Sec-WebSocket-Protocol: ocpp2.1
+DEBUG    2026-06-21 22:41:20,101 - websockets.client (322): < Server: Python/3.13 websockets/16.0
+DEBUG    2026-06-21 22:41:20,102 - websockets.client (178): = connection is OPEN
+INFO    2026-06-21 22:41:20,116 - ocpp (471): CP_1: send [2,"ce4818c8-dfd9-4e08-b7f0-5e22092d4e51","BootNotification",{"chargingStation":{"model":"MSc Embedded","vendorName":"UoL"},"reason":"PowerUp"}]
+DEBUG    2026-06-21 22:41:20,117 - websockets.client (755): > TEXT '[2,"ce4818c8-dfd9-4e08-b7f0-5e22092d4e51","Boot..."},"reason":"PowerUp"}]' [144 bytes]
+DEBUG    2026-06-21 22:41:20,125 - websockets.client (609): < TEXT '[3,"ce4818c8-dfd9-4e08-b7f0-5e22092d4e51",{"cur...0,"status":"Accepted"}]' [127 bytes]
+INFO    2026-06-21 22:41:20,126 - ocpp (247): CP_1: receive message [3,"ce4818c8-dfd9-4e08-b7f0-5e22092d4e51",{"currentTime":"2026-06-21T21:41:20.105660+00:00","interval":10,"status":"Accepted"}]
+Connected to central system.
+INFO    2026-06-21 22:41:20,157 - ocpp (471): CP_1: send [2,"2735a8db-36dd-4c51-b5ab-335f129478d3","Heartbeat",{}]
+DEBUG    2026-06-21 22:41:20,158 - websockets.client (755): > TEXT '[2,"2735a8db-36dd-4c51-b5ab-335f129478d3","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-21 22:41:20,162 - websockets.client (609): < TEXT '[3,"2735a8db-36dd-4c51-b5ab-335f129478d3",{"cur...2026-06-21T21:41:20Z"}]' [81 bytes]
+INFO    2026-06-21 22:41:20,163 - ocpp (247): CP_1: receive message [3,"2735a8db-36dd-4c51-b5ab-335f129478d3",{"currentTime":"2026-06-21T21:41:20Z"}]
+INFO    2026-06-21 22:41:20,165 - ocpp (471): CP_1: send [2,"abfcf565-b497-492c-bddf-d73742546383","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T21:41:20Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-21 22:41:20,166 - websockets.client (755): > TEXT '[2,"abfcf565-b497-492c-bddf-d73742546383","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-21 22:41:20,173 - websockets.client (609): < TEXT '[3,"abfcf565-b497-492c-bddf-d73742546383",{}]' [45 bytes]
+INFO    2026-06-21 22:41:20,174 - ocpp (247): CP_1: receive message [3,"abfcf565-b497-492c-bddf-d73742546383",{}]
+INFO    2026-06-21 22:41:20,177 - root (190): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:38476)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:38492)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:42048)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:42050)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:42066)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:42076)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:42086)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:42092)
+Waiting for connection
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:42094)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:42104)
+INFO    2026-06-21 22:41:30,174 - ocpp (471): CP_1: send [2,"61fcf253-4030-4e66-8cb9-b12e9727b5eb","Heartbeat",{}]
+DEBUG    2026-06-21 22:41:30,175 - websockets.client (755): > TEXT '[2,"61fcf253-4030-4e66-8cb9-b12e9727b5eb","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-21 22:41:30,208 - websockets.client (609): < TEXT '[3,"61fcf253-4030-4e66-8cb9-b12e9727b5eb",{"cur...2026-06-21T21:41:30Z"}]' [81 bytes]
+INFO    2026-06-21 22:41:30,210 - ocpp (247): CP_1: receive message [3,"61fcf253-4030-4e66-8cb9-b12e9727b5eb",{"currentTime":"2026-06-21T21:41:30Z"}]
+INFO    2026-06-21 22:41:30,212 - ocpp (471): CP_1: send [2,"948b306e-2d98-410f-8149-cad14c2beacd","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T21:41:30Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-21 22:41:30,214 - websockets.client (755): > TEXT '[2,"948b306e-2d98-410f-8149-cad14c2beacd","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-21 22:41:30,223 - websockets.client (609): < TEXT '[3,"948b306e-2d98-410f-8149-cad14c2beacd",{}]' [45 bytes]
+INFO    2026-06-21 22:41:30,224 - ocpp (247): CP_1: receive message [3,"948b306e-2d98-410f-8149-cad14c2beacd",{}]
+INFO    2026-06-21 22:41:30,226 - root (190): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:42120)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:58062)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:58064)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:58068)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:58074)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:58080)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:58092)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:58104)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:58118)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:58124)
+DEBUG    2026-06-21 22:41:40,096 - websockets.client (609): < PING 5e 4e 06 d2 [binary, 4 bytes]
+DEBUG    2026-06-21 22:41:40,097 - websockets.client (755): > PONG 5e 4e 06 d2 [binary, 4 bytes]
+DEBUG    2026-06-21 22:41:40,105 - websockets.client (755): > PING 25 23 d1 4b [binary, 4 bytes]
+DEBUG    2026-06-21 22:41:40,106 - websockets.client (829): % sent keepalive ping
+DEBUG    2026-06-21 22:41:40,108 - websockets.client (609): < PONG 25 23 d1 4b [binary, 4 bytes]
+DEBUG    2026-06-21 22:41:40,109 - websockets.client (840): % received keepalive pong
+INFO    2026-06-21 22:41:40,220 - ocpp (471): CP_1: send [2,"c5305705-0a5b-494f-9d84-daaed5b5c73d","Heartbeat",{}]
+DEBUG    2026-06-21 22:41:40,220 - websockets.client (755): > TEXT '[2,"c5305705-0a5b-494f-9d84-daaed5b5c73d","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-21 22:41:40,246 - websockets.client (609): < TEXT '[3,"c5305705-0a5b-494f-9d84-daaed5b5c73d",{"cur...2026-06-21T21:41:40Z"}]' [81 bytes]
+INFO    2026-06-21 22:41:40,247 - ocpp (247): CP_1: receive message [3,"c5305705-0a5b-494f-9d84-daaed5b5c73d",{"currentTime":"2026-06-21T21:41:40Z"}]
+INFO    2026-06-21 22:41:40,249 - ocpp (471): CP_1: send [2,"bf2f3a6d-844d-4f75-8813-fcbcd678f54a","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-21T21:41:40Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Voltage","unitOfMeasure":{"unit":"V"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Current.Import","unitOfMeasure":{"unit":"A"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Import.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Power.Export.Offered","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-21 22:41:40,250 - websockets.client (755): > TEXT '[2,"bf2f3a6d-844d-4f75-8813-fcbcd678f54a","Mete..."Sample.Periodic"}]}]}]' [859 bytes]
+DEBUG    2026-06-21 22:41:40,257 - websockets.client (609): < TEXT '[3,"bf2f3a6d-844d-4f75-8813-fcbcd678f54a",{}]' [45 bytes]
+INFO    2026-06-21 22:41:40,258 - ocpp (247): CP_1: receive message [3,"bf2f3a6d-844d-4f75-8813-fcbcd678f54a",{}]
+INFO    2026-06-21 22:41:40,260 - root (190): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | SoH: 100.0% | Energy: 0.00 Wh
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:58136)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:34762)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:34774)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:34790)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:34792)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:34794)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:34796)
+Waiting for connection
+TLS: handshake failed - mbedtls_ssl_handshake returned -0x1
+[c104.TransportSecurity] Alarm: handshake failed for unknown reason (t: 2, c: 8, version: TLS 1.2 remote-ip: 10.42.0.1:34812)
+^CDEBUG    2026-06-21 22:41:48,325 - websockets.client (755): > CLOSE 1000 (OK) [2 bytes]
+DEBUG    2026-06-21 22:41:48,326 - websockets.client (178): = connection is CLOSING
+DEBUG    2026-06-21 22:41:48,330 - websockets.client (609): < CLOSE 1000 (OK) [2 bytes]
+DEBUG    2026-06-21 22:41:48,332 - websockets.client (659): < EOF
+DEBUG    2026-06-21 22:41:48,332 - websockets.client (767): > EOF
+DEBUG    2026-06-21 22:41:48,333 - websockets.client (178): = connection is CLOSED
+DEBUG    2026-06-21 22:41:48,334 - websockets.client (989): x closing TCP connection
+INFO    2026-06-21 22:41:48,342 - __main__ (70): Closing connections...
+[c104.Server] loop] Tasks dropped due to stop: 2
+[c104.Server] stop] Stopped
+[c104.Server] Removed
+[c104.TransportSecurity] Removed
+Closing connections...
+

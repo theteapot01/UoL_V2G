@@ -1,0 +1,944 @@
+PYTHONPATH=/home/pi/UoL_V2G/code_iso15118_custom   poetry run python /home/pi/UoL_V2G/code_iso15118_custom/run_secc.py
+DEBUG    2026-06-11 20:35:05,168 - asyncio (54): Using selector: EpollSelector
+INFO    2026-06-11 20:35:05,198 - telemetry_evse_controller (12): TelemetryEVSEController initialized
+INFO    2026-06-11 20:35:05,199 - __main__ (52): Using TelemetryEVSEController
+INFO    2026-06-11 20:35:15,580 - iso15118.shared.exi_codec (177): EXI Codec version: 1.55
+INFO    2026-06-11 20:35:15,582 - iso15118.secc (31): Starting 15118 version: 0.31.2
+INFO    2026-06-11 20:35:15,583 - iso15118.secc.comm_session_handler (235): Communication session handler started
+Waiting for connection
+Connecting to: ws://10.42.0.1:9000/CP_1
+INFO    2026-06-11 20:35:15,787 - iso15118.secc.transport.udp_server (137): UDP server socket ready
+INFO    2026-06-11 20:35:15,788 - iso15118.secc.transport.udp_server (123): UDP server started at address FF02::1%usb0 and port 15118
+DEBUG    2026-06-11 20:35:15,794 - websockets.client (178): = connection is CONNECTING
+DEBUG    2026-06-11 20:35:15,797 - websockets.client (294): > GET /CP_1 HTTP/1.1
+DEBUG    2026-06-11 20:35:15,797 - websockets.client (296): > Host: 10.42.0.1:9000
+DEBUG    2026-06-11 20:35:15,797 - websockets.client (296): > Upgrade: websocket
+DEBUG    2026-06-11 20:35:15,798 - websockets.client (296): > Connection: Upgrade
+DEBUG    2026-06-11 20:35:15,798 - websockets.client (296): > Sec-WebSocket-Key: 1eGazTaZeYR5RV/IwEVEsw==
+DEBUG    2026-06-11 20:35:15,798 - websockets.client (296): > Sec-WebSocket-Version: 13
+DEBUG    2026-06-11 20:35:15,799 - websockets.client (296): > Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
+DEBUG    2026-06-11 20:35:15,799 - websockets.client (296): > Sec-WebSocket-Protocol: ocpp2.1
+DEBUG    2026-06-11 20:35:15,799 - websockets.client (296): > User-Agent: Python/3.11 websockets/16.0
+DEBUG    2026-06-11 20:35:15,801 - iso15118.secc.controller.simulator (266): New Status: ServiceStatus.READY
+DEBUG    2026-06-11 20:35:15,807 - websockets.client (320): < HTTP/1.1 101 Switching Protocols
+DEBUG    2026-06-11 20:35:15,807 - websockets.client (322): < Date: Thu, 11 Jun 2026 19:35:15 GMT
+DEBUG    2026-06-11 20:35:15,808 - websockets.client (322): < Upgrade: websocket
+DEBUG    2026-06-11 20:35:15,808 - websockets.client (322): < Connection: Upgrade
+DEBUG    2026-06-11 20:35:15,809 - websockets.client (322): < Sec-WebSocket-Accept: oJ8KIN4rv9onih3iWHozmIeMam0=
+DEBUG    2026-06-11 20:35:15,809 - websockets.client (322): < Sec-WebSocket-Extensions: permessage-deflate; server_max_window_bits=12; client_max_window_bits=12
+DEBUG    2026-06-11 20:35:15,809 - websockets.client (322): < Sec-WebSocket-Protocol: ocpp2.1
+DEBUG    2026-06-11 20:35:15,810 - websockets.client (322): < Server: Python/3.13 websockets/16.0
+DEBUG    2026-06-11 20:35:15,811 - websockets.client (178): = connection is OPEN
+INFO    2026-06-11 20:35:15,829 - ocpp (471): CP_1: send [2,"fecbdcfc-e148-4aa0-a802-eed2dca5087a","BootNotification",{"chargingStation":{"model":"MSc Embedded","vendorName":"UoL"},"reason":"PowerUp"}]
+DEBUG    2026-06-11 20:35:15,830 - websockets.client (755): > TEXT '[2,"fecbdcfc-e148-4aa0-a802-eed2dca5087a","Boot..."},"reason":"PowerUp"}]' [144 bytes]
+DEBUG    2026-06-11 20:35:15,835 - websockets.client (609): < TEXT '[3,"fecbdcfc-e148-4aa0-a802-eed2dca5087a",{"cur...0,"status":"Accepted"}]' [127 bytes]
+INFO    2026-06-11 20:35:15,836 - ocpp (247): CP_1: receive message [3,"fecbdcfc-e148-4aa0-a802-eed2dca5087a",{"currentTime":"2026-06-11T19:35:15.824244+00:00","interval":10,"status":"Accepted"}]
+Connected to central system.
+INFO    2026-06-11 20:35:15,861 - ocpp (471): CP_1: send [2,"0eebac25-39b9-41b7-8b28-b135772ed5f3","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-11T19:35:15Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-11 20:35:15,861 - websockets.client (755): > TEXT '[2,"0eebac25-39b9-41b7-8b28-b135772ed5f3","Mete..."Sample.Periodic"}]}]}]' [454 bytes]
+DEBUG    2026-06-11 20:35:15,866 - websockets.client (609): < TEXT '[3,"0eebac25-39b9-41b7-8b28-b135772ed5f3",{}]' [45 bytes]
+INFO    2026-06-11 20:35:15,867 - ocpp (247): CP_1: receive message [3,"0eebac25-39b9-41b7-8b28-b135772ed5f3",{}]
+INFO    2026-06-11 20:35:15,869 - ocpp (471): CP_1: send [2,"82640c18-486d-4452-853f-00b4f161714a","Heartbeat",{}]
+DEBUG    2026-06-11 20:35:15,870 - websockets.client (755): > TEXT '[2,"82640c18-486d-4452-853f-00b4f161714a","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-11 20:35:15,874 - websockets.client (609): < TEXT '[3,"82640c18-486d-4452-853f-00b4f161714a",{"cur...2026-06-11T19:35:15Z"}]' [81 bytes]
+INFO    2026-06-11 20:35:15,875 - ocpp (247): CP_1: receive message [3,"82640c18-486d-4452-853f-00b4f161714a",{"currentTime":"2026-06-11T19:35:15Z"}]
+INFO    2026-06-11 20:35:15,876 - root (100): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | Energy: 0.00 Wh
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0Keep alive until disconnected
+
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:15.587562+0100, processed_at=2026-06-11T20:35:15.587563+0100, readonly=False at 0x5584f5afd0>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:20.269000+0100, processed_at=2026-06-11T20:35:20.283094+0100, readonly=True at 0x7f74001660>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:20.269000+0100, processed_at=2026-06-11T20:35:20.283094+0100, readonly=True at 0x7f74001660>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:21.451000+0100, processed_at=2026-06-11T20:35:21.462253+0100, readonly=True at 0x5584f5afd0>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:21.451000+0100, processed_at=2026-06-11T20:35:21.462253+0100, readonly=True at 0x5584f5afd0>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:24.576000+0100, processed_at=2026-06-11T20:35:25.494689+0100, readonly=True at 0x7f74001660>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+Keep alive until disconnected
+INFO    2026-06-11 20:35:25,895 - ocpp (471): CP_1: send [2,"ed153b0c-46d6-4966-b91d-125d7954ec25","Heartbeat",{}]
+DEBUG    2026-06-11 20:35:25,897 - websockets.client (755): > TEXT '[2,"ed153b0c-46d6-4966-b91d-125d7954ec25","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-11 20:35:25,905 - websockets.client (609): < TEXT '[3,"ed153b0c-46d6-4966-b91d-125d7954ec25",{"cur...2026-06-11T19:35:25Z"}]' [81 bytes]
+INFO    2026-06-11 20:35:25,906 - ocpp (247): CP_1: receive message [3,"ed153b0c-46d6-4966-b91d-125d7954ec25",{"currentTime":"2026-06-11T19:35:25Z"}]
+INFO    2026-06-11 20:35:25,909 - ocpp (471): CP_1: send [2,"ab6ee7e7-506c-4406-8448-ac6f65d5832c","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-11T19:35:25Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-11 20:35:25,910 - websockets.client (755): > TEXT '[2,"ab6ee7e7-506c-4406-8448-ac6f65d5832c","Mete..."Sample.Periodic"}]}]}]' [454 bytes]
+DEBUG    2026-06-11 20:35:25,915 - websockets.client (609): < TEXT '[3,"ab6ee7e7-506c-4406-8448-ac6f65d5832c",{}]' [45 bytes]
+INFO    2026-06-11 20:35:25,917 - ocpp (247): CP_1: receive message [3,"ab6ee7e7-506c-4406-8448-ac6f65d5832c",{}]
+INFO    2026-06-11 20:35:25,920 - root (100): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | Energy: 0.00 Wh
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:24.576000+0100, processed_at=2026-06-11T20:35:25.494689+0100, readonly=True at 0x7f74001660>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:28.746000+0100, processed_at=2026-06-11T20:35:29.564154+0100, readonly=True at 0x5584f5afd0>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:28.746000+0100, processed_at=2026-06-11T20:35:29.564154+0100, readonly=True at 0x5584f5afd0>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:32.976000+0100, processed_at=2026-06-11T20:35:33.593232+0100, readonly=True at 0x7f74001660>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+DEBUG    2026-06-11 20:35:35,813 - websockets.client (609): < PING 43 e1 bf 39 [binary, 4 bytes]
+DEBUG    2026-06-11 20:35:35,814 - websockets.client (755): > PONG 43 e1 bf 39 [binary, 4 bytes]
+DEBUG    2026-06-11 20:35:35,816 - websockets.client (755): > PING 07 90 1a 06 [binary, 4 bytes]
+DEBUG    2026-06-11 20:35:35,817 - websockets.client (829): % sent keepalive ping
+DEBUG    2026-06-11 20:35:35,820 - websockets.client (609): < PONG 07 90 1a 06 [binary, 4 bytes]
+DEBUG    2026-06-11 20:35:35,821 - websockets.client (840): % received keepalive pong
+INFO    2026-06-11 20:35:35,917 - ocpp (471): CP_1: send [2,"dde02834-b01d-458b-801c-771761e6a30e","Heartbeat",{}]
+DEBUG    2026-06-11 20:35:35,918 - websockets.client (755): > TEXT '[2,"dde02834-b01d-458b-801c-771761e6a30e","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-11 20:35:35,935 - websockets.client (609): < TEXT '[3,"dde02834-b01d-458b-801c-771761e6a30e",{"cur...2026-06-11T19:35:35Z"}]' [81 bytes]
+INFO    2026-06-11 20:35:35,938 - ocpp (247): CP_1: receive message [3,"dde02834-b01d-458b-801c-771761e6a30e",{"currentTime":"2026-06-11T19:35:35Z"}]
+INFO    2026-06-11 20:35:35,941 - ocpp (471): CP_1: send [2,"6f6a1529-9c88-4d9a-b17c-8f25e3a3f54a","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-11T19:35:35Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-11 20:35:35,943 - websockets.client (755): > TEXT '[2,"6f6a1529-9c88-4d9a-b17c-8f25e3a3f54a","Mete..."Sample.Periodic"}]}]}]' [454 bytes]
+DEBUG    2026-06-11 20:35:35,949 - websockets.client (609): < TEXT '[3,"6f6a1529-9c88-4d9a-b17c-8f25e3a3f54a",{}]' [45 bytes]
+INFO    2026-06-11 20:35:35,950 - ocpp (247): CP_1: receive message [3,"6f6a1529-9c88-4d9a-b17c-8f25e3a3f54a",{}]
+INFO    2026-06-11 20:35:35,953 - root (100): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | Energy: 0.00 Wh
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:32.976000+0100, processed_at=2026-06-11T20:35:33.593232+0100, readonly=True at 0x7f74001660>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:37.211000+0100, processed_at=2026-06-11T20:35:37.626981+0100, readonly=True at 0x5584f5afd0>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+DEBUG    2026-06-11 20:35:40,226 - iso15118.secc.transport.udp_server (158): Message received from ('fe80::eee2:e83a:9fa:7848', 56371, 0, 2): 01fe9000000000020000
+INFO    2026-06-11 20:35:40,228 - iso15118.secc.comm_session_handler (437): SDPRequest received: [Security: TLS, Protocol: TCP]
+INFO    2026-06-11 20:35:40,281 - iso15118.secc.transport.tcp_server (134): TLS server started at address fe80::349a:6985:b277:a672%usb0 and port 54700
+INFO    2026-06-11 20:35:40,292 - iso15118.secc.comm_session_handler (464): Sending SDPResponse: [ IP address: fe80::349a:6985:b277:a672, Port: 54700 , Security: TLS , Transport: TCP ]
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+INFO    2026-06-11 20:35:40,371 - iso15118.secc.transport.udp_server (201): UDP server has been paused.
+INFO    2026-06-11 20:35:40,371 - iso15118.secc.comm_session_handler (284): TCP client connected, client address is ('fe80::eee2:e83a:9fa:7848', 53024, 0, 2).
+INFO    2026-06-11 20:35:40,448 - iso15118.shared.comm_session (344): Starting a new communication session
+INFO    2026-06-11 20:35:40,449 - iso15118.shared.states (139): Entered state SupportedAppProtocol
+DEBUG    2026-06-11 20:35:40,450 - iso15118.shared.states (143): Waiting for up to Timeouts.V2G_EVCC_COMMUNICATION_SETUP_TIMEOUT s
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+INFO    2026-06-11 20:35:41,581 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.SAP): {"supportedAppProtocolReq":{"AppProtocol":[{"ProtocolNamespace":"urn:iso:std:iso:15118:-20:DC","VersionNumberMajor":1,"VersionNumberMinor":0,"SchemaID":1,"Priority":1}]}}
+INFO    2026-06-11 20:35:41,582 - iso15118.shared.comm_session (235): supportedAppProtocolReq received
+INFO    2026-06-11 20:35:41,585 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.SAP): {"supportedAppProtocolRes": {"ResponseCode": "OK_SuccessfulNegotiation", "SchemaID": 1}}
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:37.211000+0100, processed_at=2026-06-11T20:35:37.626981+0100, readonly=True at 0x5584f5afd0>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:41.441000+0100, processed_at=2026-06-11T20:35:41.657372+0100, readonly=True at 0x7f74001660>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:35:41,825 - iso15118.secc.states.sap_states (147): Chosen protocol: ISO_15118_20_DC
+INFO    2026-06-11 20:35:41,826 - iso15118.shared.comm_session (431): Sent supportedAppProtocolRes
+INFO    2026-06-11 20:35:41,826 - iso15118.secc.controller.simulator (766): iso15118 state: SupportedAppProtocol
+INFO    2026-06-11 20:35:41,826 - iso15118.shared.states (139): Entered state SessionSetup
+DEBUG    2026-06-11 20:35:41,827 - iso15118.shared.states (143): Waiting for up to Timeouts.V2G_EVCC_COMMUNICATION_SETUP_TIMEOUT s
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:41.441000+0100, processed_at=2026-06-11T20:35:41.657372+0100, readonly=True at 0x7f74001660>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:45.680000+0100, processed_at=2026-06-11T20:35:45.800762+0100, readonly=True at 0x5584f5afd0>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:35:45,836 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_COMMON_MSG): {"SessionSetupReq":{"Header":{"SessionID":"0000000000000000","TimeStamp":1781206542},"EVCCID":"WMIV1234567890ABCDEX"}}
+INFO    2026-06-11 20:35:45,838 - iso15118.shared.comm_session (235): SessionSetupReq received
+WARNING    2026-06-11 20:35:45,839 - iso15118.secc.states.iso15118_20_states (161): EVCC's session ID 0000000000000000 does not match . New session ID F0B7E933F1D72765 assigned
+INFO    2026-06-11 20:35:45,842 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_COMMON_MSG): {"SessionSetupRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206545}, "ResponseCode": "OK_NewSessionEstablished", "EVSEID": "UK123E1234"}}
+INFO    2026-06-11 20:35:46,609 - iso15118.shared.comm_session (431): Sent SessionSetupRes
+INFO    2026-06-11 20:35:46,610 - iso15118.secc.controller.simulator (766): iso15118 state: SessionSetup
+INFO    2026-06-11 20:35:46,610 - iso15118.shared.states (139): Entered state AuthorizationSetup
+DEBUG    2026-06-11 20:35:46,611 - iso15118.shared.states (143): Waiting for up to Timeouts.V2G_EVCC_COMMUNICATION_SETUP_TIMEOUT s
+Keep alive until disconnected
+INFO    2026-06-11 20:35:46,628 - ocpp (471): CP_1: send [2,"eda8938c-226f-4309-ab71-41836ccd9057","Heartbeat",{}]
+DEBUG    2026-06-11 20:35:46,629 - websockets.client (755): > TEXT '[2,"eda8938c-226f-4309-ab71-41836ccd9057","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-11 20:35:46,635 - websockets.client (609): < TEXT '[3,"eda8938c-226f-4309-ab71-41836ccd9057",{"cur...2026-06-11T19:35:46Z"}]' [81 bytes]
+INFO    2026-06-11 20:35:46,636 - ocpp (247): CP_1: receive message [3,"eda8938c-226f-4309-ab71-41836ccd9057",{"currentTime":"2026-06-11T19:35:46Z"}]
+INFO    2026-06-11 20:35:46,640 - ocpp (471): CP_1: send [2,"7cd40b8c-1072-405a-b484-6d143e2bb592","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-11T19:35:46Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-11 20:35:46,640 - websockets.client (755): > TEXT '[2,"7cd40b8c-1072-405a-b484-6d143e2bb592","Mete..."Sample.Periodic"}]}]}]' [454 bytes]
+DEBUG    2026-06-11 20:35:46,646 - websockets.client (609): < TEXT '[3,"7cd40b8c-1072-405a-b484-6d143e2bb592",{}]' [45 bytes]
+INFO    2026-06-11 20:35:46,647 - ocpp (247): CP_1: receive message [3,"7cd40b8c-1072-405a-b484-6d143e2bb592",{}]
+INFO    2026-06-11 20:35:46,649 - root (100): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | Energy: 0.00 Wh
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:35:48,702 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_COMMON_MSG): {"AuthorizationSetupReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206547}}}
+INFO    2026-06-11 20:35:48,704 - iso15118.shared.comm_session (235): AuthorizationSetupReq received
+INFO    2026-06-11 20:35:48,709 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_COMMON_MSG): {"AuthorizationSetupRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206548}, "ResponseCode": "OK", "AuthorizationServices": ["PnC", "EIM"], "CertificateInstallationService": true, "PnC_ASResAuthorizationMode": {"GenChallenge": "Qz8gxPEOcPLEvWdnUao97Q=="}}}
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:35:49,392 - iso15118.shared.comm_session (431): Sent AuthorizationSetupRes
+INFO    2026-06-11 20:35:49,393 - iso15118.secc.controller.simulator (766): iso15118 state: AuthorizationSetup
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:45.680000+0100, processed_at=2026-06-11T20:35:45.800762+0100, readonly=True at 0x5584f5afd0>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:49.913000+0100, processed_at=2026-06-11T20:35:49.929322+0100, readonly=True at 0x7f74001660>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:35:52,540 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_COMMON_MSG): {"AuthorizationReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206551,"Signature":{"SignedInfo":{"CanonicalizationMethod":{"Algorithm":"http://www.w3.org/TR/canonical-exi/"},"SignatureMethod":{"Algorithm":"http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"},"Reference":[{"URI":"#id1","Transforms":{"Transform":[{"Algorithm":"http://www.w3.org/TR/canonical-exi/"}]},"DigestMethod":{"Algorithm":"http://www.w3.org/2001/04/xmlenc#sha256"},"DigestValue":"8l/piljrzIdYk+WOsEHotQvpvULdUe6A956evAyC3b8="}]},"SignatureValue":{"value":"V4MGE8OsZRdy74ZrdC/fbpFhRcbXrSc80mXlBw9yzV3RozhqumyMzJm3qPXKJGVpW/VjHxcLL4bVIeRo9pVvkw=="}}},"SelectedAuthorizationService":"PnC","PnC_AReqAuthorizationMode":{"Id":"id1","GenChallenge":"Qz8gxPEOcPLEvWdnUao97Q==","ContractCertificateChain":{"Certificate":"MIICYjCCAgmgAwIBAgICMEQwCgYIKoZIzj0EAwIwVjEiMCAGA1UEAwwZUEtJLUV4dF9DUlRfTU9fU1VCMl9WQUxJRDEPMA0GA1UECgwGU3dpdGNoMQswCQYDVQQGEwJVSzESMBAGCgmSJomT8ixkARkWAk1PMB4XDTI2MDUxNjEyMDE1M1oXDTI4MDUxNTEyMDE1M1owTDEYMBYGA1UEAwwPVUtTV0kxMjM0NTY3OTFBMQ8wDQYDVQQKDAZTd2l0Y2gxCzAJBgNVBAYTAlVLMRIwEAYKCZImiZPyLGQBGRYCTU8wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQnPOogtsFhE/qW7aKZrHc+vy0EIa/VU30E/BM26r3zSF6JciOTN5s4gf37/LMXwAPVRROplxscBGR6kD9HGFwUo4HQMIHNMAwGA1UdEwEB/wQCMAAwDgYDVR0PAQH/BAQDAgPoMB0GA1UdDgQWBBQTogP+YTi44GM7irC1VeqHEdr83zBtBggrBgEFBQcBAQRhMF8wJAYIKwYBBQUHMAGGGGh0dHBzOi8vd3d3LmV4YW1wbGUuY29tLzA3BggrBgEFBQcwAoYraHR0cHM6Ly93d3cuZXhhbXBsZS5jb20vSW50ZXJtZWRpYXRlLUNBLmNlcjAfBgNVHSMEGDAWgBQZvc5YmGfzO4Ji3tt822yubTz5ljAKBggqhkjOPQQDAgNHADBEAiBiKPNeEB2iokSF0r/3zCGVrX3Nh8o7AX78ji5qER271QIgCQi+7Y72v86Hu4F3uLabWuorj816hmVEQAVEeXHGcAs=","SubCertificates":{"Certificate":["MIICcjCCAhmgAwIBAgICMEMwCgYIKoZIzj0EAwIwVjEiMCAGA1UEAwwZUEtJLUV4dF9DUlRfTU9fU1VCMV9WQUxJRDEPMA0GA1UECgwGU3dpdGNoMQswCQYDVQQGEwJVSzESMBAGCgmSJomT8ixkARkWAk1PMB4XDTI2MDUxNjEyMDE1M1oXDTMwMDUxNTEyMDE1M1owVjEiMCAGA1UEAwwZUEtJLUV4dF9DUlRfTU9fU1VCMl9WQUxJRDEPMA0GA1UECgwGU3dpdGNoMQswCQYDVQQGEwJVSzESMBAGCgmSJomT8ixkARkWAk1PMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE4UdTYDsnGGTwxh8qorXRnu2/sQoeN5JF/tx3iQyznvVsV+d/sD2vuqhGzURAbVUXzRBWe6hZ9R+6QnhQtzjef6OB1jCB0zASBgNVHRMBAf8ECDAGAQH/AgEAMA4GA1UdDwEB/wQEAwIBxjAdBgNVHQ4EFgQUGb3OWJhn8zuCYt7bfNtsrm08+ZYwbQYIKwYBBQUHAQEEYTBfMCQGCCsGAQUFBzABhhhodHRwczovL3d3dy5leGFtcGxlLmNvbS8wNwYIKwYBBQUHMAKGK2h0dHBzOi8vd3d3LmV4YW1wbGUuY29tL0ludGVybWVkaWF0ZS1DQS5jZXIwHwYDVR0jBBgwFoAUF6Dt06Pvm+/pavOe16dX6po0CE4wCgYIKoZIzj0EAwIDRwAwRAIgMFjlu6waSt73htFl+bFcZrkrpxBISxzKJ3Gpykv3NZwCICAmEluW5V/cj/3juvt+ljvrzBAXLRlmphxRt242ZAuZ","MIICYjCCAgigAwIBAgICMEIwCgYIKoZIzj0EAwIwRTERMA8GA1UEAwwITU9Sb290Q0ExDzANBgNVBAoMBlN3aXRjaDELMAkGA1UEBhMCVUsxEjAQBgoJkiaJk/IsZAEZFgJNTzAeFw0yNjA1MTYxMjAxNTNaFw0zMDA1MTUxMjAxNTNaMFYxIjAgBgNVBAMMGVBLSS1FeHRfQ1JUX01PX1NVQjFfVkFMSUQxDzANBgNVBAoMBlN3aXRjaDELMAkGA1UEBhMCVUsxEjAQBgoJkiaJk/IsZAEZFgJNTzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABFHDYDHnl8/X1E3TDBqYquhq/qQCuPJY+Kmyj5qMaKJbStjJ47rGwBDiR5XQhBPx7L1VOI56HodWF4DA/QZkOB2jgdYwgdMwEgYDVR0TAQH/BAgwBgEB/wIBATAOBgNVHQ8BAf8EBAMCAQYwHQYDVR0OBBYEFBeg7dOj75vv6WrzntenV+qaNAhOMG0GCCsGAQUFBwEBBGEwXzAkBggrBgEFBQcwAYYYaHR0cHM6Ly93d3cuZXhhbXBsZS5jb20vMDcGCCsGAQUFBzAChitodHRwczovL3d3dy5leGFtcGxlLmNvbS9JbnRlcm1lZGlhdGUtQ0EuY2VyMB8GA1UdIwQYMBaAFN7JBGY3lcohUyA8h9XV7gW/mYBQMAoGCCqGSM49BAMCA0gAMEUCIBoxvG0dQnYKLf6fMKueI4ulE0/P+vckgq0md9+Ox61ZAiEAuYqCdW+GJs7NYxm8HvjoRuYEZd52nGWDewXMu/KTias="]}}}}}
+INFO    2026-06-11 20:35:52,564 - iso15118.shared.comm_session (235): AuthorizationReq received
+INFO    2026-06-11 20:35:52,565 - iso15118.shared.states (139): Entered state Authorization
+DEBUG    2026-06-11 20:35:52,565 - iso15118.shared.states (143): Waiting for up to Timeouts.V2G_EVCC_COMMUNICATION_SETUP_TIMEOUT s
+INFO    2026-06-11 20:35:52,567 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_COMMON_MSG): {"PnC_AReqAuthorizationMode": {"Id": "id1", "GenChallenge": "Qz8gxPEOcPLEvWdnUao97Q==", "ContractCertificateChain": {"Certificate": "MIICYjCCAgmgAwIBAgICMEQwCgYIKoZIzj0EAwIwVjEiMCAGA1UEAwwZUEtJLUV4dF9DUlRfTU9fU1VCMl9WQUxJRDEPMA0GA1UECgwGU3dpdGNoMQswCQYDVQQGEwJVSzESMBAGCgmSJomT8ixkARkWAk1PMB4XDTI2MDUxNjEyMDE1M1oXDTI4MDUxNTEyMDE1M1owTDEYMBYGA1UEAwwPVUtTV0kxMjM0NTY3OTFBMQ8wDQYDVQQKDAZTd2l0Y2gxCzAJBgNVBAYTAlVLMRIwEAYKCZImiZPyLGQBGRYCTU8wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQnPOogtsFhE/qW7aKZrHc+vy0EIa/VU30E/BM26r3zSF6JciOTN5s4gf37/LMXwAPVRROplxscBGR6kD9HGFwUo4HQMIHNMAwGA1UdEwEB/wQCMAAwDgYDVR0PAQH/BAQDAgPoMB0GA1UdDgQWBBQTogP+YTi44GM7irC1VeqHEdr83zBtBggrBgEFBQcBAQRhMF8wJAYIKwYBBQUHMAGGGGh0dHBzOi8vd3d3LmV4YW1wbGUuY29tLzA3BggrBgEFBQcwAoYraHR0cHM6Ly93d3cuZXhhbXBsZS5jb20vSW50ZXJtZWRpYXRlLUNBLmNlcjAfBgNVHSMEGDAWgBQZvc5YmGfzO4Ji3tt822yubTz5ljAKBggqhkjOPQQDAgNHADBEAiBiKPNeEB2iokSF0r/3zCGVrX3Nh8o7AX78ji5qER271QIgCQi+7Y72v86Hu4F3uLabWuorj816hmVEQAVEeXHGcAs=", "SubCertificates": {"Certificate": ["MIICcjCCAhmgAwIBAgICMEMwCgYIKoZIzj0EAwIwVjEiMCAGA1UEAwwZUEtJLUV4dF9DUlRfTU9fU1VCMV9WQUxJRDEPMA0GA1UECgwGU3dpdGNoMQswCQYDVQQGEwJVSzESMBAGCgmSJomT8ixkARkWAk1PMB4XDTI2MDUxNjEyMDE1M1oXDTMwMDUxNTEyMDE1M1owVjEiMCAGA1UEAwwZUEtJLUV4dF9DUlRfTU9fU1VCMl9WQUxJRDEPMA0GA1UECgwGU3dpdGNoMQswCQYDVQQGEwJVSzESMBAGCgmSJomT8ixkARkWAk1PMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE4UdTYDsnGGTwxh8qorXRnu2/sQoeN5JF/tx3iQyznvVsV+d/sD2vuqhGzURAbVUXzRBWe6hZ9R+6QnhQtzjef6OB1jCB0zASBgNVHRMBAf8ECDAGAQH/AgEAMA4GA1UdDwEB/wQEAwIBxjAdBgNVHQ4EFgQUGb3OWJhn8zuCYt7bfNtsrm08+ZYwbQYIKwYBBQUHAQEEYTBfMCQGCCsGAQUFBzABhhhodHRwczovL3d3dy5leGFtcGxlLmNvbS8wNwYIKwYBBQUHMAKGK2h0dHBzOi8vd3d3LmV4YW1wbGUuY29tL0ludGVybWVkaWF0ZS1DQS5jZXIwHwYDVR0jBBgwFoAUF6Dt06Pvm+/pavOe16dX6po0CE4wCgYIKoZIzj0EAwIDRwAwRAIgMFjlu6waSt73htFl+bFcZrkrpxBISxzKJ3Gpykv3NZwCICAmEluW5V/cj/3juvt+ljvrzBAXLRlmphxRt242ZAuZ", "MIICYjCCAgigAwIBAgICMEIwCgYIKoZIzj0EAwIwRTERMA8GA1UEAwwITU9Sb290Q0ExDzANBgNVBAoMBlN3aXRjaDELMAkGA1UEBhMCVUsxEjAQBgoJkiaJk/IsZAEZFgJNTzAeFw0yNjA1MTYxMjAxNTNaFw0zMDA1MTUxMjAxNTNaMFYxIjAgBgNVBAMMGVBLSS1FeHRfQ1JUX01PX1NVQjFfVkFMSUQxDzANBgNVBAoMBlN3aXRjaDELMAkGA1UEBhMCVUsxEjAQBgoJkiaJk/IsZAEZFgJNTzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABFHDYDHnl8/X1E3TDBqYquhq/qQCuPJY+Kmyj5qMaKJbStjJ47rGwBDiR5XQhBPx7L1VOI56HodWF4DA/QZkOB2jgdYwgdMwEgYDVR0TAQH/BAgwBgEB/wIBATAOBgNVHQ8BAf8EBAMCAQYwHQYDVR0OBBYEFBeg7dOj75vv6WrzntenV+qaNAhOMG0GCCsGAQUFBwEBBGEwXzAkBggrBgEFBQcwAYYYaHR0cHM6Ly93d3cuZXhhbXBsZS5jb20vMDcGCCsGAQUFBzAChitodHRwczovL3d3dy5leGFtcGxlLmNvbS9JbnRlcm1lZGlhdGUtQ0EuY2VyMB8GA1UdIwQYMBaAFN7JBGY3lcohUyA8h9XV7gW/mYBQMAoGCCqGSM49BAMCA0gAMEUCIBoxvG0dQnYKLf6fMKueI4ulE0/P+vckgq0md9+Ox61ZAiEAuYqCdW+GJs7NYxm8HvjoRuYEZd52nGWDewXMu/KTias="]}}}}
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+DEBUG    2026-06-11 20:35:53,102 - iso15118.shared.security (906): Verifying digest for element with ID 'id1'
+DEBUG    2026-06-11 20:35:53,134 - iso15118.shared.security (919): 
+Received digest of reference with ID id1: F25FE98A58EBCC875893E58EB041E8B50BE9BD42DD51EE80F79E9EBC0C82DDBF
+Calculated digest for reference: F25FE98A58EBCC875893E58EB041E8B50BE9BD42DD51EE80F79E9EBC0C82DDBF
+=> Match: True
+DEBUG    2026-06-11 20:35:53,134 - iso15118.shared.security (932): Verifying signature value for SignedInfo element
+INFO    2026-06-11 20:35:53,148 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.XML_DSIG): {"SignedInfo": {"CanonicalizationMethod": {"Algorithm": "http://www.w3.org/TR/canonical-exi/"}, "SignatureMethod": {"Algorithm": "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"}, "Reference": [{"Transforms": {"Transform": [{"Algorithm": "http://www.w3.org/TR/canonical-exi/"}]}, "DigestMethod": {"Algorithm": "http://www.w3.org/2001/04/xmlenc#sha256"}, "DigestValue": "8l/piljrzIdYk+WOsEHotQvpvULdUe6A956evAyC3b8=", "URI": "#id1"}]}}
+WARNING    2026-06-11 20:35:53,743 - iso15118.shared.security (999): Sub-CA and root CA certificates were not used to verify signatures along the certificate chain
+DEBUG    2026-06-11 20:35:53,744 - iso15118.shared.security (1004): Signature verified successfully
+INFO    2026-06-11 20:35:53,747 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_COMMON_MSG): {"AuthorizationRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206553}, "ResponseCode": "OK", "EVSEProcessing": "Finished"}}
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:49.913000+0100, processed_at=2026-06-11T20:35:49.929322+0100, readonly=True at 0x7f74001660>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:53.92000+0100, processed_at=2026-06-11T20:35:53.909321+0100, readonly=True at 0x5584f5afd0>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+INFO    2026-06-11 20:35:54,199 - iso15118.shared.comm_session (431): Sent AuthorizationRes
+INFO    2026-06-11 20:35:54,199 - iso15118.secc.controller.simulator (766): iso15118 state: Authorization
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+INFO    2026-06-11 20:35:55,565 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_COMMON_MSG): {"ServiceDiscoveryReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206554}}}
+INFO    2026-06-11 20:35:55,569 - iso15118.shared.comm_session (235): ServiceDiscoveryReq received
+INFO    2026-06-11 20:35:55,570 - iso15118.shared.states (139): Entered state ServiceDiscovery
+DEBUG    2026-06-11 20:35:55,571 - iso15118.shared.states (143): Waiting for up to Timeouts.V2G_EVCC_COMMUNICATION_SETUP_TIMEOUT s
+INFO    2026-06-11 20:35:55,574 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_COMMON_MSG): {"ServiceDiscoveryRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206555}, "ResponseCode": "OK", "ServiceRenegotiationSupported": false, "EnergyTransferServiceList": {"Service": [{"ServiceID": 2, "FreeService": false}, {"ServiceID": 6, "FreeService": false}]}}}
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:35:55,976 - iso15118.shared.comm_session (431): Sent ServiceDiscoveryRes
+INFO    2026-06-11 20:35:55,977 - iso15118.secc.controller.simulator (766): iso15118 state: ServiceDiscovery
+DEBUG    2026-06-11 20:35:55,978 - websockets.client (609): < PING fc 99 f0 73 [binary, 4 bytes]
+DEBUG    2026-06-11 20:35:55,979 - websockets.client (755): > PONG fc 99 f0 73 [binary, 4 bytes]
+Keep alive until disconnected
+DEBUG    2026-06-11 20:35:55,983 - websockets.client (755): > PING cb 0f 59 84 [binary, 4 bytes]
+DEBUG    2026-06-11 20:35:55,984 - websockets.client (829): % sent keepalive ping
+DEBUG    2026-06-11 20:35:55,987 - websockets.client (609): < PONG cb 0f 59 84 [binary, 4 bytes]
+DEBUG    2026-06-11 20:35:55,988 - websockets.client (840): % received keepalive pong
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+INFO    2026-06-11 20:35:56,646 - ocpp (471): CP_1: send [2,"7238931d-8297-4cd7-a022-40a0f2f3f9e8","Heartbeat",{}]
+DEBUG    2026-06-11 20:35:56,646 - websockets.client (755): > TEXT '[2,"7238931d-8297-4cd7-a022-40a0f2f3f9e8","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-11 20:35:56,660 - websockets.client (609): < TEXT '[3,"7238931d-8297-4cd7-a022-40a0f2f3f9e8",{"cur...2026-06-11T19:35:56Z"}]' [81 bytes]
+INFO    2026-06-11 20:35:56,661 - ocpp (247): CP_1: receive message [3,"7238931d-8297-4cd7-a022-40a0f2f3f9e8",{"currentTime":"2026-06-11T19:35:56Z"}]
+INFO    2026-06-11 20:35:56,663 - ocpp (471): CP_1: send [2,"cc53765a-e54e-47f4-b187-796180ff5d77","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-11T19:35:56Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-11 20:35:56,664 - websockets.client (755): > TEXT '[2,"cc53765a-e54e-47f4-b187-796180ff5d77","Mete..."Sample.Periodic"}]}]}]' [454 bytes]
+DEBUG    2026-06-11 20:35:56,669 - websockets.client (609): < TEXT '[3,"cc53765a-e54e-47f4-b187-796180ff5d77",{}]' [45 bytes]
+INFO    2026-06-11 20:35:56,670 - ocpp (247): CP_1: receive message [3,"cc53765a-e54e-47f4-b187-796180ff5d77",{}]
+INFO    2026-06-11 20:35:56,672 - root (100): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | Energy: 0.00 Wh
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:35:57,253 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_COMMON_MSG): {"ServiceDetailReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206556},"ServiceID":6}}
+INFO    2026-06-11 20:35:57,254 - iso15118.shared.comm_session (235): ServiceDetailReq received
+INFO    2026-06-11 20:35:57,255 - iso15118.shared.states (139): Entered state ServiceDetail
+DEBUG    2026-06-11 20:35:57,256 - iso15118.shared.states (143): Waiting for up to Timeouts.V2G_EVCC_COMMUNICATION_SETUP_TIMEOUT s
+INFO    2026-06-11 20:35:57,266 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_COMMON_MSG): {"ServiceDetailRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206557}, "ResponseCode": "OK", "ServiceID": 6, "ServiceParameterList": {"ParameterSet": [{"ParameterSetID": 1, "Parameter": [{"Name": "Connector", "intValue": 2}, {"Name": "EVSENominalVoltage", "intValue": 400}, {"Name": "Pricing", "intValue": 0}, {"Name": "ControlMode", "intValue": 1}, {"Name": "MobilityNeedsMode", "intValue": 1}]}, {"ParameterSetID": 2, "Parameter": [{"Name": "Connector", "intValue": 2}, {"Name": "EVSENominalVoltage", "intValue": 400}, {"Name": "Pricing", "intValue": 0}, {"Name": "ControlMode", "intValue": 2}, {"Name": "MobilityNeedsMode", "intValue": 2}]}, {"ParameterSetID": 3, "Parameter": [{"Name": "Connector", "intValue": 2}, {"Name": "EVSENominalVoltage", "intValue": 400}, {"Name": "Pricing", "intValue": 0}, {"Name": "ControlMode", "intValue": 2}, {"Name": "MobilityNeedsMode", "intValue": 1}]}]}}}
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+INFO    2026-06-11 20:35:57,741 - iso15118.shared.comm_session (431): Sent ServiceDetailRes
+INFO    2026-06-11 20:35:57,742 - iso15118.secc.controller.simulator (766): iso15118 state: ServiceDetail
+Keep alive until disconnected
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:53.92000+0100, processed_at=2026-06-11T20:35:53.909321+0100, readonly=True at 0x5584f5afd0>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:57.326000+0100, processed_at=2026-06-11T20:35:57.943186+0100, readonly=True at 0x7f74001660>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+INFO    2026-06-11 20:35:59,668 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_COMMON_MSG): {"ServiceSelectionReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206558},"SelectedEnergyTransferService":{"ServiceID":6,"ParameterSetID":1}}}
+INFO    2026-06-11 20:35:59,669 - iso15118.shared.comm_session (235): ServiceSelectionReq received
+INFO    2026-06-11 20:35:59,670 - iso15118.shared.states (139): Entered state ServiceSelection
+DEBUG    2026-06-11 20:35:59,670 - iso15118.shared.states (143): Waiting for up to Timeouts.V2G_EVCC_COMMUNICATION_SETUP_TIMEOUT s
+INFO    2026-06-11 20:35:59,673 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_COMMON_MSG): {"ServiceSelectionRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206559}, "ResponseCode": "OK"}}
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:00,048 - iso15118.shared.comm_session (431): Sent ServiceSelectionRes
+INFO    2026-06-11 20:36:00,049 - iso15118.secc.controller.simulator (766): iso15118 state: ServiceSelection
+INFO    2026-06-11 20:36:00,049 - iso15118.shared.states (139): Entered state DCChargeParameterDiscovery
+DEBUG    2026-06-11 20:36:00,050 - iso15118.shared.states (143): Waiting for up to Timeouts.V2G_EVCC_COMMUNICATION_SETUP_TIMEOUT s
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:01,441 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_ChargeParameterDiscoveryReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206560},"BPT_DC_CPDReqEnergyTransferMode":{"EVMaximumChargePower":{"Exponent":3,"Value":300},"EVMinimumChargePower":{"Exponent":0,"Value":100},"EVMaximumChargeCurrent":{"Exponent":0,"Value":300},"EVMinimumChargeCurrent":{"Exponent":0,"Value":10},"EVMaximumVoltage":{"Exponent":0,"Value":1000},"EVMinimumVoltage":{"Exponent":0,"Value":10},"EVMaximumDischargePower":{"Exponent":3,"Value":11},"EVMinimumDischargePower":{"Exponent":3,"Value":1},"EVMaximumDischargeCurrent":{"Exponent":0,"Value":11},"EVMinimumDischargeCurrent":{"Exponent":0,"Value":0}}}}
+INFO    2026-06-11 20:36:01,444 - iso15118.shared.comm_session (235): DC_ChargeParameterDiscoveryReq received
+DEBUG    2026-06-11 20:36:01,449 - iso15118.secc.controller.evse_data (241): Updating EVSE Data Context (Rated and Session Limits) with ChargeParameterDiscoveryResponse
+DEBUG    2026-06-11 20:36:01,450 - iso15118.secc.controller.evse_data (245): Active Rated Limits EVSEDCCPDLimits(max_charge_power=10, min_charge_power=10, max_charge_current=10, min_charge_current=10, max_voltage=10, min_voltage=10, max_discharge_power=10, min_discharge_power=10, max_discharge_current=10, min_discharge_current=10)
+DEBUG    2026-06-11 20:36:01,450 - iso15118.secc.controller.evse_data (246): Active Session Limits EVSEDCCLLimits(max_charge_power=10, min_charge_power=10, max_charge_current=10, max_voltage=10, min_voltage=10, max_discharge_power=10, min_discharge_power=10, max_discharge_current=10)
+DEBUG    2026-06-11 20:36:01,451 - iso15118.secc.controller.evse_data (264): Rated and Session Limits updated after ChargeParametersDiscovery
+DEBUG    2026-06-11 20:36:01,451 - iso15118.secc.controller.evse_data (267): New Rated Limits EVSEDCCPDLimits(max_charge_power=1000, min_charge_power=100, max_charge_current=100, min_charge_current=10, max_voltage=500, min_voltage=10, max_discharge_power=1000, min_discharge_power=100, max_discharge_current=100, min_discharge_current=10)
+DEBUG    2026-06-11 20:36:01,451 - iso15118.secc.controller.evse_data (268): New Session Limits EVSEDCCLLimits(max_charge_power=1000, min_charge_power=100, max_charge_current=100, max_voltage=500, min_voltage=10, max_discharge_power=1000, min_discharge_power=100, max_discharge_current=100)
+INFO    2026-06-11 20:36:01,452 - iso15118.secc.controller.simulator (1109): Send rated limits to CS.
+INFO    2026-06-11 20:36:01,456 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_ChargeParameterDiscoveryRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206561}, "ResponseCode": "OK", "BPT_DC_CPDResEnergyTransferMode": {"EVSEMaximumChargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumChargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumChargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMinimumChargeCurrent": {"Exponent": 0, "Value": 10}, "EVSEMaximumVoltage": {"Exponent": 0, "Value": 500}, "EVSEMinimumVoltage": {"Exponent": 0, "Value": 10}, "EVSEPowerRampLimitation": {"Exponent": 0, "Value": 10}, "EVSEMaximumDischargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumDischargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumDischargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMinimumDischargeCurrent": {"Exponent": 0, "Value": 10}}}}
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+INFO    2026-06-11 20:36:01,730 - iso15118.shared.comm_session (431): Sent DC_ChargeParameterDiscoveryRes
+INFO    2026-06-11 20:36:01,731 - iso15118.secc.controller.simulator (766): iso15118 state: DCChargeParameterDiscovery
+INFO    2026-06-11 20:36:01,731 - iso15118.shared.states (139): Entered state ScheduleExchange
+DEBUG    2026-06-11 20:36:01,732 - iso15118.shared.states (143): Waiting for up to Timeouts.V2G_EVCC_COMMUNICATION_SETUP_TIMEOUT s
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:35:57.326000+0100, processed_at=2026-06-11T20:35:57.943186+0100, readonly=True at 0x7f74001660>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:36:01.555000+0100, processed_at=2026-06-11T20:36:01.967983+0100, readonly=True at 0x5584f5afd0>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+INFO    2026-06-11 20:36:02,902 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_COMMON_MSG): {"ScheduleExchangeReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206562},"MaximumSupportingPoints":1024,"Scheduled_SEReqControlMode":{"DepartureTime":7200,"EVTargetEnergyRequest":{"Exponent":3,"Value":10},"EVMaximumEnergyRequest":{"Exponent":3,"Value":20},"EVMinimumEnergyRequest":{"Exponent":-2,"Value":5},"EVEnergyOffer":{"EVPowerSchedule":{"TimeAnchor":0,"EVPowerScheduleEntries":{"EVPowerScheduleEntry":[{"Duration":3600,"Power":{"Exponent":3,"Value":-10}}]}},"EVAbsolutePriceSchedule":{"TimeAnchor":0,"Currency":"EUR","PriceAlgorithm":"urn:iso:std:iso:15118:-20:PriceAlgorithm:1-Power","EVPriceRuleStacks":{"EVPriceRuleStack":[{"Duration":0,"EVPriceRule":[{"EnergyFee":{"Exponent":0,"Value":0},"PowerRangeStart":{"Exponent":0,"Value":0}}]}]}}}}}}
+INFO    2026-06-11 20:36:02,906 - iso15118.shared.comm_session (235): ScheduleExchangeReq received
+INFO    2026-06-11 20:36:02,922 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_COMMON_MSG): {"ScheduleExchangeRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206562}, "ResponseCode": "OK", "EVSEProcessing": "Finished", "Scheduled_SEResControlMode": {"ScheduleTuple": [{"ScheduleTupleID": 1, "ChargingSchedule": {"PowerSchedule": {"TimeAnchor": 0, "AvailableEnergy": {"Exponent": 3, "Value": 300}, "PowerTolerance": {"Exponent": 0, "Value": 2000}, "PowerScheduleEntries": {"PowerScheduleEntry": [{"Duration": 3600, "Power": {"Exponent": 3, "Value": 10}}]}}, "AbsolutePriceSchedule": {"TimeAnchor": 0, "PriceScheduleID": 1, "Currency": "EUR", "Language": "ENG", "PriceAlgorithm": "urn:iso:std:iso:15118:-20:PriceAlgorithm:1-Power", "MinimumCost": {"Exponent": 0, "Value": 1}, "MaximumCost": {"Exponent": 0, "Value": 10}, "TaxRules": {"TaxRule": [{"TaxRuleID": 1, "TaxRuleName": "What a great tax rule", "TaxRate": {"Exponent": 0, "Value": 10}, "TaxIncludedInPrice": false, "AppliesToEnergyFee": true, "AppliesToParkingFee": true, "AppliesToOverstayFee": true, "AppliesMinimumMaximumCost": true}]}, "PriceRuleStacks": {"PriceRuleStack": [{"Duration": 3600, "PriceRule": [{"EnergyFee": {"Exponent": 0, "Value": 20}, "ParkingFee": {"Exponent": 0, "Value": 0}, "ParkingFeePeriod": 0, "CarbonDioxideEmission": 0, "RenewableGenerationPercentage": 0, "PowerRangeStart": {"Exponent": 0, "Value": 0}}]}]}, "OverstayRules": {"OverstayTimeThreshold": 3600, "OverstayPowerThreshold": {"Exponent": 3, "Value": 30}, "OverstayRule": [{"OverstayRuleDescription": "What a great description", "StartTime": 0, "OverstayFee": {"Exponent": 0, "Value": 50}, "OverstayFeePeriod": 3600}]}, "AdditionalSelectedServices": {"AdditionalService": [{"ServiceName": "What a great service name", "ServiceFee": {"Exponent": 0, "Value": 0}}]}}}, "DischargingSchedule": {"PowerSchedule": {"TimeAnchor": 0, "PowerScheduleEntries": {"PowerScheduleEntry": [{"Duration": 3600, "Power": {"Exponent": 3, "Value": 10}}]}}, "AbsolutePriceSchedule": {"TimeAnchor": 0, "PriceScheduleID": 1, "Currency": "EUR", "Language": "ENG", "PriceAlgorithm": "urn:iso:std:iso:15118:-20:PriceAlgorithm:1-Power", "MinimumCost": {"Exponent": 0, "Value": 1}, "MaximumCost": {"Exponent": 0, "Value": 10}, "TaxRules": {"TaxRule": [{"TaxRuleID": 1, "TaxRuleName": "What a great tax rule", "TaxRate": {"Exponent": 0, "Value": 10}, "TaxIncludedInPrice": false, "AppliesToEnergyFee": true, "AppliesToParkingFee": true, "AppliesToOverstayFee": true, "AppliesMinimumMaximumCost": true}]}, "PriceRuleStacks": {"PriceRuleStack": [{"Duration": 3600, "PriceRule": [{"EnergyFee": {"Exponent": 0, "Value": 20}, "ParkingFee": {"Exponent": 0, "Value": 0}, "ParkingFeePeriod": 0, "CarbonDioxideEmission": 0, "RenewableGenerationPercentage": 0, "PowerRangeStart": {"Exponent": 0, "Value": 0}}]}]}, "OverstayRules": {"OverstayTimeThreshold": 3600, "OverstayPowerThreshold": {"Exponent": 3, "Value": 30}, "OverstayRule": [{"OverstayRuleDescription": "What a great description", "StartTime": 0, "OverstayFee": {"Exponent": 0, "Value": 50}, "OverstayFeePeriod": 3600}]}, "AdditionalSelectedServices": {"AdditionalService": [{"ServiceName": "What a great service name", "ServiceFee": {"Exponent": 0, "Value": 0}}]}}}}]}}}
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:03,471 - iso15118.shared.comm_session (431): Sent ScheduleExchangeRes
+INFO    2026-06-11 20:36:03,471 - iso15118.secc.controller.simulator (766): iso15118 state: ScheduleExchange
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:04,560 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_CableCheckReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206564}}}
+INFO    2026-06-11 20:36:04,562 - iso15118.shared.comm_session (235): DC_CableCheckReq received
+INFO    2026-06-11 20:36:04,563 - iso15118.shared.states (139): Entered state DCCableCheck
+DEBUG    2026-06-11 20:36:04,563 - iso15118.shared.states (143): Waiting for up to Timeouts.V2G_EVCC_COMMUNICATION_SETUP_TIMEOUT s
+INFO    2026-06-11 20:36:04,567 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_CableCheckRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206564}, "ResponseCode": "OK", "EVSEProcessing": "Ongoing"}}
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+INFO    2026-06-11 20:36:04,784 - iso15118.shared.comm_session (431): Sent DC_CableCheckRes
+INFO    2026-06-11 20:36:04,785 - iso15118.secc.controller.simulator (766): iso15118 state: DCCableCheck
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:05,427 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_CableCheckReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206564}}}
+INFO    2026-06-11 20:36:05,428 - iso15118.shared.comm_session (235): DC_CableCheckReq received
+INFO    2026-06-11 20:36:05,431 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_CableCheckRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206565}, "ResponseCode": "OK", "EVSEProcessing": "Finished"}}
+INFO    2026-06-11 20:36:05,703 - iso15118.shared.comm_session (431): Sent DC_CableCheckRes
+INFO    2026-06-11 20:36:05,703 - iso15118.secc.controller.simulator (766): iso15118 state: DCCableCheck
+INFO    2026-06-11 20:36:05,704 - iso15118.shared.states (139): Entered state DCPreCharge
+DEBUG    2026-06-11 20:36:05,705 - iso15118.shared.states (143): Waiting for up to Timeouts.V2G_EVCC_COMMUNICATION_SETUP_TIMEOUT s
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+Keep alive until disconnected
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:36:01.555000+0100, processed_at=2026-06-11T20:36:01.967983+0100, readonly=True at 0x5584f5afd0>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:36:05.780000+0100, processed_at=2026-06-11T20:36:05.996606+0100, readonly=True at 0x7f74001660>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:06,364 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_PreChargeReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206565},"EVProcessing":"Ongoing","EVPresentVoltage":{"Exponent":3,"Value":20},"EVTargetVoltage":{"Exponent":3,"Value":20}}}
+INFO    2026-06-11 20:36:06,366 - iso15118.shared.comm_session (235): DC_PreChargeReq received
+DEBUG    2026-06-11 20:36:06,367 - telemetry_evse_controller (53): Telemetry updated: Telemetry(soc_percent=0.0, soh_percent=100.0, power_kw=0.0, voltage_v=20000.0, current_a=0.0, charging=False)
+INFO    2026-06-11 20:36:06,371 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_PreChargeRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206566}, "ResponseCode": "OK", "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}}}
+INFO    2026-06-11 20:36:06,576 - iso15118.shared.comm_session (431): Sent DC_PreChargeRes
+INFO    2026-06-11 20:36:06,576 - iso15118.secc.controller.simulator (766): iso15118 state: DCPreCharge
+INFO    2026-06-11 20:36:06,669 - ocpp (471): CP_1: send [2,"9537b11c-c017-4ae6-a10e-717bcaf0746d","Heartbeat",{}]
+DEBUG    2026-06-11 20:36:06,669 - websockets.client (755): > TEXT '[2,"9537b11c-c017-4ae6-a10e-717bcaf0746d","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-11 20:36:06,684 - websockets.client (609): < TEXT '[3,"9537b11c-c017-4ae6-a10e-717bcaf0746d",{"cur...2026-06-11T19:36:06Z"}]' [81 bytes]
+INFO    2026-06-11 20:36:06,685 - ocpp (247): CP_1: receive message [3,"9537b11c-c017-4ae6-a10e-717bcaf0746d",{"currentTime":"2026-06-11T19:36:06Z"}]
+INFO    2026-06-11 20:36:06,686 - ocpp (471): CP_1: send [2,"8d9c1f9a-ca1c-4fe6-8317-9951e02a1839","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-11T19:36:06Z","sampledValue":[{"value":0.0,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":0.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-11 20:36:06,688 - websockets.client (755): > TEXT '[2,"8d9c1f9a-ca1c-4fe6-8317-9951e02a1839","Mete..."Sample.Periodic"}]}]}]' [454 bytes]
+DEBUG    2026-06-11 20:36:06,692 - websockets.client (609): < TEXT '[3,"8d9c1f9a-ca1c-4fe6-8317-9951e02a1839",{}]' [45 bytes]
+INFO    2026-06-11 20:36:06,693 - ocpp (247): CP_1: receive message [3,"8d9c1f9a-ca1c-4fe6-8317-9951e02a1839",{}]
+INFO    2026-06-11 20:36:06,695 - root (100): MeterValues sent | EVSE 1 | Power: 0.0 W (⬇ Charging) | SoC: 0.0% | Energy: 0.00 Wh
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:07,264 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_PreChargeReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206566},"EVProcessing":"Ongoing","EVPresentVoltage":{"Exponent":3,"Value":20},"EVTargetVoltage":{"Exponent":3,"Value":20}}}
+INFO    2026-06-11 20:36:07,267 - iso15118.shared.comm_session (235): DC_PreChargeReq received
+DEBUG    2026-06-11 20:36:07,268 - telemetry_evse_controller (53): Telemetry updated: Telemetry(soc_percent=0.0, soh_percent=100.0, power_kw=0.0, voltage_v=20000.0, current_a=0.0, charging=False)
+INFO    2026-06-11 20:36:07,270 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_PreChargeRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206567}, "ResponseCode": "OK", "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}}}
+INFO    2026-06-11 20:36:07,462 - iso15118.shared.comm_session (431): Sent DC_PreChargeRes
+INFO    2026-06-11 20:36:07,462 - iso15118.secc.controller.simulator (766): iso15118 state: DCPreCharge
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+INFO    2026-06-11 20:36:08,047 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_PreChargeReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206567},"EVProcessing":"Ongoing","EVPresentVoltage":{"Exponent":3,"Value":20},"EVTargetVoltage":{"Exponent":3,"Value":20}}}
+INFO    2026-06-11 20:36:08,049 - iso15118.shared.comm_session (235): DC_PreChargeReq received
+DEBUG    2026-06-11 20:36:08,050 - telemetry_evse_controller (53): Telemetry updated: Telemetry(soc_percent=0.0, soh_percent=100.0, power_kw=0.0, voltage_v=20000.0, current_a=0.0, charging=False)
+INFO    2026-06-11 20:36:08,053 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_PreChargeRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206568}, "ResponseCode": "OK", "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}}}
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:08,256 - iso15118.shared.comm_session (431): Sent DC_PreChargeRes
+INFO    2026-06-11 20:36:08,257 - iso15118.secc.controller.simulator (766): iso15118 state: DCPreCharge
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+INFO    2026-06-11 20:36:08,978 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_PreChargeReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206568},"EVProcessing":"Finished","EVPresentVoltage":{"Exponent":3,"Value":20},"EVTargetVoltage":{"Exponent":3,"Value":20}}}
+INFO    2026-06-11 20:36:08,979 - iso15118.shared.comm_session (235): DC_PreChargeReq received
+INFO    2026-06-11 20:36:08,981 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_PreChargeRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206568}, "ResponseCode": "OK", "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}}}
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:09,188 - iso15118.shared.comm_session (431): Sent DC_PreChargeRes
+INFO    2026-06-11 20:36:09,189 - iso15118.secc.controller.simulator (766): iso15118 state: DCPreCharge
+INFO    2026-06-11 20:36:09,191 - iso15118.shared.states (139): Entered state PowerDelivery
+DEBUG    2026-06-11 20:36:09,192 - iso15118.shared.states (143): Waiting for up to Timeouts.V2G_EVCC_COMMUNICATION_SETUP_TIMEOUT s
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+INFO    2026-06-11 20:36:10,078 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_COMMON_MSG): {"PowerDeliveryReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206569},"EVProcessing":"Ongoing","ChargeProgress":"Start","BPT_ChannelSelection":"Charge"}}
+INFO    2026-06-11 20:36:10,080 - iso15118.shared.comm_session (235): PowerDeliveryReq received
+DEBUG    2026-06-11 20:36:10,081 - iso15118.secc.states.iso15118_20_states (1054): EV is still processing the EVPowerProfile
+INFO    2026-06-11 20:36:10,084 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_COMMON_MSG): {"PowerDeliveryRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206570}, "ResponseCode": "OK"}}
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:36:05.780000+0100, processed_at=2026-06-11T20:36:05.996606+0100, readonly=True at 0x7f74001660>, current: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:36:10.10000+0100, processed_at=2026-06-11T20:36:10.125344+0100, readonly=True at 0x5584f5afd0>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 0.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:10,403 - iso15118.shared.comm_session (431): Sent PowerDeliveryRes
+INFO    2026-06-11 20:36:10,403 - iso15118.secc.controller.simulator (766): iso15118 state: PowerDelivery
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+INFO    2026-06-11 20:36:11,791 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_COMMON_MSG): {"PowerDeliveryReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206570},"EVProcessing":"Finished","ChargeProgress":"Start","EVPowerProfile":{"TimeAnchor":0,"Scheduled_EVPPTControlMode":{"SelectedScheduleTupleID":1,"PowerToleranceAcceptance":"PowerToleranceConfirmed"},"EVPowerProfileEntries":{"EVPowerProfileEntry":[{"Duration":3600,"Power":{"Exponent":3,"Value":10}}]}},"BPT_ChannelSelection":"Charge"}}
+INFO    2026-06-11 20:36:11,793 - iso15118.shared.comm_session (235): PowerDeliveryReq received
+DEBUG    2026-06-11 20:36:11,795 - iso15118.secc.states.iso15118_20_states (1197): State is CpState.C2
+INFO    2026-06-11 20:36:11,796 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_COMMON_MSG): {"PowerDeliveryRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206571}, "ResponseCode": "OK"}}
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 0.0
+INFO    2026-06-11 20:36:12,105 - iso15118.shared.comm_session (431): Sent PowerDeliveryRes
+INFO    2026-06-11 20:36:12,106 - iso15118.secc.controller.simulator (766): iso15118 state: PowerDelivery
+INFO    2026-06-11 20:36:12,106 - iso15118.shared.states (139): Entered state DCChargeLoop
+DEBUG    2026-06-11 20:36:12,107 - iso15118.shared.states (143): Waiting for up to Timeouts.V2G_EVCC_COMMUNICATION_SETUP_TIMEOUT s
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 0.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+INFO    2026-06-11 20:36:12,905 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206572},"DisplayParameters":{"PresentSOC":80,"ChargingComplete":false},"MeterInfoRequested":false,"EVPresentVoltage":{"Exponent":3,"Value":20},"BPT_Scheduled_DC_CLReqControlMode":{"EVTargetCurrent":{"Exponent":-2,"Value":1817},"EVTargetVoltage":{"Exponent":-1,"Value":5504}}}}
+INFO    2026-06-11 20:36:12,907 - iso15118.shared.comm_session (235): DC_ChargeLoopReq received
+DEBUG    2026-06-11 20:36:12,908 - telemetry_evse_controller (53): Telemetry updated: Telemetry(soc_percent=80.0, soh_percent=100.0, power_kw=10.000768, voltage_v=550.4, current_a=18.17, charging=False)
+INFO    2026-06-11 20:36:12,909 - iso15118.secc.controller.simulator (1103): Send display params to CS.
+INFO    2026-06-11 20:36:12,915 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206572}, "ResponseCode": "OK", "EVSEPresentCurrent": {"Exponent": 0, "Value": 1}, "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}, "EVSEPowerLimitAchieved": false, "EVSECurrentLimitAchieved": false, "EVSEVoltageLimitAchieved": false, "BPT_Scheduled_DC_CLResControlMode": {"EVSEMaximumChargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumChargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumChargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMaximumVoltage": {"Exponent": 0, "Value": 500}, "EVSEMaximumDischargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumDischargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumDischargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMinimumVoltage": {"Exponent": 0, "Value": 10}}}}
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 10.000767707824707
+INFO    2026-06-11 20:36:13,151 - iso15118.shared.comm_session (431): Sent DC_ChargeLoopRes
+INFO    2026-06-11 20:36:13,151 - iso15118.secc.controller.simulator (766): iso15118 state: DCChargeLoop
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+INFO    2026-06-11 20:36:13,777 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206573},"DisplayParameters":{"PresentSOC":80,"ChargingComplete":false},"MeterInfoRequested":false,"EVPresentVoltage":{"Exponent":3,"Value":20},"BPT_Scheduled_DC_CLReqControlMode":{"EVTargetCurrent":{"Exponent":-2,"Value":1853},"EVTargetVoltage":{"Exponent":-1,"Value":5504}}}}
+INFO    2026-06-11 20:36:13,779 - iso15118.shared.comm_session (235): DC_ChargeLoopReq received
+DEBUG    2026-06-11 20:36:13,781 - telemetry_evse_controller (53): Telemetry updated: Telemetry(soc_percent=80.0, soh_percent=100.0, power_kw=10.198912, voltage_v=550.4, current_a=18.53, charging=False)
+INFO    2026-06-11 20:36:13,781 - iso15118.secc.controller.simulator (1103): Send display params to CS.
+INFO    2026-06-11 20:36:13,786 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206573}, "ResponseCode": "OK", "EVSEPresentCurrent": {"Exponent": 0, "Value": 1}, "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}, "EVSEPowerLimitAchieved": false, "EVSECurrentLimitAchieved": false, "EVSEVoltageLimitAchieved": false, "BPT_Scheduled_DC_CLResControlMode": {"EVSEMaximumChargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumChargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumChargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMaximumVoltage": {"Exponent": 0, "Value": 500}, "EVSEMaximumDischargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumDischargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumDischargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMinimumVoltage": {"Exponent": 0, "Value": 10}}}}
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 10.198911666870117
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=LOWER, qualifier=NONE, recorded_at=2026-06-11T20:36:10.10000+0100, processed_at=2026-06-11T20:36:10.125344+0100, readonly=True at 0x5584f5afd0>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:14.235000+0100, processed_at=2026-06-11T20:36:14.250906+0100, readonly=True at 0x7f74001660>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 80.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:14,447 - iso15118.shared.comm_session (431): Sent DC_ChargeLoopRes
+INFO    2026-06-11 20:36:14,447 - iso15118.secc.controller.simulator (766): iso15118 state: DCChargeLoop
+Keep alive until disconnected
+INFO    2026-06-11 20:36:15,079 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206574},"DisplayParameters":{"PresentSOC":81,"ChargingComplete":false},"MeterInfoRequested":false,"EVPresentVoltage":{"Exponent":3,"Value":20},"BPT_Scheduled_DC_CLReqControlMode":{"EVTargetCurrent":{"Exponent":-2,"Value":1890},"EVTargetVoltage":{"Exponent":-1,"Value":5504}}}}
+INFO    2026-06-11 20:36:15,082 - iso15118.shared.comm_session (235): DC_ChargeLoopReq received
+DEBUG    2026-06-11 20:36:15,082 - telemetry_evse_controller (53): Telemetry updated: Telemetry(soc_percent=81.0, soh_percent=100.0, power_kw=10.402560000000001, voltage_v=550.4, current_a=18.900000000000002, charging=False)
+INFO    2026-06-11 20:36:15,083 - iso15118.secc.controller.simulator (1103): Send display params to CS.
+INFO    2026-06-11 20:36:15,087 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206575}, "ResponseCode": "OK", "EVSEPresentCurrent": {"Exponent": 0, "Value": 1}, "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}, "EVSEPowerLimitAchieved": false, "EVSECurrentLimitAchieved": false, "EVSEVoltageLimitAchieved": false, "BPT_Scheduled_DC_CLResControlMode": {"EVSEMaximumChargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumChargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumChargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMaximumVoltage": {"Exponent": 0, "Value": 500}, "EVSEMaximumDischargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumDischargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumDischargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMinimumVoltage": {"Exponent": 0, "Value": 10}}}}
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 10.402560234069824
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 81.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:15,292 - iso15118.shared.comm_session (431): Sent DC_ChargeLoopRes
+INFO    2026-06-11 20:36:15,293 - iso15118.secc.controller.simulator (766): iso15118 state: DCChargeLoop
+Keep alive until disconnected
+INFO    2026-06-11 20:36:15,864 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206575},"DisplayParameters":{"PresentSOC":82,"ChargingComplete":false},"MeterInfoRequested":false,"EVPresentVoltage":{"Exponent":3,"Value":20},"BPT_Scheduled_DC_CLReqControlMode":{"EVTargetCurrent":{"Exponent":-2,"Value":1908},"EVTargetVoltage":{"Exponent":-1,"Value":5504}}}}
+INFO    2026-06-11 20:36:15,867 - iso15118.shared.comm_session (235): DC_ChargeLoopReq received
+DEBUG    2026-06-11 20:36:15,868 - telemetry_evse_controller (53): Telemetry updated: Telemetry(soc_percent=82.0, soh_percent=100.0, power_kw=10.501632, voltage_v=550.4, current_a=19.080000000000002, charging=False)
+INFO    2026-06-11 20:36:15,868 - iso15118.secc.controller.simulator (1103): Send display params to CS.
+INFO    2026-06-11 20:36:15,873 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206575}, "ResponseCode": "OK", "EVSEPresentCurrent": {"Exponent": 0, "Value": 1}, "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}, "EVSEPowerLimitAchieved": false, "EVSECurrentLimitAchieved": false, "EVSEVoltageLimitAchieved": false, "BPT_Scheduled_DC_CLResControlMode": {"EVSEMaximumChargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumChargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumChargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMaximumVoltage": {"Exponent": 0, "Value": 500}, "EVSEMaximumDischargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumDischargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumDischargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMinimumVoltage": {"Exponent": 0, "Value": 10}}}}
+INFO    2026-06-11 20:36:16,121 - iso15118.shared.comm_session (431): Sent DC_ChargeLoopRes
+INFO    2026-06-11 20:36:16,121 - iso15118.secc.controller.simulator (766): iso15118 state: DCChargeLoop
+DEBUG    2026-06-11 20:36:16,123 - websockets.client (609): < PING f2 2f 8e 2e [binary, 4 bytes]
+DEBUG    2026-06-11 20:36:16,124 - websockets.client (755): > PONG f2 2f 8e 2e [binary, 4 bytes]
+DEBUG    2026-06-11 20:36:16,125 - websockets.client (755): > PING 6c d0 12 56 [binary, 4 bytes]
+DEBUG    2026-06-11 20:36:16,127 - websockets.client (829): % sent keepalive ping
+DEBUG    2026-06-11 20:36:16,134 - websockets.client (609): < PONG 6c d0 12 56 [binary, 4 bytes]
+DEBUG    2026-06-11 20:36:16,135 - websockets.client (840): % received keepalive pong
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 82.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 10.501631736755371
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+INFO    2026-06-11 20:36:16,726 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206576},"DisplayParameters":{"PresentSOC":82,"ChargingComplete":false},"MeterInfoRequested":false,"EVPresentVoltage":{"Exponent":3,"Value":20},"BPT_Scheduled_DC_CLReqControlMode":{"EVTargetCurrent":{"Exponent":-2,"Value":1926},"EVTargetVoltage":{"Exponent":-1,"Value":5504}}}}
+INFO    2026-06-11 20:36:16,728 - iso15118.shared.comm_session (235): DC_ChargeLoopReq received
+DEBUG    2026-06-11 20:36:16,729 - telemetry_evse_controller (53): Telemetry updated: Telemetry(soc_percent=82.0, soh_percent=100.0, power_kw=10.600704, voltage_v=550.4, current_a=19.26, charging=False)
+INFO    2026-06-11 20:36:16,730 - iso15118.secc.controller.simulator (1103): Send display params to CS.
+INFO    2026-06-11 20:36:16,734 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206576}, "ResponseCode": "OK", "EVSEPresentCurrent": {"Exponent": 0, "Value": 1}, "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}, "EVSEPowerLimitAchieved": false, "EVSECurrentLimitAchieved": false, "EVSEVoltageLimitAchieved": false, "BPT_Scheduled_DC_CLResControlMode": {"EVSEMaximumChargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumChargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumChargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMaximumVoltage": {"Exponent": 0, "Value": 500}, "EVSEMaximumDischargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumDischargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumDischargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMinimumVoltage": {"Exponent": 0, "Value": 10}}}}
+INFO    2026-06-11 20:36:16,936 - iso15118.shared.comm_session (431): Sent DC_ChargeLoopRes
+INFO    2026-06-11 20:36:16,936 - iso15118.secc.controller.simulator (766): iso15118 state: DCChargeLoop
+INFO    2026-06-11 20:36:16,952 - ocpp (471): CP_1: send [2,"9cd1e0c6-e172-4289-9fa8-58e10bedeab5","Heartbeat",{}]
+DEBUG    2026-06-11 20:36:16,953 - websockets.client (755): > TEXT '[2,"9cd1e0c6-e172-4289-9fa8-58e10bedeab5","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-11 20:36:16,957 - websockets.client (609): < TEXT '[3,"9cd1e0c6-e172-4289-9fa8-58e10bedeab5",{"cur...2026-06-11T19:36:16Z"}]' [81 bytes]
+INFO    2026-06-11 20:36:16,958 - ocpp (247): CP_1: receive message [3,"9cd1e0c6-e172-4289-9fa8-58e10bedeab5",{"currentTime":"2026-06-11T19:36:16Z"}]
+INFO    2026-06-11 20:36:16,960 - ocpp (471): CP_1: send [2,"9fb36f35-846a-4d3c-9f0a-af8a06f4acbc","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-11T19:36:16Z","sampledValue":[{"value":10600.704,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":29.446,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":82.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-11 20:36:16,961 - websockets.client (755): > TEXT '[2,"9fb36f35-846a-4d3c-9f0a-af8a06f4acbc","Mete..."Sample.Periodic"}]}]}]' [464 bytes]
+DEBUG    2026-06-11 20:36:16,966 - websockets.client (609): < TEXT '[3,"9fb36f35-846a-4d3c-9f0a-af8a06f4acbc",{}]' [45 bytes]
+INFO    2026-06-11 20:36:16,967 - ocpp (247): CP_1: receive message [3,"9fb36f35-846a-4d3c-9f0a-af8a06f4acbc",{}]
+INFO    2026-06-11 20:36:16,970 - root (100): MeterValues sent | EVSE 1 | Power: 10600.7 W (⬇ Charging) | SoC: 82.0% | Energy: 29.45 Wh
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 82.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 10.600704193115234
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:17,466 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206577},"DisplayParameters":{"PresentSOC":82,"ChargingComplete":false},"MeterInfoRequested":false,"EVPresentVoltage":{"Exponent":3,"Value":20},"BPT_Scheduled_DC_CLReqControlMode":{"EVTargetCurrent":{"Exponent":-2,"Value":1944},"EVTargetVoltage":{"Exponent":-1,"Value":5504}}}}
+INFO    2026-06-11 20:36:17,469 - iso15118.shared.comm_session (235): DC_ChargeLoopReq received
+DEBUG    2026-06-11 20:36:17,470 - telemetry_evse_controller (53): Telemetry updated: Telemetry(soc_percent=82.0, soh_percent=100.0, power_kw=10.699776, voltage_v=550.4, current_a=19.44, charging=False)
+INFO    2026-06-11 20:36:17,470 - iso15118.secc.controller.simulator (1103): Send display params to CS.
+INFO    2026-06-11 20:36:17,476 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206577}, "ResponseCode": "OK", "EVSEPresentCurrent": {"Exponent": 0, "Value": 1}, "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}, "EVSEPowerLimitAchieved": false, "EVSECurrentLimitAchieved": false, "EVSEVoltageLimitAchieved": false, "BPT_Scheduled_DC_CLResControlMode": {"EVSEMaximumChargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumChargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumChargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMaximumVoltage": {"Exponent": 0, "Value": 500}, "EVSEMaximumDischargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumDischargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumDischargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMinimumVoltage": {"Exponent": 0, "Value": 10}}}}
+INFO    2026-06-11 20:36:17,724 - iso15118.shared.comm_session (431): Sent DC_ChargeLoopRes
+INFO    2026-06-11 20:36:17,724 - iso15118.secc.controller.simulator (766): iso15118 state: DCChargeLoop
+Keep alive until disconnected
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:14.235000+0100, processed_at=2026-06-11T20:36:14.250906+0100, readonly=True at 0x7f74001660>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:17.415000+0100, processed_at=2026-06-11T20:36:18.230999+0100, readonly=True at 0x5584f5afd0>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 82.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:18,283 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206577},"DisplayParameters":{"PresentSOC":83,"ChargingComplete":false},"MeterInfoRequested":false,"EVPresentVoltage":{"Exponent":3,"Value":20},"BPT_Scheduled_DC_CLReqControlMode":{"EVTargetCurrent":{"Exponent":-2,"Value":1962},"EVTargetVoltage":{"Exponent":-1,"Value":5504}}}}
+INFO    2026-06-11 20:36:18,285 - iso15118.shared.comm_session (235): DC_ChargeLoopReq received
+DEBUG    2026-06-11 20:36:18,286 - telemetry_evse_controller (53): Telemetry updated: Telemetry(soc_percent=83.0, soh_percent=100.0, power_kw=10.798848, voltage_v=550.4, current_a=19.62, charging=False)
+INFO    2026-06-11 20:36:18,287 - iso15118.secc.controller.simulator (1103): Send display params to CS.
+INFO    2026-06-11 20:36:18,292 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206578}, "ResponseCode": "OK", "EVSEPresentCurrent": {"Exponent": 0, "Value": 1}, "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}, "EVSEPowerLimitAchieved": false, "EVSECurrentLimitAchieved": false, "EVSEVoltageLimitAchieved": false, "BPT_Scheduled_DC_CLResControlMode": {"EVSEMaximumChargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumChargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumChargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMaximumVoltage": {"Exponent": 0, "Value": 500}, "EVSEMaximumDischargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumDischargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumDischargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMinimumVoltage": {"Exponent": 0, "Value": 10}}}}
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: 10.798848152160645
+INFO    2026-06-11 20:36:18,478 - iso15118.shared.comm_session (431): Sent DC_ChargeLoopRes
+INFO    2026-06-11 20:36:18,479 - iso15118.secc.controller.simulator (766): iso15118 state: DCChargeLoop
+Keep alive until disconnected
+INFO    2026-06-11 20:36:19,053 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206578},"DisplayParameters":{"PresentSOC":84,"ChargingComplete":false},"MeterInfoRequested":false,"EVPresentVoltage":{"Exponent":3,"Value":20},"BPT_Scheduled_DC_CLReqControlMode":{"EVTargetCurrent":{"Exponent":-3,"Value":-9084},"EVTargetVoltage":{"Exponent":-1,"Value":5504}}}}
+INFO    2026-06-11 20:36:19,055 - iso15118.shared.comm_session (235): DC_ChargeLoopReq received
+DEBUG    2026-06-11 20:36:19,057 - telemetry_evse_controller (53): Telemetry updated: Telemetry(soc_percent=84.0, soh_percent=100.0, power_kw=-4.9998336, voltage_v=550.4, current_a=-9.084, charging=False)
+INFO    2026-06-11 20:36:19,058 - iso15118.secc.controller.simulator (1103): Send display params to CS.
+INFO    2026-06-11 20:36:19,063 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206579}, "ResponseCode": "OK", "EVSEPresentCurrent": {"Exponent": 0, "Value": 1}, "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}, "EVSEPowerLimitAchieved": false, "EVSECurrentLimitAchieved": false, "EVSEVoltageLimitAchieved": false, "BPT_Scheduled_DC_CLResControlMode": {"EVSEMaximumChargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumChargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumChargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMaximumVoltage": {"Exponent": 0, "Value": 500}, "EVSEMaximumDischargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumDischargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumDischargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMinimumVoltage": {"Exponent": 0, "Value": 10}}}}
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 84.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:19,305 - iso15118.shared.comm_session (431): Sent DC_ChargeLoopRes
+INFO    2026-06-11 20:36:19,306 - iso15118.secc.controller.simulator (766): iso15118 state: DCChargeLoop
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -4.999833583831787
+INFO    2026-06-11 20:36:19,839 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206579},"DisplayParameters":{"PresentSOC":83,"ChargingComplete":false},"MeterInfoRequested":false,"EVPresentVoltage":{"Exponent":3,"Value":20},"BPT_Scheduled_DC_CLReqControlMode":{"EVTargetCurrent":{"Exponent":-3,"Value":-9266},"EVTargetVoltage":{"Exponent":-1,"Value":5504}}}}
+INFO    2026-06-11 20:36:19,841 - iso15118.shared.comm_session (235): DC_ChargeLoopReq received
+DEBUG    2026-06-11 20:36:19,843 - telemetry_evse_controller (53): Telemetry updated: Telemetry(soc_percent=83.0, soh_percent=100.0, power_kw=-5.1000064, voltage_v=550.4, current_a=-9.266, charging=False)
+INFO    2026-06-11 20:36:19,843 - iso15118.secc.controller.simulator (1103): Send display params to CS.
+INFO    2026-06-11 20:36:19,849 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206579}, "ResponseCode": "OK", "EVSEPresentCurrent": {"Exponent": 0, "Value": 1}, "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}, "EVSEPowerLimitAchieved": false, "EVSECurrentLimitAchieved": false, "EVSEVoltageLimitAchieved": false, "BPT_Scheduled_DC_CLResControlMode": {"EVSEMaximumChargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumChargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumChargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMaximumVoltage": {"Exponent": 0, "Value": 500}, "EVSEMaximumDischargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumDischargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumDischargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMinimumVoltage": {"Exponent": 0, "Value": 10}}}}
+INFO    2026-06-11 20:36:20,027 - iso15118.shared.comm_session (431): Sent DC_ChargeLoopRes
+INFO    2026-06-11 20:36:20,028 - iso15118.secc.controller.simulator (766): iso15118 state: DCChargeLoop
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 83.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.100006580352783
+INFO    2026-06-11 20:36:20,594 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206580},"DisplayParameters":{"PresentSOC":82,"ChargingComplete":false},"MeterInfoRequested":false,"EVPresentVoltage":{"Exponent":3,"Value":20},"BPT_Scheduled_DC_CLReqControlMode":{"EVTargetCurrent":{"Exponent":-3,"Value":-9448},"EVTargetVoltage":{"Exponent":-1,"Value":5504}}}}
+INFO    2026-06-11 20:36:20,596 - iso15118.shared.comm_session (235): DC_ChargeLoopReq received
+DEBUG    2026-06-11 20:36:20,597 - telemetry_evse_controller (53): Telemetry updated: Telemetry(soc_percent=82.0, soh_percent=100.0, power_kw=-5.2001792, voltage_v=550.4, current_a=-9.448, charging=False)
+INFO    2026-06-11 20:36:20,598 - iso15118.secc.controller.simulator (1103): Send display params to CS.
+INFO    2026-06-11 20:36:20,603 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206580}, "ResponseCode": "OK", "EVSEPresentCurrent": {"Exponent": 0, "Value": 1}, "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}, "EVSEPowerLimitAchieved": false, "EVSECurrentLimitAchieved": false, "EVSEVoltageLimitAchieved": false, "BPT_Scheduled_DC_CLResControlMode": {"EVSEMaximumChargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumChargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumChargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMaximumVoltage": {"Exponent": 0, "Value": 500}, "EVSEMaximumDischargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumDischargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumDischargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMinimumVoltage": {"Exponent": 0, "Value": 10}}}}
+INFO    2026-06-11 20:36:20,840 - iso15118.shared.comm_session (431): Sent DC_ChargeLoopRes
+INFO    2026-06-11 20:36:20,841 - iso15118.secc.controller.simulator (766): iso15118 state: DCChargeLoop
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 82.0
+INFO    2026-06-11 20:36:21,346 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206581},"DisplayParameters":{"PresentSOC":82,"ChargingComplete":false},"MeterInfoRequested":false,"EVPresentVoltage":{"Exponent":3,"Value":20},"BPT_Scheduled_DC_CLReqControlMode":{"EVTargetCurrent":{"Exponent":-3,"Value":-9629},"EVTargetVoltage":{"Exponent":-1,"Value":5504}}}}
+INFO    2026-06-11 20:36:21,349 - iso15118.shared.comm_session (235): DC_ChargeLoopReq received
+DEBUG    2026-06-11 20:36:21,350 - telemetry_evse_controller (53): Telemetry updated: Telemetry(soc_percent=82.0, soh_percent=100.0, power_kw=-5.2998015999999994, voltage_v=550.4, current_a=-9.629, charging=False)
+INFO    2026-06-11 20:36:21,350 - iso15118.secc.controller.simulator (1103): Send display params to CS.
+INFO    2026-06-11 20:36:21,355 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206581}, "ResponseCode": "OK", "EVSEPresentCurrent": {"Exponent": 0, "Value": 1}, "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}, "EVSEPowerLimitAchieved": false, "EVSECurrentLimitAchieved": false, "EVSEVoltageLimitAchieved": false, "BPT_Scheduled_DC_CLResControlMode": {"EVSEMaximumChargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumChargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumChargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMaximumVoltage": {"Exponent": 0, "Value": 500}, "EVSEMaximumDischargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumDischargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumDischargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMinimumVoltage": {"Exponent": 0, "Value": 10}}}}
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:21,532 - iso15118.shared.comm_session (431): Sent DC_ChargeLoopRes
+INFO    2026-06-11 20:36:21,533 - iso15118.secc.controller.simulator (766): iso15118 state: DCChargeLoop
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.299801826477051
+INFO    2026-06-11 20:36:22,133 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206581},"DisplayParameters":{"PresentSOC":82,"ChargingComplete":false},"MeterInfoRequested":false,"EVPresentVoltage":{"Exponent":3,"Value":20},"BPT_Scheduled_DC_CLReqControlMode":{"EVTargetCurrent":{"Exponent":-3,"Value":-9811},"EVTargetVoltage":{"Exponent":-1,"Value":5504}}}}
+INFO    2026-06-11 20:36:22,135 - iso15118.shared.comm_session (235): DC_ChargeLoopReq received
+DEBUG    2026-06-11 20:36:22,137 - telemetry_evse_controller (53): Telemetry updated: Telemetry(soc_percent=82.0, soh_percent=100.0, power_kw=-5.3999744, voltage_v=550.4, current_a=-9.811, charging=False)
+INFO    2026-06-11 20:36:22,138 - iso15118.secc.controller.simulator (1103): Send display params to CS.
+INFO    2026-06-11 20:36:22,144 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206582}, "ResponseCode": "OK", "EVSEPresentCurrent": {"Exponent": 0, "Value": 1}, "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}, "EVSEPowerLimitAchieved": false, "EVSECurrentLimitAchieved": false, "EVSEVoltageLimitAchieved": false, "BPT_Scheduled_DC_CLResControlMode": {"EVSEMaximumChargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumChargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumChargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMaximumVoltage": {"Exponent": 0, "Value": 500}, "EVSEMaximumDischargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumDischargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumDischargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMinimumVoltage": {"Exponent": 0, "Value": 10}}}}
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:17.415000+0100, processed_at=2026-06-11T20:36:18.230999+0100, readonly=True at 0x5584f5afd0>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:21.648000+0100, processed_at=2026-06-11T20:36:22.264638+0100, readonly=True at 0x7f74001660>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 82.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:22,329 - iso15118.shared.comm_session (431): Sent DC_ChargeLoopRes
+INFO    2026-06-11 20:36:22,330 - iso15118.secc.controller.simulator (766): iso15118 state: DCChargeLoop
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.399974346160889
+INFO    2026-06-11 20:36:22,839 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206582},"DisplayParameters":{"PresentSOC":81,"ChargingComplete":false},"MeterInfoRequested":false,"EVPresentVoltage":{"Exponent":3,"Value":20},"BPT_Scheduled_DC_CLReqControlMode":{"EVTargetCurrent":{"Exponent":-3,"Value":-9993},"EVTargetVoltage":{"Exponent":-1,"Value":5504}}}}
+INFO    2026-06-11 20:36:22,841 - iso15118.shared.comm_session (235): DC_ChargeLoopReq received
+DEBUG    2026-06-11 20:36:22,842 - telemetry_evse_controller (53): Telemetry updated: Telemetry(soc_percent=81.0, soh_percent=100.0, power_kw=-5.500147200000001, voltage_v=550.4, current_a=-9.993, charging=False)
+INFO    2026-06-11 20:36:22,843 - iso15118.secc.controller.simulator (1103): Send display params to CS.
+INFO    2026-06-11 20:36:22,847 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206582}, "ResponseCode": "OK", "EVSEPresentCurrent": {"Exponent": 0, "Value": 1}, "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}, "EVSEPowerLimitAchieved": false, "EVSECurrentLimitAchieved": false, "EVSEVoltageLimitAchieved": false, "BPT_Scheduled_DC_CLResControlMode": {"EVSEMaximumChargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumChargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumChargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMaximumVoltage": {"Exponent": 0, "Value": 500}, "EVSEMaximumDischargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumDischargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumDischargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMinimumVoltage": {"Exponent": 0, "Value": 10}}}}
+INFO    2026-06-11 20:36:23,023 - iso15118.shared.comm_session (431): Sent DC_ChargeLoopRes
+INFO    2026-06-11 20:36:23,024 - iso15118.secc.controller.simulator (766): iso15118 state: DCChargeLoop
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 81.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+INFO    2026-06-11 20:36:23,607 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206583},"DisplayParameters":{"PresentSOC":80,"ChargingComplete":false},"MeterInfoRequested":false,"EVPresentVoltage":{"Exponent":3,"Value":20},"BPT_Scheduled_DC_CLReqControlMode":{"EVTargetCurrent":{"Exponent":-2,"Value":-1017},"EVTargetVoltage":{"Exponent":-1,"Value":5504}}}}
+INFO    2026-06-11 20:36:23,609 - iso15118.shared.comm_session (235): DC_ChargeLoopReq received
+DEBUG    2026-06-11 20:36:23,610 - telemetry_evse_controller (53): Telemetry updated: Telemetry(soc_percent=80.0, soh_percent=100.0, power_kw=-5.597567999999999, voltage_v=550.4, current_a=-10.17, charging=False)
+INFO    2026-06-11 20:36:23,610 - iso15118.secc.controller.simulator (1103): Send display params to CS.
+INFO    2026-06-11 20:36:23,614 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206583}, "ResponseCode": "OK", "EVSEPresentCurrent": {"Exponent": 0, "Value": 1}, "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}, "EVSEPowerLimitAchieved": false, "EVSECurrentLimitAchieved": false, "EVSEVoltageLimitAchieved": false, "BPT_Scheduled_DC_CLResControlMode": {"EVSEMaximumChargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumChargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumChargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMaximumVoltage": {"Exponent": 0, "Value": 500}, "EVSEMaximumDischargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumDischargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumDischargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMinimumVoltage": {"Exponent": 0, "Value": 10}}}}
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.597568035125732
+INFO    2026-06-11 20:36:23,807 - iso15118.shared.comm_session (431): Sent DC_ChargeLoopRes
+INFO    2026-06-11 20:36:23,807 - iso15118.secc.controller.simulator (766): iso15118 state: DCChargeLoop
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:24,323 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206583},"DisplayParameters":{"PresentSOC":80,"ChargingComplete":true},"MeterInfoRequested":false,"EVPresentVoltage":{"Exponent":3,"Value":20},"BPT_Scheduled_DC_CLReqControlMode":{"EVTargetCurrent":{"Exponent":-2,"Value":-1036},"EVTargetVoltage":{"Exponent":-1,"Value":5504}}}}
+INFO    2026-06-11 20:36:24,325 - iso15118.shared.comm_session (235): DC_ChargeLoopReq received
+DEBUG    2026-06-11 20:36:24,326 - telemetry_evse_controller (53): Telemetry updated: Telemetry(soc_percent=80.0, soh_percent=100.0, power_kw=-5.702144, voltage_v=550.4, current_a=-10.36, charging=False)
+INFO    2026-06-11 20:36:24,326 - iso15118.secc.controller.simulator (1103): Send display params to CS.
+INFO    2026-06-11 20:36:24,330 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_ChargeLoopRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206584}, "ResponseCode": "OK", "EVSEPresentCurrent": {"Exponent": 0, "Value": 1}, "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}, "EVSEPowerLimitAchieved": false, "EVSECurrentLimitAchieved": false, "EVSEVoltageLimitAchieved": false, "BPT_Scheduled_DC_CLResControlMode": {"EVSEMaximumChargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumChargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumChargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMaximumVoltage": {"Exponent": 0, "Value": 500}, "EVSEMaximumDischargePower": {"Exponent": 0, "Value": 1000}, "EVSEMinimumDischargePower": {"Exponent": 0, "Value": 100}, "EVSEMaximumDischargeCurrent": {"Exponent": 0, "Value": 100}, "EVSEMinimumVoltage": {"Exponent": 0, "Value": 10}}}}
+INFO    2026-06-11 20:36:24,507 - iso15118.shared.comm_session (431): Sent DC_ChargeLoopRes
+INFO    2026-06-11 20:36:24,507 - iso15118.secc.controller.simulator (766): iso15118 state: DCChargeLoop
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+INFO    2026-06-11 20:36:25,281 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_COMMON_MSG): {"PowerDeliveryReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206584},"EVProcessing":"Finished","ChargeProgress":"Stop"}}
+INFO    2026-06-11 20:36:25,282 - iso15118.shared.comm_session (235): PowerDeliveryReq received
+INFO    2026-06-11 20:36:25,283 - iso15118.shared.states (139): Entered state PowerDelivery
+DEBUG    2026-06-11 20:36:25,283 - iso15118.shared.states (143): Waiting for up to Timeouts.V2G_EVCC_COMMUNICATION_SETUP_TIMEOUT s
+INFO    2026-06-11 20:36:25,285 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_COMMON_MSG): {"PowerDeliveryRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206585}, "ResponseCode": "OK"}}
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:25,532 - iso15118.shared.comm_session (431): Sent PowerDeliveryRes
+INFO    2026-06-11 20:36:25,533 - iso15118.secc.controller.simulator (766): iso15118 state: PowerDelivery
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:21.648000+0100, processed_at=2026-06-11T20:36:22.264638+0100, readonly=True at 0x7f74001660>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:25.874000+0100, processed_at=2026-06-11T20:36:26.289230+0100, readonly=True at 0x5584f5afd0>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 80.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:26,536 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_WeldingDetectionReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206586},"EVProcessing":"Ongoing"}}
+INFO    2026-06-11 20:36:26,537 - iso15118.shared.comm_session (235): DC_WeldingDetectionReq received
+INFO    2026-06-11 20:36:26,538 - iso15118.shared.states (139): Entered state DCWeldingDetection
+DEBUG    2026-06-11 20:36:26,539 - iso15118.shared.states (143): Waiting for up to Timeouts.V2G_EVCC_COMMUNICATION_SETUP_TIMEOUT s
+INFO    2026-06-11 20:36:26,542 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_WeldingDetectionRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206586}, "ResponseCode": "OK", "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}}}
+INFO    2026-06-11 20:36:26,741 - iso15118.shared.comm_session (431): Sent DC_WeldingDetectionRes
+INFO    2026-06-11 20:36:26,742 - iso15118.secc.controller.simulator (766): iso15118 state: DCWeldingDetection
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+INFO    2026-06-11 20:36:26,967 - ocpp (471): CP_1: send [2,"f40533b2-2792-4e16-ba07-f9e52029f6f2","Heartbeat",{}]
+DEBUG    2026-06-11 20:36:26,967 - websockets.client (755): > TEXT '[2,"f40533b2-2792-4e16-ba07-f9e52029f6f2","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-11 20:36:26,982 - websockets.client (609): < TEXT '[3,"f40533b2-2792-4e16-ba07-f9e52029f6f2",{"cur...2026-06-11T19:36:26Z"}]' [81 bytes]
+INFO    2026-06-11 20:36:26,983 - ocpp (247): CP_1: receive message [3,"f40533b2-2792-4e16-ba07-f9e52029f6f2",{"currentTime":"2026-06-11T19:36:26Z"}]
+INFO    2026-06-11 20:36:26,984 - ocpp (471): CP_1: send [2,"e8cdbb01-0b63-4795-82f8-b575f46dd003","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-11T19:36:26Z","sampledValue":[{"value":-5702.143999999999,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":29.446,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":80.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-11 20:36:26,986 - websockets.client (755): > TEXT '[2,"e8cdbb01-0b63-4795-82f8-b575f46dd003","Mete..."Sample.Periodic"}]}]}]' [473 bytes]
+DEBUG    2026-06-11 20:36:26,990 - websockets.client (609): < TEXT '[3,"e8cdbb01-0b63-4795-82f8-b575f46dd003",{}]' [45 bytes]
+INFO    2026-06-11 20:36:26,991 - ocpp (247): CP_1: receive message [3,"e8cdbb01-0b63-4795-82f8-b575f46dd003",{}]
+INFO    2026-06-11 20:36:26,994 - root (100): MeterValues sent | EVSE 1 | Power: -5702.1 W (⬆ V2G discharge) | SoC: 80.0% | Energy: 29.45 Wh
+INFO    2026-06-11 20:36:27,185 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_WeldingDetectionReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206586},"EVProcessing":"Ongoing"}}
+INFO    2026-06-11 20:36:27,186 - iso15118.shared.comm_session (235): DC_WeldingDetectionReq received
+INFO    2026-06-11 20:36:27,188 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_WeldingDetectionRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206587}, "ResponseCode": "OK", "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}}}
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:27,336 - iso15118.shared.comm_session (431): Sent DC_WeldingDetectionRes
+INFO    2026-06-11 20:36:27,336 - iso15118.secc.controller.simulator (766): iso15118 state: DCWeldingDetection
+INFO    2026-06-11 20:36:27,809 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_WeldingDetectionReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206587},"EVProcessing":"Ongoing"}}
+INFO    2026-06-11 20:36:27,811 - iso15118.shared.comm_session (235): DC_WeldingDetectionReq received
+INFO    2026-06-11 20:36:27,813 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_WeldingDetectionRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206587}, "ResponseCode": "OK", "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}}}
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+INFO    2026-06-11 20:36:28,010 - iso15118.shared.comm_session (431): Sent DC_WeldingDetectionRes
+INFO    2026-06-11 20:36:28,011 - iso15118.secc.controller.simulator (766): iso15118 state: DCWeldingDetection
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:28,450 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_WeldingDetectionReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206588},"EVProcessing":"Ongoing"}}
+INFO    2026-06-11 20:36:28,451 - iso15118.shared.comm_session (235): DC_WeldingDetectionReq received
+INFO    2026-06-11 20:36:28,453 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_WeldingDetectionRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206588}, "ResponseCode": "OK", "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}}}
+INFO    2026-06-11 20:36:28,593 - iso15118.shared.comm_session (431): Sent DC_WeldingDetectionRes
+INFO    2026-06-11 20:36:28,594 - iso15118.secc.controller.simulator (766): iso15118 state: DCWeldingDetection
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+INFO    2026-06-11 20:36:29,091 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_DC): {"DC_WeldingDetectionReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206588},"EVProcessing":"Finished"}}
+INFO    2026-06-11 20:36:29,092 - iso15118.shared.comm_session (235): DC_WeldingDetectionReq received
+INFO    2026-06-11 20:36:29,095 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_DC): {"DC_WeldingDetectionRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206589}, "ResponseCode": "OK", "EVSEPresentVoltage": {"Exponent": 0, "Value": 1}}}
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:29,684 - iso15118.shared.comm_session (431): Sent DC_WeldingDetectionRes
+INFO    2026-06-11 20:36:29,685 - iso15118.secc.controller.simulator (766): iso15118 state: DCWeldingDetection
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:25.874000+0100, processed_at=2026-06-11T20:36:26.289230+0100, readonly=True at 0x5584f5afd0>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:30.105000+0100, processed_at=2026-06-11T20:36:30.315590+0100, readonly=True at 0x7f74001660>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 80.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:30,357 - iso15118.shared.exi_codec (302): Decoded message (ns=Namespace.ISO_V20_COMMON_MSG): {"SessionStopReq":{"Header":{"SessionID":"F0B7E933F1D72765","TimeStamp":1781206589},"ChargingSession":"Terminate"}}
+INFO    2026-06-11 20:36:30,358 - iso15118.shared.comm_session (235): SessionStopReq received
+INFO    2026-06-11 20:36:30,359 - iso15118.shared.states (139): Entered state SessionStop
+DEBUG    2026-06-11 20:36:30,359 - iso15118.shared.states (143): Waiting for up to Timeouts.V2G_EVCC_COMMUNICATION_SETUP_TIMEOUT s
+INFO    2026-06-11 20:36:30,362 - iso15118.shared.exi_codec (248): Message to encode (ns=Namespace.ISO_V20_COMMON_MSG): {"SessionStopRes": {"Header": {"SessionID": "F0B7E933F1D72765", "TimeStamp": 1781206590}, "ResponseCode": "OK"}}
+INFO    2026-06-11 20:36:30,630 - iso15118.shared.comm_session (431): Sent SessionStopRes
+INFO    2026-06-11 20:36:30,631 - iso15118.secc.controller.simulator (766): iso15118 state: SessionStop
+INFO    2026-06-11 20:36:30,631 - iso15118.shared.comm_session (395): The data link will SessionStopAction.TERMINATE in 2 seconds and the TCP connection will close in 5 seconds. 
+INFO    2026-06-11 20:36:30,632 - iso15118.shared.comm_session (399): Reason: Communication session terminated. EV Info: 
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:32,635 - iso15118.secc.controller.simulator (1097): Session ended in SessionStop (Communication session terminated. EV Info: ).
+INFO    2026-06-11 20:36:32,636 - iso15118.shared.comm_session (410): SessionStopAction.TERMINATEd the data link
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:30.105000+0100, processed_at=2026-06-11T20:36:30.315590+0100, readonly=True at 0x7f74001660>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:34.330000+0100, processed_at=2026-06-11T20:36:34.438348+0100, readonly=True at 0x5584f5afd0>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 80.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:35,642 - iso15118.shared.comm_session (417): TCP connection closed to peer with address ('fe80::eee2:e83a:9fa:7848', 53024, 0, 2)
+WARNING    2026-06-11 20:36:35,643 - iso15118.secc.transport.tcp_server (149): Closing TCP server
+INFO    2026-06-11 20:36:35,644 - iso15118.secc.transport.udp_server (209): UDP server has been resumed.
+Keep alive until disconnected
+DEBUG    2026-06-11 20:36:35,814 - websockets.client (609): < PING 5d 71 a2 1b [binary, 4 bytes]
+DEBUG    2026-06-11 20:36:35,815 - websockets.client (755): > PONG 5d 71 a2 1b [binary, 4 bytes]
+DEBUG    2026-06-11 20:36:36,129 - websockets.client (755): > PING df 0d 97 e4 [binary, 4 bytes]
+DEBUG    2026-06-11 20:36:36,130 - websockets.client (829): % sent keepalive ping
+DEBUG    2026-06-11 20:36:36,139 - websockets.client (609): < PONG df 0d 97 e4 [binary, 4 bytes]
+DEBUG    2026-06-11 20:36:36,140 - websockets.client (840): % received keepalive pong
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+INFO    2026-06-11 20:36:36,991 - ocpp (471): CP_1: send [2,"cf44e76a-4d3a-42b3-9795-afe567040cbf","Heartbeat",{}]
+DEBUG    2026-06-11 20:36:36,992 - websockets.client (755): > TEXT '[2,"cf44e76a-4d3a-42b3-9795-afe567040cbf","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-11 20:36:37,009 - websockets.client (609): < TEXT '[3,"cf44e76a-4d3a-42b3-9795-afe567040cbf",{"cur...2026-06-11T19:36:36Z"}]' [81 bytes]
+INFO    2026-06-11 20:36:37,012 - ocpp (247): CP_1: receive message [3,"cf44e76a-4d3a-42b3-9795-afe567040cbf",{"currentTime":"2026-06-11T19:36:36Z"}]
+INFO    2026-06-11 20:36:37,014 - ocpp (471): CP_1: send [2,"93a341ef-7832-4174-87d5-51b910a8ce16","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-11T19:36:36Z","sampledValue":[{"value":-5702.143999999999,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":29.446,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":80.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-11 20:36:37,016 - websockets.client (755): > TEXT '[2,"93a341ef-7832-4174-87d5-51b910a8ce16","Mete..."Sample.Periodic"}]}]}]' [473 bytes]
+DEBUG    2026-06-11 20:36:37,022 - websockets.client (609): < TEXT '[3,"93a341ef-7832-4174-87d5-51b910a8ce16",{}]' [45 bytes]
+INFO    2026-06-11 20:36:37,023 - ocpp (247): CP_1: receive message [3,"93a341ef-7832-4174-87d5-51b910a8ce16",{}]
+INFO    2026-06-11 20:36:37,026 - root (100): MeterValues sent | EVSE 1 | Power: -5702.1 W (⬆ V2G discharge) | SoC: 80.0% | Energy: 29.45 Wh
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:34.330000+0100, processed_at=2026-06-11T20:36:34.438348+0100, readonly=True at 0x5584f5afd0>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:38.559000+0100, processed_at=2026-06-11T20:36:38.573223+0100, readonly=True at 0x7f74001660>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 80.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:38.559000+0100, processed_at=2026-06-11T20:36:38.573223+0100, readonly=True at 0x7f74001660>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:41.731000+0100, processed_at=2026-06-11T20:36:42.545207+0100, readonly=True at 0x5584f5afd0>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 80.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:41.731000+0100, processed_at=2026-06-11T20:36:42.545207+0100, readonly=True at 0x5584f5afd0>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:45.961000+0100, processed_at=2026-06-11T20:36:46.576615+0100, readonly=True at 0x7f74001660>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 80.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+INFO    2026-06-11 20:36:47,023 - ocpp (471): CP_1: send [2,"5c96e6f0-e463-4860-82b6-aeec39d382f7","Heartbeat",{}]
+DEBUG    2026-06-11 20:36:47,024 - websockets.client (755): > TEXT '[2,"5c96e6f0-e463-4860-82b6-aeec39d382f7","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-11 20:36:47,042 - websockets.client (609): < TEXT '[3,"5c96e6f0-e463-4860-82b6-aeec39d382f7",{"cur...2026-06-11T19:36:47Z"}]' [81 bytes]
+INFO    2026-06-11 20:36:47,043 - ocpp (247): CP_1: receive message [3,"5c96e6f0-e463-4860-82b6-aeec39d382f7",{"currentTime":"2026-06-11T19:36:47Z"}]
+INFO    2026-06-11 20:36:47,046 - ocpp (471): CP_1: send [2,"80c2301c-58bc-4f6c-a8d6-53bf5f163eb4","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-11T19:36:47Z","sampledValue":[{"value":-5702.143999999999,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":29.446,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":80.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-11 20:36:47,048 - websockets.client (755): > TEXT '[2,"80c2301c-58bc-4f6c-a8d6-53bf5f163eb4","Mete..."Sample.Periodic"}]}]}]' [473 bytes]
+DEBUG    2026-06-11 20:36:47,053 - websockets.client (609): < TEXT '[3,"80c2301c-58bc-4f6c-a8d6-53bf5f163eb4",{}]' [45 bytes]
+INFO    2026-06-11 20:36:47,054 - ocpp (247): CP_1: receive message [3,"80c2301c-58bc-4f6c-a8d6-53bf5f163eb4",{}]
+INFO    2026-06-11 20:36:47,057 - root (100): MeterValues sent | EVSE 1 | Power: -5702.1 W (⬆ V2G discharge) | SoC: 80.0% | Energy: 29.45 Wh
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:45.961000+0100, processed_at=2026-06-11T20:36:46.576615+0100, readonly=True at 0x7f74001660>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:50.192000+0100, processed_at=2026-06-11T20:36:50.605235+0100, readonly=True at 0x5584f5afd0>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 80.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:50.192000+0100, processed_at=2026-06-11T20:36:50.605235+0100, readonly=True at 0x5584f5afd0>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:54.427000+0100, processed_at=2026-06-11T20:36:54.640656+0100, readonly=True at 0x7f74001660>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 80.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+DEBUG    2026-06-11 20:36:55,809 - websockets.client (609): < PING d7 cf 87 f6 [binary, 4 bytes]
+DEBUG    2026-06-11 20:36:55,810 - websockets.client (755): > PONG d7 cf 87 f6 [binary, 4 bytes]
+DEBUG    2026-06-11 20:36:56,131 - websockets.client (755): > PING 7e fa e4 d5 [binary, 4 bytes]
+DEBUG    2026-06-11 20:36:56,133 - websockets.client (829): % sent keepalive ping
+DEBUG    2026-06-11 20:36:56,142 - websockets.client (609): < PONG 7e fa e4 d5 [binary, 4 bytes]
+DEBUG    2026-06-11 20:36:56,144 - websockets.client (840): % received keepalive pong
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+INFO    2026-06-11 20:36:57,054 - ocpp (471): CP_1: send [2,"d1bda8aa-94e3-4f6c-9687-a94314b95191","Heartbeat",{}]
+DEBUG    2026-06-11 20:36:57,055 - websockets.client (755): > TEXT '[2,"d1bda8aa-94e3-4f6c-9687-a94314b95191","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-11 20:36:57,072 - websockets.client (609): < TEXT '[3,"d1bda8aa-94e3-4f6c-9687-a94314b95191",{"cur...2026-06-11T19:36:57Z"}]' [81 bytes]
+INFO    2026-06-11 20:36:57,075 - ocpp (247): CP_1: receive message [3,"d1bda8aa-94e3-4f6c-9687-a94314b95191",{"currentTime":"2026-06-11T19:36:57Z"}]
+INFO    2026-06-11 20:36:57,078 - ocpp (471): CP_1: send [2,"5b45b98f-1984-48e7-8c49-cdb708827679","MeterValues",{"evseId":1,"meterValue":[{"timestamp":"2026-06-11T19:36:57Z","sampledValue":[{"value":-5702.143999999999,"measurand":"Power.Active.Import","unitOfMeasure":{"unit":"W"},"context":"Sample.Periodic"},{"value":29.446,"measurand":"Energy.Active.Import.Register","unitOfMeasure":{"unit":"Wh"},"context":"Sample.Periodic"},{"value":80.0,"measurand":"SoC","unitOfMeasure":{"unit":"Percent"},"context":"Sample.Periodic"}]}]}]
+DEBUG    2026-06-11 20:36:57,079 - websockets.client (755): > TEXT '[2,"5b45b98f-1984-48e7-8c49-cdb708827679","Mete..."Sample.Periodic"}]}]}]' [473 bytes]
+DEBUG    2026-06-11 20:36:57,084 - websockets.client (609): < TEXT '[3,"5b45b98f-1984-48e7-8c49-cdb708827679",{}]' [45 bytes]
+INFO    2026-06-11 20:36:57,086 - ocpp (247): CP_1: receive message [3,"5b45b98f-1984-48e7-8c49-cdb708827679",{}]
+INFO    2026-06-11 20:36:57,089 - root (100): MeterValues sent | EVSE 1 | Power: -5702.1 W (⬆ V2G discharge) | SoC: 80.0% | Energy: 29.45 Wh
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:54.427000+0100, processed_at=2026-06-11T20:36:54.640656+0100, readonly=True at 0x7f74001660>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:58.658000+0100, processed_at=2026-06-11T20:36:58.767063+0100, readonly=True at 0x5584f5afd0>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 80.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE AUTOMATIC REPORT on IOA: 14 VALUE: 25.0
+Keep alive until disconnected
+BEFORE AUTOMATIC REPORT on IOA: 13 VALUE: 80.0
+BEFORE READ or INTERROGATION on IOA: 11 VALUE: -5.702144145965576
+STEP COMMAND on IOA: 12, message: <c104.IncomingMessage common_address=47, io_address=12, type=C_RC_TA_1, info=Information, cot=ACTIVATION, number_of_objects=1, test=False, negative=False, sequence=False at 0x7f74000c50>, previous: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:36:58.658000+0100, processed_at=2026-06-11T20:36:58.767063+0100, readonly=True at 0x5584f5afd0>, current: <c104.StepCmd step=HIGHER, qualifier=NONE, recorded_at=2026-06-11T20:37:02.882000+0100, processed_at=2026-06-11T20:37:02.897210+0100, readonly=True at 0x7f74001660>
+Battery not initialized in shared state
+BEFORE READ or INTERROGATION on IOA: 13 VALUE: 80.0
+BEFORE READ or INTERROGATION on IOA: 14 VALUE: 25.0
+^CDEBUG    2026-06-11 20:37:03,315 - websockets.client (755): > CLOSE 1000 (OK) [2 bytes]
+DEBUG    2026-06-11 20:37:03,317 - websockets.client (178): = connection is CLOSING
+DEBUG    2026-06-11 20:37:03,322 - websockets.client (609): < CLOSE 1000 (OK) [2 bytes]
+DEBUG    2026-06-11 20:37:03,418 - websockets.client (659): < EOF
+DEBUG    2026-06-11 20:37:03,418 - websockets.client (767): > EOF
+DEBUG    2026-06-11 20:37:03,419 - websockets.client (178): = connection is CLOSED
+DEBUG    2026-06-11 20:37:03,419 - websockets.client (979): x half-closing TCP connection
+INFO    2026-06-11 20:37:03,425 - __main__ (69): Closing connections...
+

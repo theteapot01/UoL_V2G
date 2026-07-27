@@ -27,6 +27,14 @@ Multi-EV scalability chart from summary CSV only:
     python tools/plot_results.py multi-ev \\
         --summary Logs/multi_ev_summary_20240101_120000.csv
 
+Combined latency validation (IEC 104 / pandapower / control / ISO 15118):
+    python tools/plot_results.py latency \\
+        --iec104 Logs/iec104_20240101_120000.csv \\
+        --control-latency Logs/control_latency_20240101_120000.csv \\
+        --iso15118 Logs/iso15118_20240101_120000.csv
+
+    python tools/plot_results.py latency --dir Logs/   # auto-picks latest of each
+
 Auto-discover everything in Logs/ and generate all plots:
     python tools/plot_results.py all --dir Logs/
 
@@ -165,6 +173,27 @@ def _load_reliability_summary(path: Path) -> list[dict]:
     return rows
 
 
+def _drop_empty_sessions(
+    labels: list[str],
+    summaries: list[dict],
+    raw_data: Optional[list[dict]],
+) -> tuple:
+    """
+    Drop sessions with zero transmit cycles (e.g. a process started and
+    stopped before any command was staged) before plotting. Plotting these
+    alongside real sessions renders a "0.0%" delivery-rate bar indistinguishable
+    from an actual failure, when it's really "no data was collected."
+    """
+    keep = [i for i, s in enumerate(summaries) if s["transmit"] > 0]
+    dropped = len(summaries) - len(keep)
+    if dropped:
+        print(f"  Excluding {dropped} empty session(s) with 0 transmit cycles from plots")
+    labels    = [labels[i] for i in keep]
+    summaries = [summaries[i] for i in keep]
+    raw_data  = [raw_data[i] for i in keep] if raw_data else None
+    return labels, summaries, raw_data
+
+
 # ── Reliability — plotting ─────────────────────────────────────────────────────
 
 def plot_reliability(
@@ -172,20 +201,37 @@ def plot_reliability(
     summaries: list[dict],
     raw_data: Optional[list[dict]],
     out_dir: Path,
+    scenario_label: str = "Session",
 ) -> None:
+    """
+    scenario_label names what each category on the x-axis actually is. It
+    defaults to the neutral "Session" because, absent real tc-netem loss
+    injection (tools/reliability_test.sh), the categories are just logged
+    sessions, not loss scenarios — titling the chart "Under Packet Loss" for
+    baseline data would misrepresent what was actually tested. Pass
+    scenario_label="Packet Loss Scenario" once genuine labelled-loss CSVs
+    (e.g. "0% loss", "5% loss") are fed in.
+    """
     out_dir.mkdir(parents=True, exist_ok=True)
     n = len(labels)
     x = np.arange(n)
+    rot = 25 if n > 4 else 0
+
+    def _tick(ax):
+        ax.set_xticks(x)
+        if rot:
+            ax.set_xticklabels(labels, rotation=rot, ha="right")
+        else:
+            ax.set_xticklabels(labels)
 
     # Figure 1: Delivery rate bar chart
-    fig, ax = plt.subplots(figsize=(max(4, n * 1.8), 4))
+    fig, ax = plt.subplots(figsize=(max(5, n * 1.9), 4.5))
     bars = ax.bar(x, [s["delivery_rate"] for s in summaries],
-                  color=_C[:n], edgecolor="white", width=0.5)
+                  color=_C[:n] * (n // len(_C) + 1), edgecolor="white", width=0.5)
     ax.axhline(100, color="green", linewidth=0.8, linestyle="--", label="100% baseline")
-    ax.set_xticks(x)
-    ax.set_xticklabels(labels)
+    _tick(ax)
     ax.set_ylabel("Delivery Rate (%)")
-    ax.set_title("IEC 104 Command Delivery Rate Under Packet Loss")
+    ax.set_title(f"IEC 104 Command Delivery Rate by {scenario_label}")
     ax.set_ylim(0, 115)
     ax.legend()
     for bar, s in zip(bars, summaries):
@@ -198,48 +244,49 @@ def plot_reliability(
     _save(fig, out_dir / "reliability_delivery_rate.png")
 
     # Figure 2: Latency comparison — mean vs p95 grouped bars
-    fig, ax = plt.subplots(figsize=(max(5, n * 2.2), 4))
+    fig, ax = plt.subplots(figsize=(max(6, n * 2.3), 4.5))
     width = 0.35
     ax.bar(x - width / 2, [s["mean_transmit_ms"] for s in summaries],
            width, label="Mean", color=_C[0])
     ax.bar(x + width / 2, [s["p95_transmit_ms"] for s in summaries],
            width, label="p95", color=_C[1])
-    ax.set_xticks(x)
-    ax.set_xticklabels(labels)
-    ax.set_xlabel("Packet Loss Scenario")
+    _tick(ax)
+    ax.set_xlabel(scenario_label)
     ax.set_ylabel("Transmit Latency (ms)")
-    ax.set_title("IEC 104 Transmit Latency Under Packet Loss")
+    ax.set_title(f"IEC 104 Transmit Latency by {scenario_label}")
     ax.legend()
     _save(fig, out_dir / "reliability_latency.png")
 
     # Figure 3: Latency distribution — box plots (raw data only)
     if raw_data and all(d["transmit_ms"] for d in raw_data):
-        fig, ax = plt.subplots(figsize=(max(5, n * 2.2), 4))
+        fig, ax = plt.subplots(figsize=(max(6, n * 2.3), 4.5))
         bp = ax.boxplot(
             [d["transmit_ms"] for d in raw_data],
             patch_artist=True, notch=False,
         )
         ax.set_xticks(range(1, n + 1))
-        ax.set_xticklabels(labels)
-        for patch, color in zip(bp["boxes"], _C[:n]):
+        if rot:
+            ax.set_xticklabels(labels, rotation=rot, ha="right")
+        else:
+            ax.set_xticklabels(labels)
+        for patch, color in zip(bp["boxes"], _C[:n] * (n // len(_C) + 1)):
             patch.set_facecolor(color)
             patch.set_alpha(0.7)
-        ax.set_xlabel("Packet Loss Scenario")
+        ax.set_xlabel(scenario_label)
         ax.set_ylabel("Transmit Latency (ms)")
         ax.set_title("IEC 104 Transmit Latency Distribution")
         _save(fig, out_dir / "reliability_latency_dist.png")
 
     # Figure 4: Command mix stacked bar
-    fig, ax = plt.subplots(figsize=(max(4, n * 1.8), 4))
+    fig, ax = plt.subplots(figsize=(max(5, n * 1.9), 4.5))
     highs = [s["higher"] for s in summaries]
     lows  = [s["lower"]  for s in summaries]
-    ax.bar(x, highs, color=_C[1], label="HIGHER (reduce charge / V2G)")
-    ax.bar(x, lows,  bottom=highs, color=_C[0], label="LOWER (increase charge)")
-    ax.set_xticks(x)
-    ax.set_xticklabels(labels)
-    ax.set_xlabel("Packet Loss Scenario")
+    ax.bar(x, highs, color=_C[0], label="HIGHER (increase charge)")
+    ax.bar(x, lows,  bottom=highs, color=_C[1], label="LOWER (reduce charge / V2G)")
+    _tick(ax)
+    ax.set_xlabel(scenario_label)
     ax.set_ylabel("Command Count")
-    ax.set_title("IEC 104 Command Distribution per Scenario")
+    ax.set_title(f"IEC 104 Command Distribution by {scenario_label}")
     ax.legend()
     _save(fig, out_dir / "reliability_command_mix.png")
 
@@ -253,6 +300,129 @@ def plot_reliability(
         ax.set_title("IEC 104 Transmit Latency Over Time")
         ax.legend()
         _save(fig, out_dir / "reliability_latency_timeseries.png")
+
+
+# ── Latency — data loading ─────────────────────────────────────────────────────
+
+def _load_control_latency_csv(path: Path) -> list:
+    """Load control_latency_*.csv and return the latency_ms column."""
+    values: list[float] = []
+    with open(path, newline="") as f:
+        for row in csv.DictReader(f):
+            v = _safe_float(row.get("latency_ms"))
+            if v is not None:
+                values.append(v)
+    return values
+
+
+def _load_iso15118_loop_csv(path: Path) -> list:
+    """Load iso15118_*.csv and return the loop_ms column (blank/startup rows skipped)."""
+    values: list[float] = []
+    with open(path, newline="") as f:
+        for row in csv.DictReader(f):
+            v = _safe_float(row.get("loop_ms"))
+            if v is not None:
+                values.append(v)
+    return values
+
+
+def _robust_range(values: list) -> tuple:
+    """
+    Full data range, unless one or two extreme values are disproportionate
+    enough to flatten the rest of the distribution to invisibility — e.g. the
+    first pandapower call after cold start, which pays a one-off JIT/import
+    cost the following 1000+ calls don't. Detected as max > 5x the 99th
+    percentile; in that case the view is capped at p99 and the excluded
+    count is reported in the panel annotation rather than silently dropped.
+    Ordinary long right tails (e.g. control latency's spread up to ~1 s,
+    which is itself the evidence being validated) are left untouched — this
+    only trims genuine one-off transients, not skew.
+    """
+    sv = sorted(values)
+    n = len(sv)
+    lo, hi = sv[0], sv[-1]
+    if n < 20:
+        return lo, hi, 0
+    p99 = sv[int(n * 0.99)]
+    if p99 <= 0 or hi <= p99 * 5:
+        return lo, hi, 0
+    n_excluded = sum(1 for v in sv if v > p99)
+    return lo, p99, n_excluded
+
+
+# ── Latency — plotting ──────────────────────────────────────────────────────────
+
+def plot_latency(
+    iec104_transmit_ms: list,
+    pandapower_ms: list,
+    control_latency_ms: list,
+    iso15118_loop_ms: list,
+    out_dir: Path,
+    session_label: str = "",
+) -> None:
+    """
+    One combined figure, four latency metrics as small multiples. Each panel
+    keeps its own x-axis rather than sharing one scale across the figure —
+    control latency (hundreds of ms) and ISO 15118 loop time (under 2 ms) are
+    two orders of magnitude apart, so a shared axis would flatten the faster
+    metrics to an invisible sliver.
+    """
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    panels = [
+        ("IEC 104 Command Transmit", iec104_transmit_ms, _C[0]),
+        ("Pandapower Load-Flow Compute", pandapower_ms, _C[1]),
+        ("Control Latency (Setpoint → EVSE Limit)", control_latency_ms, _C[3]),
+        ("ISO 15118 Charge-Loop Iteration", iso15118_loop_ms, _C[2]),
+    ]
+
+    fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+    axes = axes.flatten()
+
+    any_data = False
+    for ax, (title, values, color) in zip(axes, panels):
+        if not values:
+            ax.set_visible(False)
+            continue
+        any_data = True
+        mean_v = sum(values) / len(values)
+        p95_v  = _p95(values)
+        max_v  = max(values)
+        lo, hi, n_excluded = _robust_range(values)
+        bins   = min(40, max(10, len(values) // 10))
+        ax.hist(values, bins=bins, range=(lo, hi), color=color, alpha=0.75, edgecolor="white")
+        ax.axvline(mean_v, color="black", linewidth=1.2, linestyle="--",
+                   label=f"Mean {mean_v:.2f} ms")
+        if lo <= p95_v <= hi:
+            ax.axvline(p95_v, color="red", linewidth=1.2, linestyle=":",
+                       label=f"p95 {p95_v:.2f} ms")
+        else:
+            ax.axvline(hi, color="red", linewidth=1.2, linestyle=":",
+                       label=f"p95 {p95_v:.2f} ms (off-scale)")
+        ax.set_xlim(lo, hi)
+        ax.set_title(title)
+        ax.set_xlabel("Latency (ms)")
+        ax.set_ylabel("Sample Count")
+        ax.legend(fontsize=8)
+        note = f"n={len(values)}\nmax={max_v:.2f} ms"
+        if n_excluded:
+            note += f"\n{n_excluded} outlier(s) off-scale"
+        ax.annotate(
+            note,
+            xy=(0.98, 0.97), xycoords="axes fraction",
+            ha="right", va="top", fontsize=8,
+            bbox=dict(boxstyle="round,pad=0.3", fc="white", alpha=0.7),
+        )
+
+    if not any_data:
+        plt.close(fig)
+        print("  No latency data to plot — skipping")
+        return
+
+    title_suffix = f" — {session_label}" if session_label else ""
+    fig.suptitle(f"Latency Validation Across Protocol Layers{title_suffix}", fontsize=12)
+    stem = f"latency_validation_{session_label}" if session_label else "latency_validation"
+    _save(fig, out_dir / f"{stem}.png")
 
 
 # ── Multi-EV — data loading ────────────────────────────────────────────────────
@@ -626,6 +796,86 @@ def plot_resource(rows: list[dict], out_dir: Path) -> None:
     _save(fig, out_dir / "resource_usage.png")
 
 
+# ── Voltage stabilisation — data loading & plotting ──────────────────────────
+
+def _load_voltage_stab_csv(path: Path) -> list[dict]:
+    rows = []
+    with open(path, newline="") as f:
+        for row in csv.DictReader(f):
+            rows.append({
+                "timestamp_unix":  float(row["timestamp_unix"]),
+                "bus2_voltage_pu": float(row["bus2_voltage_pu"]),
+                "setpoint_pu":     float(row["setpoint_pu"]),
+                "error_pu":        float(row["error_pu"]),
+                "bg_load_kw":      float(row["bg_load_kw"]),
+                "cmd":             row["cmd"].strip(),
+            })
+    return rows
+
+
+def plot_voltage_stab(rows: list[dict], out_dir: Path, label: str = "") -> None:
+    """Two-panel figure: voltage time series + error distribution."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    if not rows:
+        return
+
+    t0       = rows[0]["timestamp_unix"]
+    t_min    = [(r["timestamp_unix"] - t0) / 60.0 for r in rows]
+    volts    = [r["bus2_voltage_pu"] for r in rows]
+    errors   = [r["error_pu"]        for r in rows]
+    bg_load  = [r["bg_load_kw"]      for r in rows]
+    setpoint = rows[0]["setpoint_pu"]
+    deadband = max(abs(r["error_pu"]) for r in rows[:1]) if rows else 0.003
+
+    # Read deadband from actual data spread near setpoint
+    # Use a fixed value matching VDROOP_DEADBAND = 0.003 from iec104_panda.py
+    _DEADBAND = 0.003
+
+    sse  = sum(e ** 2 for e in errors)
+    rmse = (sse / len(errors)) ** 0.5 if errors else 0.0
+    mae  = sum(abs(e) for e in errors) / len(errors) if errors else 0.0
+    title_suffix = f" — {label}" if label else ""
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5))
+
+    # ── Left: voltage time series ─────────────────────────────────────────────
+    ax1.plot(t_min, volts, linewidth=1.0, color=_C[0], label="Bus 2 voltage")
+    ax1.axhline(setpoint, color="red", linewidth=1.2, linestyle="--",
+                label=f"Setpoint ({setpoint:.3f} pu)")
+    ax1.axhspan(setpoint - _DEADBAND, setpoint + _DEADBAND,
+                alpha=0.12, color="green", label=f"Deadband (±{_DEADBAND} pu)")
+
+    ax1b = ax1.twinx()
+    ax1b.plot(t_min, bg_load, linewidth=0.8, color=_C[3], alpha=0.5, linestyle=":")
+    ax1b.set_ylabel("Background Disturbance (kW)", color=_C[3], fontsize=8)
+    ax1b.tick_params(axis="y", labelcolor=_C[3], labelsize=8)
+
+    ax1.set_xlabel("Session Time (min)")
+    ax1.set_ylabel("Bus Voltage (pu)")
+    ax1.set_title(f"Bus 2 Voltage vs Setpoint{title_suffix}")
+    ax1.legend(fontsize=8, loc="lower left")
+    ax1.annotate(
+        f"RMSE={rmse*1000:.3f} mpu\nMAE={mae*1000:.3f} mpu",
+        xy=(0.02, 0.97), xycoords="axes fraction",
+        va="top", fontsize=8,
+        bbox=dict(boxstyle="round,pad=0.3", fc="white", alpha=0.7),
+    )
+
+    # ── Right: error distribution ─────────────────────────────────────────────
+    ax2.hist([e * 1000 for e in errors], bins=40, color=_C[0], alpha=0.75, edgecolor="white")
+    ax2.axvline(0, color="red", linewidth=1.2, linestyle="--", label="Zero error")
+    ax2.axvspan(-_DEADBAND * 1000, _DEADBAND * 1000,
+                alpha=0.12, color="green", label=f"Deadband (±{_DEADBAND*1000:.1f} mpu)")
+    ax2.set_xlabel("Voltage Error (mpu = 0.001 pu)")
+    ax2.set_ylabel("Sample Count")
+    ax2.set_title("Voltage Error Distribution")
+    ax2.legend(fontsize=8)
+
+    fig.suptitle(f"Voltage Stabilisation Accuracy{title_suffix}", fontsize=12)
+    stem = f"voltage_stab_{label}" if label else "voltage_stab"
+    _save(fig, out_dir / f"{stem}.png")
+
+
 # ── Multi-EV V2G vs no-V2G comparison ─────────────────────────────────────────
 
 def plot_multiev_comparison(
@@ -722,8 +972,73 @@ def cmd_reliability(args) -> None:
         print("ERROR: provide positional CSV files or --summary", file=sys.stderr)
         sys.exit(1)
 
+    labels, summaries, raw_data = _drop_empty_sessions(labels, summaries, raw_data)
+    if not summaries:
+        print("ERROR: no non-empty sessions to plot", file=sys.stderr)
+        sys.exit(1)
+
     print(f"Generating reliability plots → {out_dir}/")
-    plot_reliability(labels, summaries, raw_data, out_dir)
+    plot_reliability(labels, summaries, raw_data, out_dir, scenario_label=args.scenario_label)
+
+
+def cmd_latency(args) -> None:
+    out_dir = Path(args.out_dir)
+    _setup_style(args.dpi)
+
+    iec104_path  = Path(args.iec104) if args.iec104 else None
+    control_path = Path(args.control_latency) if args.control_latency else None
+    iso_path     = Path(args.iso15118) if args.iso15118 else None
+
+    if getattr(args, "dir", None):
+        log_dir = Path(args.dir)
+        if not iec104_path:
+            found = sorted(log_dir.glob("iec104_*.csv"))
+            iec104_path = found[-1] if found else None
+        if not control_path:
+            found = sorted(log_dir.glob("control_latency_*.csv"))
+            control_path = found[-1] if found else None
+        if not iso_path:
+            found = sorted(p for p in log_dir.glob("iso15118_*.csv") if "_bytes_" not in p.name)
+            iso_path = found[-1] if found else None
+
+    if not any([iec104_path, control_path, iso_path]):
+        print("ERROR: provide --iec104/--control-latency/--iso15118 or --dir", file=sys.stderr)
+        sys.exit(1)
+
+    iec104_transmit_ms: list = []
+    pandapower_ms: list = []
+    control_latency_ms: list = []
+    iso15118_loop_ms: list = []
+
+    if iec104_path and iec104_path.exists():
+        d = _load_reliability_raw(iec104_path)
+        iec104_transmit_ms = d["transmit_ms"]
+        pandapower_ms      = d["pandapower_ms"]
+        print(f"  IEC 104: {len(iec104_transmit_ms)} transmit samples from {iec104_path.name}")
+    elif iec104_path:
+        print(f"WARNING: {iec104_path} not found — skipping IEC 104 panel", file=sys.stderr)
+
+    if control_path and control_path.exists():
+        control_latency_ms = _load_control_latency_csv(control_path)
+        print(f"  Control latency: {len(control_latency_ms)} samples from {control_path.name}")
+    elif control_path:
+        print(f"WARNING: {control_path} not found — skipping control-latency panel", file=sys.stderr)
+
+    if iso_path and iso_path.exists():
+        iso15118_loop_ms = _load_iso15118_loop_csv(iso_path)
+        print(f"  ISO 15118 loop: {len(iso15118_loop_ms)} samples from {iso_path.name}")
+    elif iso_path:
+        print(f"WARNING: {iso_path} not found — skipping ISO 15118 panel", file=sys.stderr)
+
+    if not any([iec104_transmit_ms, pandapower_ms, control_latency_ms, iso15118_loop_ms]):
+        print("ERROR: no latency data loaded from any source", file=sys.stderr)
+        sys.exit(1)
+
+    print(f"Generating latency validation plot → {out_dir}/")
+    plot_latency(
+        iec104_transmit_ms, pandapower_ms, control_latency_ms, iso15118_loop_ms,
+        out_dir, session_label=args.label or "",
+    )
 
 
 def cmd_degradation(args) -> None:
@@ -827,6 +1142,33 @@ def cmd_multiev(args) -> None:
             plot_multiev_comparison(summaries, nov2g, out_dir)
 
 
+def cmd_voltage_stab(args) -> None:
+    out_dir = Path(args.out_dir)
+    _setup_style(args.dpi)
+
+    paths = [Path(f) for f in args.files] if getattr(args, "files", None) else []
+    if not paths and getattr(args, "dir", None):
+        paths = sorted(Path(args.dir).glob("voltage_stab_*.csv"))
+    if not paths:
+        print("ERROR: provide voltage_stab_*.csv file(s) or --dir", file=sys.stderr)
+        sys.exit(1)
+
+    for p in paths:
+        if not p.exists():
+            print(f"WARNING: {p} not found — skipping", file=sys.stderr)
+            continue
+        rows = _load_voltage_stab_csv(p)
+        if not rows:
+            print(f"WARNING: {p.name} has no data rows — skipping", file=sys.stderr)
+            continue
+        print(f"Generating voltage-stab plot for {p.name} ({len(rows)} samples) → {out_dir}/")
+        sse  = sum(r["error_pu"] ** 2 for r in rows)
+        rmse = (sse / len(rows)) ** 0.5
+        print(f"  RMSE={rmse*1000:.3f} mpu  samples={len(rows)}")
+        label = p.stem.replace("voltage_stab_", "")
+        plot_voltage_stab(rows, out_dir, label=label)
+
+
 def cmd_all(args) -> None:
     log_dir = Path(args.dir)
     out_dir = Path(args.out_dir)
@@ -869,9 +1211,28 @@ def cmd_all(args) -> None:
         labels    = []
         raw_data  = None
 
+    labels, summaries, raw_data = _drop_empty_sessions(labels, summaries, raw_data)
     if summaries:
         print(f"  Generating reliability plots → {out_dir}/")
         plot_reliability(labels, summaries, raw_data, out_dir)
+
+    # ── Latency (combined) ───────────────────────────────────────────────────
+    lat_iec_csvs  = sorted(log_dir.glob("iec104_*.csv"))
+    lat_ctrl_csvs = sorted(log_dir.glob("control_latency_*.csv"))
+    lat_iso_csvs  = sorted(p for p in log_dir.glob("iso15118_*.csv") if "_bytes_" not in p.name)
+
+    if lat_iec_csvs or lat_ctrl_csvs or lat_iso_csvs:
+        lat_iec_transmit, lat_pandapower = [], []
+        if lat_iec_csvs:
+            d = _load_reliability_raw(lat_iec_csvs[-1])
+            lat_iec_transmit, lat_pandapower = d["transmit_ms"], d["pandapower_ms"]
+        lat_control = _load_control_latency_csv(lat_ctrl_csvs[-1]) if lat_ctrl_csvs else []
+        lat_iso_loop = _load_iso15118_loop_csv(lat_iso_csvs[-1]) if lat_iso_csvs else []
+        if any([lat_iec_transmit, lat_pandapower, lat_control, lat_iso_loop]):
+            print(f"\n[Latency] Generating combined latency plot → {out_dir}/")
+            plot_latency(lat_iec_transmit, lat_pandapower, lat_control, lat_iso_loop, out_dir)
+    else:
+        print("[Latency] No latency-related CSVs found — skipping")
 
     # ── Multi-EV ─────────────────────────────────────────────────────────────
     # Only V2G-enabled summaries — exclude _nov2g variants
@@ -951,6 +1312,23 @@ def cmd_all(args) -> None:
     else:
         print("[Resource] No resource_*.csv found — skipping")
 
+    # ── Voltage stabilisation ─────────────────────────────────────────────────
+    vstab_csvs = sorted(log_dir.glob("voltage_stab_*.csv"))
+    if vstab_csvs:
+        print(f"\n[VoltageStab] Found {len(vstab_csvs)} voltage_stab CSV(s)")
+        for p in vstab_csvs:
+            rows = _load_voltage_stab_csv(p)
+            if not rows:
+                print(f"  {p.name}: no data rows — skipping")
+                continue
+            sse  = sum(r["error_pu"] ** 2 for r in rows)
+            rmse = (sse / len(rows)) ** 0.5
+            print(f"  {p.name}: {len(rows)} samples, RMSE={rmse*1000:.3f} mpu")
+            label = p.stem.replace("voltage_stab_", "")
+            plot_voltage_stab(rows, out_dir, label=label)
+    else:
+        print("[VoltageStab] No voltage_stab_*.csv found — skipping")
+
 
 # ── CLI ────────────────────────────────────────────────────────────────────────
 
@@ -992,6 +1370,28 @@ def main() -> None:
         "--summary", metavar="PATH",
         help="Load from reliability_summary.csv instead of raw files.",
     )
+    p_rel.add_argument(
+        "--scenario-label", dest="scenario_label", default="Session", metavar="LABEL",
+        help="What each x-axis category represents (default: 'Session'). "
+             "Pass 'Packet Loss Scenario' only when the data is genuine tc-netem loss-injection output.",
+    )
+
+    # ── latency ──────────────────────────────────────────────────────────────
+    p_lat = sub.add_parser(
+        "latency",
+        parents=[_shared],
+        help="Plot combined latency validation (IEC 104, pandapower, control, ISO 15118).",
+    )
+    p_lat.add_argument("--iec104", metavar="PATH",
+                        help="iec104_*.csv (transmit + pandapower latency).")
+    p_lat.add_argument("--control-latency", metavar="PATH", dest="control_latency",
+                        help="control_latency_*.csv (setpoint -> EVSE limit handoff).")
+    p_lat.add_argument("--iso15118", metavar="PATH",
+                        help="iso15118_*.csv (charge-loop iteration time).")
+    p_lat.add_argument("--dir", metavar="DIR",
+                        help="Auto-discover the latest matching CSV of each kind in this directory.")
+    p_lat.add_argument("--label", metavar="LABEL", default="",
+                        help="Optional session label appended to the title/filename.")
 
     # ── multi-ev ─────────────────────────────────────────────────────────────
     p_multi = sub.add_parser(
@@ -1038,6 +1438,21 @@ def main() -> None:
         help="Auto-discover resource_*.csv in this directory.",
     )
 
+    # ── voltage-stab ──────────────────────────────────────────────────────────
+    p_vstab = sub.add_parser(
+        "voltage-stab",
+        parents=[_shared],
+        help="Plot voltage-stabilisation accuracy from voltage_stab_*.csv.",
+    )
+    p_vstab.add_argument(
+        "files", nargs="*", metavar="CSV",
+        help="voltage_stab_*.csv files.",
+    )
+    p_vstab.add_argument(
+        "--dir", metavar="DIR",
+        help="Auto-discover voltage_stab_*.csv in this directory.",
+    )
+
     # ── all ───────────────────────────────────────────────────────────────────
     p_all = sub.add_parser(
         "all",
@@ -1054,12 +1469,16 @@ def main() -> None:
 
     if args.command == "reliability":
         cmd_reliability(args)
+    elif args.command == "latency":
+        cmd_latency(args)
     elif args.command == "multi-ev":
         cmd_multiev(args)
     elif args.command == "degradation":
         cmd_degradation(args)
     elif args.command == "resource":
         cmd_resource(args)
+    elif args.command == "voltage-stab":
+        cmd_voltage_stab(args)
     elif args.command == "all":
         cmd_all(args)
 

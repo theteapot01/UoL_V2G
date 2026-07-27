@@ -1,0 +1,154 @@
+DEBUG    2026-06-18 20:07:59,803 - asyncio (54): Using selector: EpollSelector
+INFO    2026-06-18 20:07:59,834 - telemetry_evse_controller (28): TelemetryEVSEController initialized
+INFO    2026-06-18 20:07:59,834 - __main__ (53): Using TelemetryEVSEController
+INFO    2026-06-18 20:08:10,016 - iso15118.shared.exi_codec (177): EXI Codec version: 1.55
+INFO    2026-06-18 20:08:10,017 - iso15118.secc (31): Starting 15118 version: 0.31.2
+INFO    2026-06-18 20:08:10,018 - iso15118.secc.comm_session_handler (235): Communication session handler started
+Waiting for connection
+Connecting to: ws://10.42.0.1:9000/CP_1
+INFO    2026-06-18 20:08:10,239 - iso15118.secc.transport.udp_server (137): UDP server socket ready
+INFO    2026-06-18 20:08:10,240 - iso15118.secc.transport.udp_server (123): UDP server started at address FF02::1%usb0 and port 15118
+DEBUG    2026-06-18 20:08:10,244 - websockets.client (178): = connection is CONNECTING
+DEBUG    2026-06-18 20:08:10,246 - websockets.client (294): > GET /CP_1 HTTP/1.1
+DEBUG    2026-06-18 20:08:10,247 - websockets.client (296): > Host: 10.42.0.1:9000
+DEBUG    2026-06-18 20:08:10,247 - websockets.client (296): > Upgrade: websocket
+DEBUG    2026-06-18 20:08:10,247 - websockets.client (296): > Connection: Upgrade
+DEBUG    2026-06-18 20:08:10,248 - websockets.client (296): > Sec-WebSocket-Key: JwDQqXee7xtMkGuuC+GD2g==
+DEBUG    2026-06-18 20:08:10,248 - websockets.client (296): > Sec-WebSocket-Version: 13
+DEBUG    2026-06-18 20:08:10,248 - websockets.client (296): > Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
+DEBUG    2026-06-18 20:08:10,249 - websockets.client (296): > Sec-WebSocket-Protocol: ocpp2.1
+DEBUG    2026-06-18 20:08:10,249 - websockets.client (296): > User-Agent: Python/3.11 websockets/16.0
+DEBUG    2026-06-18 20:08:10,252 - iso15118.secc.controller.simulator (266): New Status: ServiceStatus.READY
+DEBUG    2026-06-18 20:08:10,254 - websockets.client (320): < HTTP/1.1 101 Switching Protocols
+DEBUG    2026-06-18 20:08:10,255 - websockets.client (322): < Date: Thu, 18 Jun 2026 19:08:10 GMT
+DEBUG    2026-06-18 20:08:10,255 - websockets.client (322): < Upgrade: websocket
+DEBUG    2026-06-18 20:08:10,256 - websockets.client (322): < Connection: Upgrade
+DEBUG    2026-06-18 20:08:10,256 - websockets.client (322): < Sec-WebSocket-Accept: MXn/QhOHPIxdDVxI7jI2dLGE4OI=
+DEBUG    2026-06-18 20:08:10,256 - websockets.client (322): < Sec-WebSocket-Extensions: permessage-deflate; server_max_window_bits=12; client_max_window_bits=12
+DEBUG    2026-06-18 20:08:10,257 - websockets.client (322): < Sec-WebSocket-Protocol: ocpp2.1
+DEBUG    2026-06-18 20:08:10,257 - websockets.client (322): < Server: Python/3.13 websockets/16.0
+DEBUG    2026-06-18 20:08:10,258 - websockets.client (178): = connection is OPEN
+INFO    2026-06-18 20:08:10,278 - ocpp (471): CP_1: send [2,"679d2a69-0bc1-4f7d-b7ba-28b448c99825","BootNotification",{"chargingStation":{"model":"MSc Embedded","vendorName":"UoL"},"reason":"PowerUp"}]
+DEBUG    2026-06-18 20:08:10,279 - websockets.client (755): > TEXT '[2,"679d2a69-0bc1-4f7d-b7ba-28b448c99825","Boot..."},"reason":"PowerUp"}]' [144 bytes]
+DEBUG    2026-06-18 20:08:10,286 - websockets.client (609): < TEXT '[3,"679d2a69-0bc1-4f7d-b7ba-28b448c99825",{"cur...0,"status":"Accepted"}]' [127 bytes]
+INFO    2026-06-18 20:08:10,287 - ocpp (247): CP_1: receive message [3,"679d2a69-0bc1-4f7d-b7ba-28b448c99825",{"currentTime":"2026-06-18T19:08:10.254721+00:00","interval":10,"status":"Accepted"}]
+Connected to central system.
+INFO    2026-06-18 20:08:10,325 - ocpp (471): CP_1: send [2,"5b099a8a-c799-4ad4-9b2b-19e1485f499a","Heartbeat",{}]
+DEBUG    2026-06-18 20:08:10,325 - websockets.client (755): > TEXT '[2,"5b099a8a-c799-4ad4-9b2b-19e1485f499a","Heartbeat",{}]' [57 bytes]
+DEBUG    2026-06-18 20:08:10,327 - websockets.client (755): > CLOSE 1000 (OK) [2 bytes]
+DEBUG    2026-06-18 20:08:10,328 - websockets.client (178): = connection is CLOSING
+DEBUG    2026-06-18 20:08:10,330 - websockets.client (609): < TEXT '[3,"5b099a8a-c799-4ad4-9b2b-19e1485f499a",{"cur...2026-06-18T19:08:10Z"}]' [81 bytes]
+INFO    2026-06-18 20:08:10,331 - ocpp (247): CP_1: receive message [3,"5b099a8a-c799-4ad4-9b2b-19e1485f499a",{"currentTime":"2026-06-18T19:08:10Z"}]
+DEBUG    2026-06-18 20:08:10,333 - websockets.client (609): < CLOSE 1000 (OK) [2 bytes]
+DEBUG    2026-06-18 20:08:10,335 - websockets.client (659): < EOF
+DEBUG    2026-06-18 20:08:10,335 - websockets.client (767): > EOF
+DEBUG    2026-06-18 20:08:10,336 - websockets.client (178): = connection is CLOSED
+DEBUG    2026-06-18 20:08:10,336 - websockets.client (979): x half-closing TCP connection
+ERROR    2026-06-18 20:08:10,365 - __main__ (72): SECC program terminated with error: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action,  {'cause': 'Payload \'{\'evseId\': 1, \'meterValue\': [{\'timestamp\': \'2026-06-18T19:08:10Z\', \'sampledValue\': [{\'value\': 0.0, \'measurand\': \'Power.Active.Import\', \'unitOfMeasure\': {\'unit\': \'W\'}, \'context\': \'Sample.Periodic\'}, {\'value\': 0.0, \'measurand\': \'Energy.Active.Import.Register\', \'unitOfMeasure\': {\'unit\': \'Wh\'}, \'context\': \'Sample.Periodic\'}, {\'value\': 0.0, \'measurand\': \'SoC\', \'unitOfMeasure\': {\'unit\': \'Percent\'}, \'context\': \'Sample.Periodic\'}, {\'value\': 0.0, \'measurand\': \'Voltage\', \'unitOfMeasure\': {\'unit\': \'V\'}, \'context\': \'Sample.Periodic\'}, {\'value\': 0.0, \'measurand\': \'Current.Import\', \'unitOfMeasure\': {\'unit\': \'A\'}, \'context\': \'Sample.Periodic\'}, {\'value\': 0.0, \'measurand\': \'ISO15118.EVSE.MaxChargePower\', \'unitOfMeasure\': {\'unit\': \'kW\'}, \'context\': \'Sample.Periodic\'}, {\'value\': 0.0, \'measurand\': \'ISO15118.EVSE.MaxDischargePower\', \'unitOfMeasure\': {\'unit\': \'kW\'}, \'context\': \'Sample.Periodic\'}, {\'value\': 0, \'measurand\': \'ISO15118.LoopCount\', \'unitOfMeasure\': {\'unit\': \'\'}, \'context\': \'Sample.Periodic\'}, {\'value\': 0.0, \'measurand\': \'ISO15118.LoopProcessingMs\', \'unitOfMeasure\': {\'unit\': \'ms\'}, \'context\': \'Sample.Periodic\'}]}]}\' for action \'MeterValues\' is not valid: \'ISO15118.EVSE.MaxChargePower\' is not one of [\'Current.Export\', \'Current.Export.Offered\', \'Current.Export.Minimum\', \'Current.Import\', \'Current.Import.Offered\', \'Current.Import.Minimum\', \'Current.Offered\', \'Display.PresentSOC\', \'Display.MinimumSOC\', \'Display.TargetSOC\', \'Display.MaximumSOC\', \'Display.RemainingTimeToMinimumSOC\', \'Display.RemainingTimeToTargetSOC\', \'Display.RemainingTimeToMaximumSOC\', \'Display.ChargingComplete\', \'Display.BatteryEnergyCapacity\', \'Display.InletHot\', \'Energy.Active.Export.Interval\', \'Energy.Active.Export.Register\', \'Energy.Active.Import.Interval\', \'Energy.Active.Import.Register\', \'Energy.Active.Import.CableLoss\', \'Energy.Active.Import.LocalGeneration.Register\', \'Energy.Active.Net\', \'Energy.Active.Setpoint.Interval\', \'Energy.Apparent.Export\', \'Energy.Apparent.Import\', \'Energy.Apparent.Net\', \'Energy.Reactive.Export.Interval\', \'Energy.Reactive.Export.Register\', \'Energy.Reactive.Import.Interval\', \'Energy.Reactive.Import.Register\', \'Energy.Reactive.Net\', \'EnergyRequest.Target\', \'EnergyRequest.Minimum\', \'EnergyRequest.Maximum\', \'EnergyRequest.Minimum.V2X\', \'EnergyRequest.Maximum.V2X\', \'EnergyRequest.Bulk\', \'Frequency\', \'Power.Active.Export\', \'Power.Active.Import\', \'Power.Active.Setpoint\', \'Power.Active.Residual\', \'Power.Export.Minimum\', \'Power.Export.Offered\', \'Power.Factor\', \'Power.Import.Offered\', \'Power.Import.Minimum\', \'Power.Offered\', \'Power.Reactive.Export\', \'Power.Reactive.Import\', \'SoC\', \'Voltage\', \'Voltage.Minimum\', \'Voltage.Maximum\']\n\nFailed validating \'enum\' in schema[\'properties\'][\'meterValue\'][\'items\'][\'properties\'][\'sampledValue\'][\'items\'][\'properties\'][\'measurand\']:\n    {\'description\': \'Type of measurement. Default = \'\n                    \'"Energy.Active.Import.Register"\\r\\n\',\n     \'javaType\': \'MeasurandEnum\',\n     \'type\': \'string\',\n     \'default\': \'Energy.Active.Import.Register\',\n     \'additionalProperties\': False,\n     \'enum\': [\'Current.Export\',\n              \'Current.Export.Offered\',\n              \'Current.Export.Minimum\',\n              \'Current.Import\',\n              \'Current.Import.Offered\',\n              \'Current.Import.Minimum\',\n              \'Current.Offered\',\n              \'Display.PresentSOC\',\n              \'Display.MinimumSOC\',\n              \'Display.TargetSOC\',\n              \'Display.MaximumSOC\',\n              \'Display.RemainingTimeToMinimumSOC\',\n              \'Display.RemainingTimeToTargetSOC\',\n              \'Display.RemainingTimeToMaximumSOC\',\n              \'Display.ChargingComplete\',\n              \'Display.BatteryEnergyCapacity\',\n              \'Display.InletHot\',\n              \'Energy.Active.Export.Interval\',\n              \'Energy.Active.Export.Register\',\n              \'Energy.Active.Import.Interval\',\n              \'Energy.Active.Import.Register\',\n              \'Energy.Active.Import.CableLoss\',\n              \'Energy.Active.Import.LocalGeneration.Register\',\n              \'Energy.Active.Net\',\n              \'Energy.Active.Setpoint.Interval\',\n              \'Energy.Apparent.Export\',\n              \'Energy.Apparent.Import\',\n              \'Energy.Apparent.Net\',\n              \'Energy.Reactive.Export.Interval\',\n              \'Energy.Reactive.Export.Register\',\n              \'Energy.Reactive.Import.Interval\',\n              \'Energy.Reactive.Import.Register\',\n              \'Energy.Reactive.Net\',\n              \'EnergyRequest.Target\',\n              \'EnergyRequest.Minimum\',\n              \'EnergyRequest.Maximum\',\n              \'EnergyRequest.Minimum.V2X\',\n              \'EnergyRequest.Maximum.V2X\',\n              \'EnergyRequest.Bulk\',\n              \'Frequency\',\n              \'Power.Active.Export\',\n              \'Power.Active.Import\',\n              \'Power.Active.Setpoint\',\n              \'Power.Active.Residual\',\n              \'Power.Export.Minimum\',\n              \'Power.Export.Offered\',\n              \'Power.Factor\',\n              \'Power.Import.Offered\',\n              \'Power.Import.Minimum\',\n              \'Power.Offered\',\n              \'Power.Reactive.Export\',\n              \'Power.Reactive.Import\',\n              \'SoC\',\n              \'Voltage\',\n              \'Voltage.Minimum\',\n              \'Voltage.Maximum\']}\n\nOn instance[\'meterValue\'][0][\'sampledValue\'][5][\'measurand\']:\n    \'ISO15118.EVSE.MaxChargePower\'', 'ocpp_message': <Call - unique_id=cd511adb-05a8-4c3c-91b0-819840ec5c1b, action=MeterValues, payload={'evseId': 1, 'meterValue': [{'timestamp': '2026-06-18T19:08:10Z', 'sampledValue': [{'value': 0.0, 'measurand': 'Power.Active.Import', 'unitOfMeasure': {'unit': 'W'}, 'context': 'Sample.Periodic'}, {'value': 0.0, 'measurand': 'Energy.Active.Import.Register', 'unitOfMeasure': {'unit': 'Wh'}, 'context': 'Sample.Periodic'}, {'value': 0.0, 'measurand': 'SoC', 'unitOfMeasure': {'unit': 'Percent'}, 'context': 'Sample.Periodic'}, {'value': 0.0, 'measurand': 'Voltage', 'unitOfMeasure': {'unit': 'V'}, 'context': 'Sample.Periodic'}, {'value': 0.0, 'measurand': 'Current.Import', 'unitOfMeasure': {'unit': 'A'}, 'context': 'Sample.Periodic'}, {'value': 0.0, 'measurand': 'ISO15118.EVSE.MaxChargePower', 'unitOfMeasure': {'unit': 'kW'}, 'context': 'Sample.Periodic'}, {'value': 0.0, 'measurand': 'ISO15118.EVSE.MaxDischargePower', 'unitOfMeasure': {'unit': 'kW'}, 'context': 'Sample.Periodic'}, {'value': 0, 'measurand': 'ISO15118.LoopCount', 'unitOfMeasure': {'unit': ''}, 'context': 'Sample.Periodic'}, {'value': 0.0, 'measurand': 'ISO15118.LoopProcessingMs', 'unitOfMeasure': {'unit': 'ms'}, 'context': 'Sample.Periodic'}]}]}>}
+Traceback (most recent call last):
+  File "/home/pi/.cache/pypoetry/virtualenvs/iso15118-syZwZL3b-py3.11/lib/python3.11/site-packages/ocpp/messages.py", line 240, in _validate_payload
+    validator.validate(message.payload)
+  File "/home/pi/.cache/pypoetry/virtualenvs/iso15118-syZwZL3b-py3.11/lib/python3.11/site-packages/jsonschema/validators.py", line 450, in validate
+    raise error
+jsonschema.exceptions.ValidationError: 'ISO15118.EVSE.MaxChargePower' is not one of ['Current.Export', 'Current.Export.Offered', 'Current.Export.Minimum', 'Current.Import', 'Current.Import.Offered', 'Current.Import.Minimum', 'Current.Offered', 'Display.PresentSOC', 'Display.MinimumSOC', 'Display.TargetSOC', 'Display.MaximumSOC', 'Display.RemainingTimeToMinimumSOC', 'Display.RemainingTimeToTargetSOC', 'Display.RemainingTimeToMaximumSOC', 'Display.ChargingComplete', 'Display.BatteryEnergyCapacity', 'Display.InletHot', 'Energy.Active.Export.Interval', 'Energy.Active.Export.Register', 'Energy.Active.Import.Interval', 'Energy.Active.Import.Register', 'Energy.Active.Import.CableLoss', 'Energy.Active.Import.LocalGeneration.Register', 'Energy.Active.Net', 'Energy.Active.Setpoint.Interval', 'Energy.Apparent.Export', 'Energy.Apparent.Import', 'Energy.Apparent.Net', 'Energy.Reactive.Export.Interval', 'Energy.Reactive.Export.Register', 'Energy.Reactive.Import.Interval', 'Energy.Reactive.Import.Register', 'Energy.Reactive.Net', 'EnergyRequest.Target', 'EnergyRequest.Minimum', 'EnergyRequest.Maximum', 'EnergyRequest.Minimum.V2X', 'EnergyRequest.Maximum.V2X', 'EnergyRequest.Bulk', 'Frequency', 'Power.Active.Export', 'Power.Active.Import', 'Power.Active.Setpoint', 'Power.Active.Residual', 'Power.Export.Minimum', 'Power.Export.Offered', 'Power.Factor', 'Power.Import.Offered', 'Power.Import.Minimum', 'Power.Offered', 'Power.Reactive.Export', 'Power.Reactive.Import', 'SoC', 'Voltage', 'Voltage.Minimum', 'Voltage.Maximum']
+
+Failed validating 'enum' in schema['properties']['meterValue']['items']['properties']['sampledValue']['items']['properties']['measurand']:
+    {'description': 'Type of measurement. Default = '
+                    '"Energy.Active.Import.Register"\r\n',
+     'javaType': 'MeasurandEnum',
+     'type': 'string',
+     'default': 'Energy.Active.Import.Register',
+     'additionalProperties': False,
+     'enum': ['Current.Export',
+              'Current.Export.Offered',
+              'Current.Export.Minimum',
+              'Current.Import',
+              'Current.Import.Offered',
+              'Current.Import.Minimum',
+              'Current.Offered',
+              'Display.PresentSOC',
+              'Display.MinimumSOC',
+              'Display.TargetSOC',
+              'Display.MaximumSOC',
+              'Display.RemainingTimeToMinimumSOC',
+              'Display.RemainingTimeToTargetSOC',
+              'Display.RemainingTimeToMaximumSOC',
+              'Display.ChargingComplete',
+              'Display.BatteryEnergyCapacity',
+              'Display.InletHot',
+              'Energy.Active.Export.Interval',
+              'Energy.Active.Export.Register',
+              'Energy.Active.Import.Interval',
+              'Energy.Active.Import.Register',
+              'Energy.Active.Import.CableLoss',
+              'Energy.Active.Import.LocalGeneration.Register',
+              'Energy.Active.Net',
+              'Energy.Active.Setpoint.Interval',
+              'Energy.Apparent.Export',
+              'Energy.Apparent.Import',
+              'Energy.Apparent.Net',
+              'Energy.Reactive.Export.Interval',
+              'Energy.Reactive.Export.Register',
+              'Energy.Reactive.Import.Interval',
+              'Energy.Reactive.Import.Register',
+              'Energy.Reactive.Net',
+              'EnergyRequest.Target',
+              'EnergyRequest.Minimum',
+              'EnergyRequest.Maximum',
+              'EnergyRequest.Minimum.V2X',
+              'EnergyRequest.Maximum.V2X',
+              'EnergyRequest.Bulk',
+              'Frequency',
+              'Power.Active.Export',
+              'Power.Active.Import',
+              'Power.Active.Setpoint',
+              'Power.Active.Residual',
+              'Power.Export.Minimum',
+              'Power.Export.Offered',
+              'Power.Factor',
+              'Power.Import.Offered',
+              'Power.Import.Minimum',
+              'Power.Offered',
+              'Power.Reactive.Export',
+              'Power.Reactive.Import',
+              'SoC',
+              'Voltage',
+              'Voltage.Minimum',
+              'Voltage.Maximum']}
+
+On instance['meterValue'][0]['sampledValue'][5]['measurand']:
+    'ISO15118.EVSE.MaxChargePower'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/pi/UoL_V2G/code_iso15118_custom/run_secc.py", line 68, in run
+    asyncio.run( main() )
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/pi/UoL_V2G/code_iso15118_custom/run_secc.py", line 55, in main
+    await asyncio.gather(
+  File "/home/pi/UoL_V2G/code_cpms/ocpp_charge_point_2.py", line 177, in run_ocpp_client
+    await asyncio.gather(
+  File "/home/pi/UoL_V2G/code_cpms/ocpp_charge_point_2.py", line 161, in send_boot_notification
+    await asyncio.gather(
+  File "/home/pi/UoL_V2G/code_cpms/ocpp_charge_point_2.py", line 139, in send_meter_values
+    await self.call( request )
+  File "/home/pi/.cache/pypoetry/virtualenvs/iso15118-syZwZL3b-py3.11/lib/python3.11/site-packages/ocpp/charge_point.py", line 414, in call
+    await validate_payload(call, self._ocpp_version)
+  File "/home/pi/.cache/pypoetry/virtualenvs/iso15118-syZwZL3b-py3.11/lib/python3.11/site-packages/ocpp/messages.py", line 179, in validate_payload
+    await asyncio.get_event_loop().run_in_executor(
+  File "/home/pi/.pyenv/versions/3.11.15/lib/python3.11/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/pi/.cache/pypoetry/virtualenvs/iso15118-syZwZL3b-py3.11/lib/python3.11/site-packages/ocpp/messages.py", line 258, in _validate_payload
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action,  {'cause': 'Payload \'{\'evseId\': 1, \'meterValue\': [{\'timestamp\': \'2026-06-18T19:08:10Z\', \'sampledValue\': [{\'value\': 0.0, \'measurand\': \'Power.Active.Import\', \'unitOfMeasure\': {\'unit\': \'W\'}, \'context\': \'Sample.Periodic\'}, {\'value\': 0.0, \'measurand\': \'Energy.Active.Import.Register\', \'unitOfMeasure\': {\'unit\': \'Wh\'}, \'context\': \'Sample.Periodic\'}, {\'value\': 0.0, \'measurand\': \'SoC\', \'unitOfMeasure\': {\'unit\': \'Percent\'}, \'context\': \'Sample.Periodic\'}, {\'value\': 0.0, \'measurand\': \'Voltage\', \'unitOfMeasure\': {\'unit\': \'V\'}, \'context\': \'Sample.Periodic\'}, {\'value\': 0.0, \'measurand\': \'Current.Import\', \'unitOfMeasure\': {\'unit\': \'A\'}, \'context\': \'Sample.Periodic\'}, {\'value\': 0.0, \'measurand\': \'ISO15118.EVSE.MaxChargePower\', \'unitOfMeasure\': {\'unit\': \'kW\'}, \'context\': \'Sample.Periodic\'}, {\'value\': 0.0, \'measurand\': \'ISO15118.EVSE.MaxDischargePower\', \'unitOfMeasure\': {\'unit\': \'kW\'}, \'context\': \'Sample.Periodic\'}, {\'value\': 0, \'measurand\': \'ISO15118.LoopCount\', \'unitOfMeasure\': {\'unit\': \'\'}, \'context\': \'Sample.Periodic\'}, {\'value\': 0.0, \'measurand\': \'ISO15118.LoopProcessingMs\', \'unitOfMeasure\': {\'unit\': \'ms\'}, \'context\': \'Sample.Periodic\'}]}]}\' for action \'MeterValues\' is not valid: \'ISO15118.EVSE.MaxChargePower\' is not one of [\'Current.Export\', \'Current.Export.Offered\', \'Current.Export.Minimum\', \'Current.Import\', \'Current.Import.Offered\', \'Current.Import.Minimum\', \'Current.Offered\', \'Display.PresentSOC\', \'Display.MinimumSOC\', \'Display.TargetSOC\', \'Display.MaximumSOC\', \'Display.RemainingTimeToMinimumSOC\', \'Display.RemainingTimeToTargetSOC\', \'Display.RemainingTimeToMaximumSOC\', \'Display.ChargingComplete\', \'Display.BatteryEnergyCapacity\', \'Display.InletHot\', \'Energy.Active.Export.Interval\', \'Energy.Active.Export.Register\', \'Energy.Active.Import.Interval\', \'Energy.Active.Import.Register\', \'Energy.Active.Import.CableLoss\', \'Energy.Active.Import.LocalGeneration.Register\', \'Energy.Active.Net\', \'Energy.Active.Setpoint.Interval\', \'Energy.Apparent.Export\', \'Energy.Apparent.Import\', \'Energy.Apparent.Net\', \'Energy.Reactive.Export.Interval\', \'Energy.Reactive.Export.Register\', \'Energy.Reactive.Import.Interval\', \'Energy.Reactive.Import.Register\', \'Energy.Reactive.Net\', \'EnergyRequest.Target\', \'EnergyRequest.Minimum\', \'EnergyRequest.Maximum\', \'EnergyRequest.Minimum.V2X\', \'EnergyRequest.Maximum.V2X\', \'EnergyRequest.Bulk\', \'Frequency\', \'Power.Active.Export\', \'Power.Active.Import\', \'Power.Active.Setpoint\', \'Power.Active.Residual\', \'Power.Export.Minimum\', \'Power.Export.Offered\', \'Power.Factor\', \'Power.Import.Offered\', \'Power.Import.Minimum\', \'Power.Offered\', \'Power.Reactive.Export\', \'Power.Reactive.Import\', \'SoC\', \'Voltage\', \'Voltage.Minimum\', \'Voltage.Maximum\']\n\nFailed validating \'enum\' in schema[\'properties\'][\'meterValue\'][\'items\'][\'properties\'][\'sampledValue\'][\'items\'][\'properties\'][\'measurand\']:\n    {\'description\': \'Type of measurement. Default = \'\n                    \'"Energy.Active.Import.Register"\\r\\n\',\n     \'javaType\': \'MeasurandEnum\',\n     \'type\': \'string\',\n     \'default\': \'Energy.Active.Import.Register\',\n     \'additionalProperties\': False,\n     \'enum\': [\'Current.Export\',\n              \'Current.Export.Offered\',\n              \'Current.Export.Minimum\',\n              \'Current.Import\',\n              \'Current.Import.Offered\',\n              \'Current.Import.Minimum\',\n              \'Current.Offered\',\n              \'Display.PresentSOC\',\n              \'Display.MinimumSOC\',\n              \'Display.TargetSOC\',\n              \'Display.MaximumSOC\',\n              \'Display.RemainingTimeToMinimumSOC\',\n              \'Display.RemainingTimeToTargetSOC\',\n              \'Display.RemainingTimeToMaximumSOC\',\n              \'Display.ChargingComplete\',\n              \'Display.BatteryEnergyCapacity\',\n              \'Display.InletHot\',\n              \'Energy.Active.Export.Interval\',\n              \'Energy.Active.Export.Register\',\n              \'Energy.Active.Import.Interval\',\n              \'Energy.Active.Import.Register\',\n              \'Energy.Active.Import.CableLoss\',\n              \'Energy.Active.Import.LocalGeneration.Register\',\n              \'Energy.Active.Net\',\n              \'Energy.Active.Setpoint.Interval\',\n              \'Energy.Apparent.Export\',\n              \'Energy.Apparent.Import\',\n              \'Energy.Apparent.Net\',\n              \'Energy.Reactive.Export.Interval\',\n              \'Energy.Reactive.Export.Register\',\n              \'Energy.Reactive.Import.Interval\',\n              \'Energy.Reactive.Import.Register\',\n              \'Energy.Reactive.Net\',\n              \'EnergyRequest.Target\',\n              \'EnergyRequest.Minimum\',\n              \'EnergyRequest.Maximum\',\n              \'EnergyRequest.Minimum.V2X\',\n              \'EnergyRequest.Maximum.V2X\',\n              \'EnergyRequest.Bulk\',\n              \'Frequency\',\n              \'Power.Active.Export\',\n              \'Power.Active.Import\',\n              \'Power.Active.Setpoint\',\n              \'Power.Active.Residual\',\n              \'Power.Export.Minimum\',\n              \'Power.Export.Offered\',\n              \'Power.Factor\',\n              \'Power.Import.Offered\',\n              \'Power.Import.Minimum\',\n              \'Power.Offered\',\n              \'Power.Reactive.Export\',\n              \'Power.Reactive.Import\',\n              \'SoC\',\n              \'Voltage\',\n              \'Voltage.Minimum\',\n              \'Voltage.Maximum\']}\n\nOn instance[\'meterValue\'][0][\'sampledValue\'][5][\'measurand\']:\n    \'ISO15118.EVSE.MaxChargePower\'', 'ocpp_message': <Call - unique_id=cd511adb-05a8-4c3c-91b0-819840ec5c1b, action=MeterValues, payload={'evseId': 1, 'meterValue': [{'timestamp': '2026-06-18T19:08:10Z', 'sampledValue': [{'value': 0.0, 'measurand': 'Power.Active.Import', 'unitOfMeasure': {'unit': 'W'}, 'context': 'Sample.Periodic'}, {'value': 0.0, 'measurand': 'Energy.Active.Import.Register', 'unitOfMeasure': {'unit': 'Wh'}, 'context': 'Sample.Periodic'}, {'value': 0.0, 'measurand': 'SoC', 'unitOfMeasure': {'unit': 'Percent'}, 'context': 'Sample.Periodic'}, {'value': 0.0, 'measurand': 'Voltage', 'unitOfMeasure': {'unit': 'V'}, 'context': 'Sample.Periodic'}, {'value': 0.0, 'measurand': 'Current.Import', 'unitOfMeasure': {'unit': 'A'}, 'context': 'Sample.Periodic'}, {'value': 0.0, 'measurand': 'ISO15118.EVSE.MaxChargePower', 'unitOfMeasure': {'unit': 'kW'}, 'context': 'Sample.Periodic'}, {'value': 0.0, 'measurand': 'ISO15118.EVSE.MaxDischargePower', 'unitOfMeasure': {'unit': 'kW'}, 'context': 'Sample.Periodic'}, {'value': 0, 'measurand': 'ISO15118.LoopCount', 'unitOfMeasure': {'unit': ''}, 'context': 'Sample.Periodic'}, {'value': 0.0, 'measurand': 'ISO15118.LoopProcessingMs', 'unitOfMeasure': {'unit': 'ms'}, 'context': 'Sample.Periodic'}]}]}>}
+
