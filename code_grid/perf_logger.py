@@ -15,6 +15,14 @@ IEC 104 APDU sizes are theoretical (IEC 60870-5-104); the c104 library does
 not expose raw byte counts.  OCPP sizes are measured from the live WebSocket
 frames.  ISO 15118 loop time is measured on the charger Pi and relayed via
 IOA 17.
+
+Core functions/classes:
+    _Stats           — rolling-deque accumulator (count/min/mean/max/p95) for one metric.
+    _RateCounter      — 60 s sliding-window throughput counter (msgs/sec, bytes/sec).
+    PerfLogger.log_iec104() / log_ocpp_message() / log_iso15118() / log_voltage_stab() — append one row to the matching CSV and update in-memory stats.
+    PerfLogger.get_summary()    — full session statistics dict, including IEC 104 theoretical APDU sizes and voltage-stabilisation accuracy.
+    PerfLogger.get_live_stats() — lightweight stats dict pushed to the dashboard every 500 ms.
+    PerfLogger.csv_paths()      — maps log names (iec104/ocpp/iso15118/voltage_stab) to their file paths for the download endpoint.
 """
 
 import csv

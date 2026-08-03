@@ -28,6 +28,13 @@ IOA map
   IOA 15 (M_ME_NC_1) : EV voltage [V]      — from state.latest.voltage_v
   IOA 16 (M_ME_NC_1) : EV current [A]      — from state.latest.current_a
   IOA 17 (M_ME_NC_1) : loop time [ms]      — from state.iso_loop_ms
+
+Core functions:
+    _build_tls()             — builds the IEC 62351-3 mutual-TLS context for the controlled station.
+    _departure_blocks_v2g()  — checks whether the user's departure window/SoC floor should veto a LOWER (discharge) command.
+    on_step_command()        — handles an incoming HIGHER/LOWER step command on IOA 12, updating state.grid_power_setpoint_kw (guarded by SoC floor / departure preferences).
+    _update_point() / before_auto_transmit() / before_read() — refresh IOAs 11/13-17 from state.latest just before each report or read.
+    run_iec104_server()      — builds the server, registers the IOA points and callbacks, and starts listening.
 """
 
 import datetime

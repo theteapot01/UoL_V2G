@@ -15,6 +15,15 @@ A session CSV is written to Logs/iso15118_bytes_YYYYMMDD_HHMMSS.csv with:
     cumulative_rx_bytes, cumulative_tx_bytes
 
 In-memory summary accessible via get_summary().
+
+Used on both the Charger (run_secc.py) and EV (run_evcc.py) sides — each
+process gets its own independent counters and CSV.
+
+Core functions/classes:
+    _log()                 — records one read/write event's byte count into the CSV and cumulative totals.
+    get_summary()           — returns totals, rates, elapsed time, and log path.
+    CountingStreamReader    — wraps asyncio.StreamReader; intercepts read()/readexactly()/readline()/readuntil() to count incoming bytes.
+    CountingStreamWriter    — wraps asyncio.StreamWriter; intercepts write()/writelines() to count outgoing bytes.
 """
 
 import asyncio

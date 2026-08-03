@@ -8,6 +8,13 @@ The SECC does NOT own a battery model. SoC and power are forwarded from the
 EV via ISO 15118 (the EV is the single source of truth). The grid's power
 commands arrive via IEC 104 and are stored here so the EVSE controller can
 relay them to the EV through the charge-loop response limits.
+
+Core contents (no active behaviour — a plain in-memory data hub):
+    Telemetry           — immutable snapshot of the EV's latest SoC/power/voltage/current/temperature.
+    SharedState.latest  — the current Telemetry, replaced atomically each charge-loop tick.
+    SharedState.grid_power_setpoint_kw — the IEC 104 server's target power; read by TelemetryEVSEController.
+    SharedState.command_received / ev_connected — guard flags distinguishing startup from a live direction-change.
+    SharedState.last_command_t / last_command_str — control-latency handoff between the IEC 104 callback thread and the asyncio charge loop.
 """
 
 from dataclasses import dataclass

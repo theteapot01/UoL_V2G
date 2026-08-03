@@ -26,6 +26,10 @@ EVCC_CONFIG_PATH resolve), with this directory on PYTHONPATH:
 An optional EVCC config file path may be passed as the first argument, exactly
 as with the upstream main.py.
 
+Core functions:
+    _counting_tcp_evcc_create() — monkey-patches TCPClient.create to wrap the EVCC's reader/writer for byte-count measurement, without touching the upstream Josev tree.
+    main() — reads EVCC_* env vars to choose a controller (stock SimEVController, CSV replay, or live SimulatedBattery), builds it, then runs the ISO 15118 EVCCHandler.
+    run()  — asyncio entry point with KeyboardInterrupt handling.
 """
 
 import asyncio

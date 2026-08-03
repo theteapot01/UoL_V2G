@@ -20,6 +20,9 @@ Prerequisites:
     cd code_charger/iso15118 && poetry install          # one-time
     cd iso15118/shared/pki && ./create_certs.sh -v iso-2  # one-time (ISO 15118 PKI)
     ./create_ocpp_certs.sh                              # one-time (OCPP mTLS PKI)
+
+Core functions:
+    main() — sets PYTHONPATH, launches run_secc.py as a `poetry run` subprocess under code_charger/iso15118, and forwards Ctrl-C for a clean shutdown.
 """
 
 import asyncio

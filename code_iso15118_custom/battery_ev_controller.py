@@ -34,6 +34,14 @@ On this (EVCC) side, ``get_scheduled_dc_charge_loop_params()`` clamps the
 target current to ``self.evse_max_charge_power`` / ``self.evse_max_discharge_power``.
 These are initialised from the ChargeParameterDiscovery response and updated
 each loop iteration via ``update_evse_limits()``, called from the Josev state machine.
+
+Core functions:
+    update_evse_limits()        — stores the EVSE's latest max charge/discharge power from DC_ChargeLoopRes, called each loop iteration.
+    continue_charging()         — advances the BatteryProfile one step and reports whether the loop should keep running.
+    is_charging_complete()      — delegates to the profile's at_end() (or max_steps cap) to end the session.
+    get_dc_ev_status() / get_dc_ev_status_dinspec() — report the EV's current SoC/status for ISO 15118-2 / DIN SPEC messages.
+    get_dc_charge_params()      — ISO 15118-2 target current/voltage for the DC charge loop, clamped to EVSE limits.
+    get_scheduled_dc_charge_loop_params() — ISO 15118-20 equivalent for Scheduled-mode DC BPT charge loops.
 """
 
 import logging

@@ -1,3 +1,24 @@
+"""
+ocpp_charge_point_2.py
+=======================
+Charger Pi's OCPP 2.1 client (the charge point). Runs inside the SECC
+process (launched by run_secc.py) and reports EV telemetry to the CPMS on
+the grid Pi via periodic MeterValues, sends heartbeats, and receives
+SetVariables calls that carry the user's SoC/departure preferences from the
+dashboard — those are written into SharedState and mirrored to a prefs file
+so the EVCC process (a separate node) can pick them up too.
+
+Core functions:
+    _write_prefs_file()   — atomically writes SharedState's SoC/departure prefs to /tmp/v2g_prefs.json for the EVCC to read.
+    simulate_power_watt() — unused random power generator kept from an earlier prototype iteration; send_meter_values() sources real telemetry from SharedState instead.
+    ChargePoint.on_set_variables() — applies incoming SetVariables (MinSoC/MaxSoC/TargetSoC/DepartureTime) to SharedState.
+    ChargePoint.send_heartbeat()   — periodic OCPP Heartbeat call.
+    ChargePoint.send_meter_values() — reports power, energy, SoC, voltage, current, and EVSE offer limits from state.latest every `interval` seconds.
+    ChargePoint.send_boot_notification() — registers with the CSMS, then runs send_heartbeat() and send_meter_values() concurrently.
+    _build_client_ssl_context() — builds the Security Profile 3 mutual-TLS client context.
+    run_ocpp_client()      — connects to the CPMS over WSS and starts the boot sequence.
+"""
+
 import asyncio
 import json
 import logging

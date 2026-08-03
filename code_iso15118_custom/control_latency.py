@@ -11,6 +11,11 @@ grid issues a step command.
 
 CSV: Logs/control_latency_YYYYMMDD_HHMMSS.csv
   timestamp_unix, timestamp_iso, cmd, setpoint_kw, latency_ms
+
+Core functions:
+    _init()        — creates Logs/ and writes the CSV header on first import.
+    log()          — appends one latency sample to the CSV and updates the in-memory count/mean/min/max/p95 accumulators.
+    get_summary()  — returns the rolling {count, mean_ms, min_ms, max_ms, p95_ms, log_path} dict.
 """
 
 import csv

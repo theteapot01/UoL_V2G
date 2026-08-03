@@ -24,6 +24,9 @@ Environment variables (all optional):
 Prerequisites:
     cd code_charger/iso15118 && poetry install          # one-time
     cd iso15118/shared/pki && ./create_certs.sh -v iso-2  # one-time (ISO 15118 PKI)
+
+Core functions:
+    main() — sets PYTHONPATH, launches run_evcc.py as a `poetry run` subprocess under code_charger/iso15118, and forwards Ctrl-C for a clean shutdown.
 """
 
 import asyncio
