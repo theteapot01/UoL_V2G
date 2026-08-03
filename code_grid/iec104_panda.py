@@ -1,3 +1,24 @@
+"""
+iec104_panda.py
+================
+Grid Pi's IEC 60870-5-104 controlling station (client) and grid-control loop.
+
+Every second it reads the charger's telemetry over IEC 104 (power, SoC,
+temperature), runs a pandapower load-flow on a 3-bus CIGRE network to get bus
+voltage / transformer / line loading, then decides on a HIGHER or LOWER
+regulating-step command; every 4 seconds it transmits the staged command
+(auto trafo/line threshold control, manual override, or voltage-stabilisation
+droop control, in that priority order). Results are written to grid_state
+for the dashboard and to perf_logger for CSV/session statistics.
+
+Core functions:
+    _build_tls()              — builds the IEC 62351-3 mutual-TLS context for the client connection.
+    _adaptive_bursts()        — picks how many step commands (1×/2×/3×/4×) to send in one transmit cycle based on urgency.
+    _minutes_to_departure()   — parses the user's departure time preference into minutes-from-now.
+    con_on_unexpected_message() — logs IEC 104 protocol-level conflicts/rejections from the server.
+    run_iec104_client()       — the main loop: connects to the charger, then interleaves the 1 s read/load-flow cycle with the 4 s command-transmit cycle.
+"""
+
 import asyncio
 import datetime
 import math

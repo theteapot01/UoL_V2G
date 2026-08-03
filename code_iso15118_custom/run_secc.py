@@ -18,6 +18,11 @@ SECC_CONFIG_PATH resolve), with this directory on PYTHONPATH:
 
 An optional SECC config file path may be passed as the first argument, exactly
 as with the upstream main.py.
+
+Core functions:
+    _counting_tcp_secc_call() — monkey-patches TCPServer.__call__ to wrap the SECC's reader/writer for byte-count measurement, without touching the upstream Josev tree.
+    main() — builds the SECC config, constructs TelemetryEVSEController, then runs the ISO 15118 SECCHandler, IEC 104 server, and OCPP client concurrently.
+    run()  — asyncio entry point with top-level exception/KeyboardInterrupt handling.
 """
 
 import asyncio

@@ -52,6 +52,13 @@ can be unit-tested on its own; wire it into shared state at the call sites.
 Sign convention (matches the OCPP MeterValues usage in the project):
     power > 0  ->  charging  (drawing from grid, SoC rises)
     power < 0  ->  discharging / V2G export (SoC falls)
+
+Core functions:
+    set_power_setpoint() / apply_step() — set an absolute power target or nudge it by one HIGHER/LOWER step, clamped to safe limits.
+    tick()               — advances real time: integrates SoC by coulomb-counting, updates SOH via cycle-throughput, and steps the RC thermal model.
+    current() / advance() — BatteryProfile interface: return the live state, or tick() and return the new state.
+    at_end()              — True once SoC reaches the configured target_soc.
+    reset() / reset_health() — reinitialise SoC/power/temperature, or just the SOH/throughput counters, for a fresh run.
 """
 
 import json

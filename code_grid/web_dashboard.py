@@ -2,16 +2,33 @@
 web_dashboard.py
 ================
 FastAPI web server that serves a live V2G monitoring dashboard on port 8080.
+It is a read/control layer only — all telemetry is written into grid_state
+by iec104_panda.py (IEC 104 readings, load-flow results, timing) and
+ocpp_central_system_2.py (OCPP MeterValues); this module renders that state
+and forwards user actions (control mode, tariffs, preferences) back into it.
 
 Endpoints
 ---------
-GET  /          HTML dashboard page
-WS   /ws        WebSocket — pushes JSON state every 500 ms
-POST /api/control  Set grid demand mode {"action": "auto"|"v2g"|"charge"}
+GET  /                    HTML dashboard page
+WS   /ws                  Pushes full JSON state every 500 ms
+POST /api/control         {"action": "auto"|"v2g"|"charge"|"voltage_stab"}
+POST /api/tariff          {"charge_pence_per_kwh", "v2g_pence_per_kwh"}
+POST /api/preferences     SoC limits + departure time (pushed to charger via OCPP SetVariables)
+GET  /api/perf/summary    Full session performance statistics as JSON
+GET  /api/perf/csv/{name} Download a log CSV (iec104, ocpp, iso15118, voltage_stab)
 
-grid_state (code_grid.grid_state) is written by:
-  - iec104_panda.py  (IEC 104 readings, grid load-flow results, timing)
-  - ocpp_central_system_2.py  (OCPP MeterValues telemetry)
+Core functions:
+    _cert_expiry()        — parses a cert file's expiry date for the Security Status card.
+    _init_security_state() — populates SecurityState at startup from the configured cert files.
+    index()                — serves the dashboard HTML page.
+    control()               — applies a control-mode change (auto/v2g/charge/voltage_stab) to grid_state.
+    set_tariff()             — updates the billing tariff rates.
+    set_preferences()        — updates SoC/departure preferences and pushes them to the charger over OCPP.
+    ws_endpoint()             — the /ws WebSocket loop; pushes _build_payload() every 500 ms.
+    _build_billing()          — computes session charge/V2G cost from OCPP energy counters and tariff rates.
+    _build_payload()          — assembles the full JSON state dict sent to the dashboard.
+    perf_summary()/perf_csv() — serve performance-statistics JSON and CSV downloads.
+    run_web_server()          — starts the uvicorn server on 0.0.0.0:8080.
 """
 
 import asyncio

@@ -20,6 +20,11 @@ The CSV is expected to have the columns produced by the battery simulator:
 
 `phase` is a free-text label such as "ramp", "charge", "hold", "done".
 By convention the final row(s) carry phase == "done".
+
+Core functions/classes:
+    load_battery_parameters() — reads an EV chemistry CSV (e.g. nominal voltage) from code_battery_sim/evtype/.
+    BatteryProfile             — abstract interface (current/advance/at_end/reset) implemented by both CsvProfile and SimulatedBattery.
+    CsvProfile.current()/advance()/at_end()/reset() — step through a pre-recorded CSV charge profile row by row.
 """
 
 import csv

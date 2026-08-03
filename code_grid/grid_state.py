@@ -1,3 +1,20 @@
+"""
+grid_state.py
+=============
+Dashboard-facing state for the Grid Pi: the ``GridDashboardState`` singleton
+(``grid_state``) that every grid-side module reads from and writes to.
+
+iec104_panda.py writes IEC 104 telemetry, pandapower results, and per-step
+timing into it; ocpp_central_system_2.py writes OCPP MeterValues telemetry;
+web_dashboard.py reads it to build the JSON payload pushed over the /ws
+WebSocket and to serve the REST endpoints. Nothing here talks to a protocol
+library directly — it is a plain in-memory data hub, not an active component.
+
+Core functions:
+    GridDashboardState.__init__() — constructs the nested snapshot dataclasses (IEC104Snapshot, OCPPSnapshot, GridSnapshot, UserPreferences, TariffSettings, SecurityState) and control-mode flags.
+    GridDashboardState.log_command() — appends a HIGHER/LOWER/HOLD command to the 20-entry rolling command_log shown on the dashboard.
+"""
+
 import time
 from collections import deque
 from dataclasses import dataclass, field

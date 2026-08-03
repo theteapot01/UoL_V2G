@@ -41,6 +41,17 @@ Usage:
 
 Dependencies:
     pip install ocpp websockets
+
+Core functions/classes:
+    ChargePoint.on_boot_notification() — registers the charge point and resets session energy counters.
+    ChargePoint.on_authorize()         — checks an ID token against VALID_TOKENS.
+    ChargePoint.on_heartbeat()         — replies with the current server time.
+    ChargePoint.on_meter_values()      — parses power/energy/SoC/voltage/current/EVSE-limit measurands and writes them into grid_state.ocpp (also integrates V2G export energy).
+    ChargePoint.send_preferences()     — pushes SoC/departure preferences to the charger via SetVariables.
+    _MeasuringWebSocket                — proxies the live WebSocket to measure and log every frame's byte size for perf_logger.
+    on_connect()                       — accepts a new charge-point WebSocket, wraps it, and runs the OCPP handler loop.
+    _build_server_ssl_context()        — builds the Security Profile 3 mutual-TLS server context.
+    run_ocpp_server()                  — starts the WSS server on 0.0.0.0:9000.
 """
 
 # --------------------------------------------------------------

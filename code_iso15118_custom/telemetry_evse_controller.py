@@ -11,6 +11,11 @@ voltage and current.  The grid's desired power direction/magnitude is stored
 in ``state.grid_power_setpoint_kw`` by the IEC 104 on_step_command callback;
 this controller translates it into EVSE DC charge-loop limits so the EV can
 respect the grid's wishes.
+
+Core functions:
+    TelemetryEVSEController.send_charging_command() — the per-DC_ChargeLoopReq hook: writes EV telemetry into state.latest, converts the grid setpoint into EVSE charge/discharge limits, and records control latency.
+    TelemetryEVSEController.session_ended()         — resets SharedState's EV-connected/setpoint/telemetry fields when the ISO 15118 session ends.
+    TelemetryEVSEController._grid_setpoint_to_evse_limits() — converts state.grid_power_setpoint_kw into (max_charge_W, max_discharge_W), guarding the startup/zero-crossing case via state.command_received.
 """
 
 import logging
